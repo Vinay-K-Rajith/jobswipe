@@ -1,8 +1,6 @@
 {
-  "accuracy": 0.9199,
-  "f1": 0.8127,
-  "precision": 0.8334,
-  "recall": 0.793,
-  "gender_parity_gap": 0.045,
-  "model_name": "Fairlearn_LightGBM"
+  "accuracy": 0.919625,
+  "precision": 0.8312462731067383,
+  "recall": 0.7947548460661346,
+  "f1": 0.8125910813174002
 }

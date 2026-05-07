@@ -137,12 +137,25 @@ export default function EligibilityEngine() {
       {!checking && singleResult && (
          <div className="animate-slide">
             <div className="glass-card" style={{ marginBottom: '24px', borderColor: singleResult.criteria_eligible ? 'var(--accent-success)' : 'var(--accent-danger)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                   <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '24px' }} className={singleResult.criteria_eligible ? 'animate-pulse-glow' : ''}>
-                      {singleResult.criteria_eligible ? '✅ ELIGIBLE' : '❌ INELIGIBLE'}
-                      <span className="badge badge-info" style={{ fontSize: '12px' }}>AI Model Score: {singleResult.ml_result ? singleResult.ml_result.score.toFixed(3) : 'N/A'}</span>
-                   </h2>
-                </div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                            {(() => {
+                                 const rulePass = singleResult.criteria_eligible;
+                                 const mlPass = singleResult.ml_result ? singleResult.ml_result.eligible : null;
+                                 const finalEligible = mlPass === null ? rulePass : (rulePass && mlPass);
+                                 return (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                       <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '24px' }} className={finalEligible ? 'animate-pulse-glow' : ''}>
+                                          {finalEligible ? '✅ ELIGIBLE' : '❌ INELIGIBLE'}
+                                       </h2>
+                                       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                          <span className={`badge ${rulePass ? 'badge-success' : 'badge-danger'}`} style={{ fontSize: '12px' }}>{rulePass ? 'Rules: PASSED' : 'Rules: FAILED'}</span>
+                                          <span className={`badge ${mlPass === null ? 'badge-ghost' : (mlPass ? 'badge-success' : 'badge-warning')}`} style={{ fontSize: '12px' }}>{mlPass === null ? 'ML: N/A' : (mlPass ? 'ML: Recommended' : 'ML: Not Recommended')}</span>
+                                          <span className="badge badge-info" style={{ fontSize: '12px' }}>AI Model Score: {singleResult.ml_result ? singleResult.ml_result.score.toFixed(3) : 'N/A'}</span>
+                                       </div>
+                                    </div>
+                                 );
+                            })()}
+                        </div>
                 
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
                    {singleResult.ml_result?.message || 'Criteria checks failed.'}

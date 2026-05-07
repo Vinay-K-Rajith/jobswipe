@@ -15,7 +15,10 @@ if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 pwd = CryptContext(schemes=["bcrypt"])
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "datasets"
+_BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = _BASE_DIR / "data"
+if not DATA_DIR.exists():
+    DATA_DIR = _BASE_DIR / "datasets"
 
 
 def seed_students():

@@ -8,6 +8,10 @@ echo Current directory: %cd%
 
 echo.
 echo Step 1: Creating virtual environment...
+if exist venv (
+    echo Removing stale virtual environment...
+    rmdir /s /q venv
+)
 python -m venv venv
 if errorlevel 1 (
     echo ERROR: Failed to create venv
@@ -28,10 +32,14 @@ if errorlevel 1 (
 
 echo.
 echo Step 4: Downloading spacy model...
-python -m spacy download en_core_web_sm
+python -c "import importlib.util, sys; sys.exit(0 if importlib.util.find_spec('spacy') else 1)"
 if errorlevel 1 (
-    echo ERROR: Failed to download spacy model
-    exit /b 1
+    echo Skipping spacy model download because spaCy is not installed.
+) else (
+    python -m spacy download en_core_web_sm
+    if errorlevel 1 (
+        echo WARNING: Failed to download spacy model, continuing without it.
+    )
 )
 
 echo.

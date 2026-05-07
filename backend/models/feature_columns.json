@@ -1,1 +1,22 @@
-["cgpa_normalized", "10th_normalized", "12th_normalized", "active_backlogs", "dept_match", "required_skills_match_ratio", "preferred_skills_match_ratio", "total_internship_months", "max_internship_tier", "num_projects", "max_project_complexity", "meets_project_complexity", "num_global_premium_certs", "num_global_standard_certs", "num_national_certs", "meets_cert_tier", "num_papers", "max_paper_tier", "num_advanced_skills", "num_verified_skills"]
+[
+  "cgpa_normalized",
+  "10th_normalized",
+  "12th_normalized",
+  "active_backlogs",
+  "dept_match",
+  "required_skills_match_ratio",
+  "preferred_skills_match_ratio",
+  "total_internship_months",
+  "max_internship_tier",
+  "num_projects",
+  "max_project_complexity",
+  "meets_project_complexity",
+  "num_global_premium_certs",
+  "num_global_standard_certs",
+  "num_national_certs",
+  "meets_cert_tier",
+  "num_papers",
+  "max_paper_tier",
+  "num_advanced_skills",
+  "num_verified_skills"
+]
