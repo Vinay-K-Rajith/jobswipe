@@ -90,16 +90,22 @@ export default function StudentsPage() {
               <section className="student-card-grid">
                 {students.map((student) => {
                   const score = readiness(student);
+                  const backlogLabel = student.active_backlogs > 0
+                    ? `${student.active_backlogs} active backlog${student.active_backlogs > 1 ? 's' : ''}`
+                    : 'No active backlogs';
+
                   return (
                     <article className="student-profile-card bento-card" key={student.student_id}>
-                      <div className="bento-card-topline">
-                        <span className="badge badge-info">{student.department}</span>
-                        <span className={`badge ${student.active_backlogs > 0 ? 'badge-danger' : 'badge-success'}`}>
-                          {student.active_backlogs > 0 ? `${student.active_backlogs} active` : 'clear'}
-                        </span>
-                      </div>
                       <h3>{student.full_name}</h3>
-                      <p>{student.student_id} · Year {student.year_of_study}</p>
+                      <div className="student-profile-meta">
+                        <p>{student.student_id} · Year {student.year_of_study}</p>
+                        <div className="student-tag-row">
+                          <span className="student-inline-tag">{student.department}</span>
+                          <span className={`student-inline-tag ${student.active_backlogs > 0 ? 'risk' : 'clear'}`}>
+                            {backlogLabel}
+                          </span>
+                        </div>
+                      </div>
                       <div className="student-score-ring">
                         <div>
                           <strong>{score}%</strong>

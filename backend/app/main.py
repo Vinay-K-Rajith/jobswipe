@@ -9,7 +9,7 @@ import sys
 import json
 import pandas as pd
 import math
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -33,6 +33,15 @@ from src.preprocessing.feature_engineering import (
 from src.explainability.criteria_checker import check_criteria
 from src.explainability.explanation_generator import generate_explanation, generate_detailed_report
 from src.explainability.improvement_planner import generate_improvement_plan
+from app.services.bias_reduction import (
+    counterfactual_rules,
+    fairness_comparison,
+    get_fairness_history,
+    preview_substitution,
+    retrain_constrained_model,
+    save_bias_recommendation,
+    simulate_fix,
+)
 
 # Try to load classifier model (may not be trained yet)
 try:
@@ -161,6 +170,46 @@ class CompanyCreate(BaseModel):
     role_offered: str = "SDE"
     package_lpa: float = 5.0
     bond_years: int = 0
+
+
+class BiasSimulationRequest(BaseModel):
+    company_id: str
+    criterion: str
+
+
+class BiasRecommendationRequest(BaseModel):
+    company_id: str
+    criterion: str
+    current_threshold: Optional[Any] = None
+    recommended_threshold: Optional[Any] = None
+    current_disparity: Optional[float] = None
+    projected_disparity: Optional[float] = None
+    current_pool_size: Optional[int] = None
+    projected_pool_size: Optional[int] = None
+    status: str = "proposed"
+    recommendation_type: str = "threshold"
+    simulation_payload: Optional[Dict[str, Any]] = None
+
+
+class CounterfactualRulesRequest(BaseModel):
+    company_id: str
+
+
+class SubstitutionSpecRequest(BaseModel):
+    remove_criterion: str
+    substitution: Dict[str, Any]
+
+
+class BiasSubstitutionPreviewRequest(BaseModel):
+    company_id: str
+    remove_criterion: str
+    substitution: Dict[str, Any]
+
+
+class ConstrainedRetrainRequest(BaseModel):
+    company_id: str
+    epsilon: float
+    triggered_by: str = "admin-dashboard"
 
 
 # ---------- API Endpoints ----------
@@ -715,6 +764,126 @@ async def get_bias_report(flagged_only: bool = False):
         "flagged_companies": report["flagged_companies"],
         "all_companies": companies_flat,
     })
+
+
+@app.post("/api/bias/simulate-fix")
+async def post_bias_simulation(request: BiasSimulationRequest):
+    if students_df is None or companies_df is None or student_features_df is None:
+        raise HTTPException(status_code=500, detail="Data not loaded")
+    try:
+        return simulate_fix(
+            request.company_id,
+            request.criterion,
+            students_df,
+            companies_df,
+            student_features_df,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Bias simulation failed: {exc}")
+
+
+@app.post("/api/bias/recommendations")
+async def post_bias_recommendation(request: BiasRecommendationRequest):
+    try:
+        return save_bias_recommendation(request.model_dump())
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to save recommendation: {exc}")
+
+
+@app.post("/api/bias/counterfactual-rules")
+async def post_counterfactual_rules(request: CounterfactualRulesRequest):
+    if students_df is None or companies_df is None or student_features_df is None:
+        raise HTTPException(status_code=500, detail="Data not loaded")
+    try:
+        return counterfactual_rules(
+            request.company_id,
+            students_df,
+            companies_df,
+            student_features_df,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Counterfactual analysis failed: {exc}")
+
+
+@app.post("/api/bias/preview-substitution")
+async def post_preview_substitution(request: BiasSubstitutionPreviewRequest):
+    if students_df is None or companies_df is None or student_features_df is None:
+        raise HTTPException(status_code=500, detail="Data not loaded")
+    try:
+        return preview_substitution(
+            request.company_id,
+            {
+                "remove_criterion": request.remove_criterion,
+                "substitution": request.substitution,
+            },
+            students_df,
+            companies_df,
+            student_features_df,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Substitution preview failed: {exc}")
+
+
+@app.get("/api/bias/ml-fairness-comparison")
+async def get_ml_fairness_comparison(company_id: str):
+    if students_df is None or companies_df is None or student_features_df is None:
+        raise HTTPException(status_code=500, detail="Data not loaded")
+    try:
+        return fairness_comparison(
+            company_id,
+            students_df,
+            companies_df,
+            student_features_df,
+            ranker=ranker if RANKER_LOADED else None,
+            ranker_scaler=ranker_scaler if RANKER_LOADED else None,
+            ranker_feat_cols=ranker_feat_cols if RANKER_LOADED else None,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"ML fairness comparison failed: {exc}")
+
+
+@app.post("/api/bias/retrain-constrained")
+async def post_retrain_constrained(request: ConstrainedRetrainRequest):
+    if students_df is None or companies_df is None or student_features_df is None:
+        raise HTTPException(status_code=500, detail="Data not loaded")
+    try:
+        return retrain_constrained_model(
+            request.company_id,
+            request.epsilon,
+            students_df,
+            companies_df,
+            student_features_df,
+            request.triggered_by,
+        )
+    except PermissionError as exc:
+        raise HTTPException(status_code=429, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Constrained retraining failed: {exc}")
+
+
+@app.get("/api/bias/model-fairness-history/{company_id}")
+async def get_model_fairness_history(company_id: str):
+    try:
+        return get_fairness_history(company_id)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to load fairness history: {exc}")
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("BACKEND_PORT", 8000))

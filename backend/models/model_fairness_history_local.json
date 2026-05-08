@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1778279849156,
+    "company_id": "CO001",
+    "epsilon": 0.02,
+    "accuracy": 0.6818,
+    "f1": 0.5333,
+    "delta_dp": 0.3077,
+    "delta_eo": 0.6,
+    "trained_at": "2026-05-08T22:37:29.156284+00:00",
+    "triggered_by": "admin-dashboard",
+    "persistence_mode": "local"
+  },
+  {
+    "id": 1778279869410,
+    "company_id": "CO001",
+    "epsilon": 0.029,
+    "accuracy": 0.6818,
+    "f1": 0.5333,
+    "delta_dp": 0.3077,
+    "delta_eo": 0.6,
+    "trained_at": "2026-05-08T22:37:49.410350+00:00",
+    "triggered_by": "admin-dashboard",
+    "persistence_mode": "local"
+  }
+]

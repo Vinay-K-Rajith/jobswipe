@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1778279762136,
+    "company_id": "CO001",
+    "criterion": "cgpa",
+    "current_threshold": null,
+    "recommended_threshold": null,
+    "current_disparity": null,
+    "projected_disparity": null,
+    "current_pool_size": null,
+    "projected_pool_size": null,
+    "status": "proposed",
+    "recommendation_type": "threshold",
+    "simulation_payload": null,
+    "created_at": "2026-05-08T22:36:02.136595+00:00",
+    "persistence_mode": "local"
+  },
+  {
+    "id": 1778279807339,
+    "company_id": "CO001",
+    "criterion": "12th",
+    "current_threshold": 82,
+    "recommended_threshold": 8.37,
+    "current_disparity": 0.1821,
+    "projected_disparity": 0.1759,
+    "current_pool_size": 87,
+    "projected_pool_size": 87,
+    "status": "proposed",
+    "recommendation_type": "substitution",
+    "simulation_payload": {
+      "candidate_id": "CO001-12th-cgpa-1",
+      "description": "Replace the 12th-grade cutoff with CGPA at least 8.37.",
+      "confidence": "medium",
+      "composite_score": 0.9497,
+      "current_rule": {
+        "criterion": "12th",
+        "threshold": 82,
+        "gender_disparity": 0.1821,
+        "pool_size": 87
+      },
+      "alternative_rule": {
+        "criterion": "cgpa",
+        "threshold": 8.37,
+        "label": "CGPA at least 8.37",
+        "gender_disparity": 0.1759,
+        "pool_size": 87,
+        "p_value": 0.116457,
+        "performance_preservation_score": 0.8323,
+        "pool_similarity": 1
+      },
+      "spec": {
+        "remove_criterion": "12th",
+        "substitution": {
+          "kind": "cgpa",
+          "value": 8.37
+        }
+      }
+    },
+    "created_at": "2026-05-08T22:36:47.339176+00:00",
+    "persistence_mode": "local"
+  }
+]

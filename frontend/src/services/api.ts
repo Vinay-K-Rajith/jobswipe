@@ -191,6 +191,169 @@ export interface BiasReport {
   all_companies: BiasCompany[];
 }
 
+export interface BiasSimulationPoint {
+  threshold: number;
+  total_eligible: number;
+  female_eligible: number;
+  male_eligible: number;
+  non_binary_eligible: number;
+  gender_disparity: number;
+  p_value: number;
+  pass_rates: Record<string, number>;
+}
+
+export interface BiasSimulationResult {
+  company_id: string;
+  company_name: string;
+  criterion: string;
+  current_threshold: number;
+  current_disparity: number;
+  current_pool_size: number;
+  sweep: BiasSimulationPoint[];
+  recommended_threshold: number | null;
+  recommended_result: BiasSimulationPoint | null;
+}
+
+export interface BiasRecommendationPayload {
+  company_id: string;
+  criterion: string;
+  current_threshold?: string | number | null;
+  recommended_threshold?: string | number | null;
+  current_disparity?: number | null;
+  projected_disparity?: number | null;
+  current_pool_size?: number | null;
+  projected_pool_size?: number | null;
+  status?: 'proposed' | 'accepted' | 'rejected' | 'implemented';
+  recommendation_type?: 'threshold' | 'substitution';
+  simulation_payload?: Record<string, any> | null;
+}
+
+export interface BiasDriver {
+  criterion: string;
+  baseline_disparity: number;
+  disparity_without_criterion: number;
+  disparity_reduction: number;
+  pool_size_without_criterion: number;
+}
+
+export interface CounterfactualCandidate {
+  candidate_id: string;
+  description: string;
+  confidence: 'high' | 'medium' | 'low';
+  composite_score: number;
+  current_rule: {
+    criterion: string;
+    threshold: string | number;
+    gender_disparity: number;
+    pool_size: number;
+  };
+  alternative_rule: {
+    criterion: string;
+    threshold: string | number;
+    label: string;
+    gender_disparity: number;
+    pool_size: number;
+    p_value: number;
+    performance_preservation_score: number;
+    pool_similarity: number;
+  };
+  spec: {
+    remove_criterion: string;
+    substitution: {
+      kind: string;
+      value: string | number;
+    };
+  };
+}
+
+export interface CounterfactualRulesResult {
+  company_id: string;
+  company_name: string;
+  drivers: BiasDriver[];
+  top_driver: string;
+  current_metrics: {
+    pool_size: number;
+    gender_disparity: number;
+    p_value: number;
+  };
+  candidates: CounterfactualCandidate[];
+}
+
+export interface SubstitutionPreviewResult {
+  company_id: string;
+  newly_eligible_count: number;
+  dropped_count: number;
+  grouped: Array<{
+    department: string;
+    gender: string;
+    count: number;
+  }>;
+  students: Array<{
+    student_id: string;
+    full_name: string;
+    department: string;
+    gender: string;
+    cgpa: number;
+  }>;
+}
+
+export interface FairnessVariantStudent {
+  student_id: string;
+  full_name: string;
+  department: string;
+  cgpa: number;
+  score: number;
+}
+
+export interface FairnessVariant {
+  key: 'baseline' | 'champion' | 'tightened';
+  label: string;
+  available: boolean;
+  detail?: string;
+  accuracy?: number;
+  f1?: number;
+  delta_dp?: number;
+  delta_eo?: number;
+  shortlist_overlap?: number;
+  shortlist?: FairnessVariantStudent[];
+}
+
+export interface MLFairnessComparison {
+  company_id: string;
+  reference_shortlist: string[];
+  variants: FairnessVariant[];
+}
+
+export interface RetrainConstrainedResponse {
+  company_id: string;
+  epsilon: number;
+  accuracy: number;
+  f1: number;
+  delta_dp: number;
+  delta_eo: number;
+  trained_at: string;
+  triggered_by: string;
+  training_time_seconds: number;
+  artifact_path: string;
+}
+
+export interface FairnessHistoryPoint {
+  id?: number;
+  company_id: string;
+  epsilon: number;
+  accuracy: number;
+  f1: number;
+  delta_dp: number;
+  delta_eo: number;
+  trained_at: string;
+  triggered_by: string;
+}
+
+export interface FairnessHistoryResponse {
+  company_id: string;
+  history: FairnessHistoryPoint[];
+}
+
 export interface SkillDeficit {
   skill: string;
   students_with_skill: number;
@@ -249,4 +412,39 @@ export const getSkillGap = (studentId: string, topK = 5) =>
 
 export const getBiasReport = (flaggedOnly = false) =>
   api.get<BiasReport>('/api/ml/bias-report', { params: { flagged_only: flaggedOnly } });
+
+export const simulateBiasFix = (companyId: string, criterion: string) =>
+  api.post<BiasSimulationResult>('/api/bias/simulate-fix', {
+    company_id: companyId,
+    criterion,
+  });
+
+export const saveBiasRecommendation = (payload: BiasRecommendationPayload) =>
+  api.post('/api/bias/recommendations', payload);
+
+export const getCounterfactualRules = (companyId: string) =>
+  api.post<CounterfactualRulesResult>('/api/bias/counterfactual-rules', {
+    company_id: companyId,
+  });
+
+export const previewSubstitution = (companyId: string, spec: CounterfactualCandidate['spec']) =>
+  api.post<SubstitutionPreviewResult>('/api/bias/preview-substitution', {
+    company_id: companyId,
+    remove_criterion: spec.remove_criterion,
+    substitution: spec.substitution,
+  });
+
+export const getMLFairnessComparison = (companyId: string) =>
+  api.get<MLFairnessComparison>('/api/bias/ml-fairness-comparison', { params: { company_id: companyId } });
+
+export const retrainConstrainedModel = (companyId: string, epsilon: number, triggeredBy = 'admin-dashboard') =>
+  api.post<RetrainConstrainedResponse>('/api/bias/retrain-constrained', {
+    company_id: companyId,
+    epsilon,
+    triggered_by: triggeredBy,
+  });
+
+export const getModelFairnessHistory = (companyId: string) =>
+  api.get<FairnessHistoryResponse>(`/api/bias/model-fairness-history/${companyId}`);
+
 export default api;
