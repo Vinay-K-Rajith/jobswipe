@@ -47,7 +47,7 @@ STUDENT_FEAT_COLS = [
     "num_national_certs", "max_cert_tier",
     "num_papers", "max_paper_tier",
     "num_advanced_skills", "num_verified_skills",
-    "n_skills_currently", "baseline_avg_prob",
+    "dept_match_ratio", "n_skills_currently", "baseline_avg_prob",
 ]
 
 
@@ -60,6 +60,14 @@ def build_surrogate_features(gap_df: pd.DataFrame,
     # Aggregate student features from pair_features (take first row per student)
     student_agg = pairs.groupby("student_id").first().reset_index()
     student_agg["cgpa_normalized"] = student_agg["cgpa_normalized"]
+    dept_match_ratio = (
+        pairs.groupby("student_id")["dept_match"]
+        .mean()
+        .reset_index()
+        .rename(columns={"dept_match": "dept_match_ratio"})
+    )
+    student_agg = student_agg.drop(columns=["dept_match_ratio"], errors="ignore")
+    student_agg = student_agg.merge(dept_match_ratio, on="student_id", how="left")
 
     # Encode skill name as integer (label encoding)
     le = LabelEncoder()
@@ -184,7 +192,9 @@ def recommend_skills(student_id: str,
         with open(os.path.join(MODEL_DIR, "skill_recommender_features.json"))          as f: fc  = json.load(f)
 
         pairs = pd.read_csv(os.path.join(DATA_DIR, "pair_features.csv"))
-        student_row = pairs[pairs["student_id"] == student_id].iloc[0]
+        student_rows = pairs[pairs["student_id"] == student_id]
+        student_row = student_rows.iloc[0]
+        dept_match_ratio = float(student_rows["dept_match"].mean()) if "dept_match" in student_rows else 0.0
 
         rows = []
         for skill in le.classes_:
@@ -192,7 +202,7 @@ def recommend_skills(student_id: str,
             feats = {"skill_encoded": skill_enc}
             for col in fc:
                 if col != "skill_encoded":
-                    feats[col] = student_row.get(col, 0)
+                    feats[col] = dept_match_ratio if col == "dept_match_ratio" else student_row.get(col, 0)
             X = pd.DataFrame([feats])[fc].fillna(0)
             gain = float(mdl.predict(scl.transform(X))[0])
             rows.append({"skill": skill, "predicted_gain": round(gain, 4)})

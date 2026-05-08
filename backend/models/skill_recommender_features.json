@@ -15,6 +15,7 @@
   "max_paper_tier",
   "num_advanced_skills",
   "num_verified_skills",
+  "dept_match_ratio",
   "n_skills_currently",
   "baseline_avg_prob"
 ]

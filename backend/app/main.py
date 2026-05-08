@@ -116,6 +116,20 @@ def load_data():
 load_data()
 
 
+def compute_department_match_ratio(department: str) -> float:
+    """Share of companies whose department restrictions include this department."""
+    if companies_df is None or companies_df.empty:
+        return 0.0
+
+    matches = 0
+    for value in companies_df["allowed_departments"].fillna("").tolist():
+        allowed = {d.strip() for d in str(value).split(",") if d.strip()}
+        if department in allowed:
+            matches += 1
+
+    return matches / len(companies_df)
+
+
 # ---------- Pydantic Models ----------
 class EligibilityRequest(BaseModel):
     student_id: str
@@ -611,6 +625,7 @@ async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
     if sf.empty:
         raise HTTPException(404, f"Student {student_id} not found")
     student_row = sf.iloc[0]
+    dept_match_ratio = compute_department_match_ratio(student_row.get("department", ""))
 
     # Score every skill using surrogate model
     rec_rows = []
@@ -619,7 +634,10 @@ async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
         feats = {"skill_encoded": skill_enc}
         for col in skill_rec_feat_cols:
             if col != "skill_encoded":
-                feats[col] = float(student_row.get(col, 0) or 0)
+                if col == "dept_match_ratio":
+                    feats[col] = dept_match_ratio
+                else:
+                    feats[col] = float(student_row.get(col, 0) or 0)
         import numpy as np
         X = pd.DataFrame([feats])[skill_rec_feat_cols].fillna(0)
         gain = float(skill_rec_model.predict(skill_rec_scaler.transform(X.values))[0])
@@ -631,6 +649,16 @@ async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
     current_skills = {s.lower() for s in (student_row.get("skill_list") or [])}
     filtered = [r for r in rec_rows if r["skill"].lower() not in current_skills]
 
+    metrics_path = os.path.join(_mdir, "skill_recommender_metrics.json")
+    model_label = "GradientBoosting surrogate"
+    if os.path.exists(metrics_path):
+        with open(metrics_path) as f:
+            skill_metrics = json.load(f)
+        rho = skill_metrics.get("test_spearman_rho")
+        r2 = skill_metrics.get("test_r2")
+        if rho is not None and r2 is not None:
+            model_label = f"GradientBoosting surrogate (R2={r2}, Spearman rho={rho})"
+
     student_raw = students_df[students_df["student_id"] == student_id].iloc[0]
     return clean_nan({
         "student_id": student_id,
@@ -638,7 +666,7 @@ async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
         "department": student_raw.get("department", ""),
         "current_skill_count": len(current_skills),
         "recommendations": filtered[:top_k],
-        "model": "GradientBoosting surrogate (Spearman rho=0.77)",
+        "model": model_label,
     })
 
 

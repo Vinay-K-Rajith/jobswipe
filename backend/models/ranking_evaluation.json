@@ -1,21 +1,21 @@
 {
   "global_metrics": {
     "ndcg@5": 1.0,
-    "ndcg@10": 0.9914662624223984,
-    "ndcg@20": 0.9817348729855115,
+    "ndcg@10": 0.9896625074373828,
+    "ndcg@20": 0.9829545879566972,
     "precision@5": 1.0,
-    "precision@10": 0.996,
-    "precision@20": 0.9790000000000001,
-    "map": 0.848772390546706,
-    "kendall_tau": 0.5045909317314385,
+    "precision@10": 0.99,
+    "precision@20": 0.977,
+    "map": 0.8449692301983347,
+    "kendall_tau": 0.5047379573539961,
     "num_companies": 50,
     "num_students": 800
   },
   "fairness_by_gender": {
-    "F": 0.9041351102760092,
-    "M": 0.986917637730143,
-    "Non-binary": 0.961131473104719,
-    "ndcg@10_fairness_gap": 0.0828
+    "F": 0.9122518616285383,
+    "M": 0.9859884928859788,
+    "Non-binary": 0.9672490412375012,
+    "ndcg@10_fairness_gap": 0.0737
   },
   "per_company": [
     {
@@ -25,10 +25,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.9228,
+      "ndcg@20": 0.9197,
       "precision@20": 0.85,
-      "map": 0.7677,
-      "kendall_tau": 0.3444
+      "map": 0.7582,
+      "kendall_tau": 0.3421
     },
     {
       "company_id": "CO003",
@@ -37,22 +37,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.9567,
-      "precision@20": 0.95,
-      "map": 0.8353,
+      "ndcg@20": 0.942,
+      "precision@20": 0.9,
+      "map": 0.8219,
       "kendall_tau": 0.3913
-    },
-    {
-      "company_id": "CO018",
-      "n_students": 800,
-      "ndcg@5": 1.0,
-      "precision@5": 1.0,
-      "ndcg@10": 1.0,
-      "precision@10": 1.0,
-      "ndcg@20": 0.9815,
-      "precision@20": 1.0,
-      "map": 0.8484,
-      "kendall_tau": 0.5099
     },
     {
       "company_id": "CO017",
@@ -63,8 +51,20 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8568,
-      "kendall_tau": 0.5803
+      "map": 0.849,
+      "kendall_tau": 0.5775
+    },
+    {
+      "company_id": "CO004",
+      "n_students": 800,
+      "ndcg@5": 1.0,
+      "precision@5": 1.0,
+      "ndcg@10": 1.0,
+      "precision@10": 1.0,
+      "ndcg@20": 0.9393,
+      "precision@20": 0.85,
+      "map": 0.7202,
+      "kendall_tau": 0.3442
     },
     {
       "company_id": "CO016",
@@ -75,8 +75,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8131,
-      "kendall_tau": 0.5309
+      "map": 0.8172,
+      "kendall_tau": 0.5343
     },
     {
       "company_id": "CO015",
@@ -87,8 +87,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8623,
-      "kendall_tau": 0.5581
+      "map": 0.8587,
+      "kendall_tau": 0.5578
     },
     {
       "company_id": "CO014",
@@ -97,10 +97,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.9418,
+      "ndcg@20": 0.9801,
       "precision@20": 1.0,
-      "map": 0.8501,
-      "kendall_tau": 0.4744
+      "map": 0.8537,
+      "kendall_tau": 0.4763
     },
     {
       "company_id": "CO013",
@@ -111,8 +111,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8808,
-      "kendall_tau": 0.5354
+      "map": 0.8802,
+      "kendall_tau": 0.5363
     },
     {
       "company_id": "CO012",
@@ -121,10 +121,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.9418,
+      "ndcg@20": 0.9614,
       "precision@20": 1.0,
-      "map": 0.8642,
-      "kendall_tau": 0.4794
+      "map": 0.8579,
+      "kendall_tau": 0.4784
     },
     {
       "company_id": "CO011",
@@ -135,11 +135,11 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8547,
-      "kendall_tau": 0.544
+      "map": 0.8535,
+      "kendall_tau": 0.5439
     },
     {
-      "company_id": "CO026",
+      "company_id": "CO018",
       "n_students": 800,
       "ndcg@5": 1.0,
       "precision@5": 1.0,
@@ -147,8 +147,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8061,
-      "kendall_tau": 0.4903
+      "map": 0.8518,
+      "kendall_tau": 0.5122
     },
     {
       "company_id": "CO025",
@@ -157,10 +157,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 1.0,
+      "ndcg@20": 0.9815,
       "precision@20": 1.0,
-      "map": 0.8456,
-      "kendall_tau": 0.4844
+      "map": 0.8367,
+      "kendall_tau": 0.4821
     },
     {
       "company_id": "CO024",
@@ -171,8 +171,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8789,
-      "kendall_tau": 0.5442
+      "map": 0.8759,
+      "kendall_tau": 0.5425
     },
     {
       "company_id": "CO023",
@@ -181,10 +181,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.921,
+      "ndcg@20": 0.922,
       "precision@20": 1.0,
-      "map": 0.8219,
-      "kendall_tau": 0.4633
+      "map": 0.8207,
+      "kendall_tau": 0.4656
     },
     {
       "company_id": "CO022",
@@ -195,8 +195,8 @@
       "precision@10": 1.0,
       "ndcg@20": 0.9815,
       "precision@20": 1.0,
-      "map": 0.8248,
-      "kendall_tau": 0.4854
+      "map": 0.8207,
+      "kendall_tau": 0.4865
     },
     {
       "company_id": "CO021",
@@ -207,8 +207,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.7541,
-      "kendall_tau": 0.5012
+      "map": 0.7496,
+      "kendall_tau": 0.5005
     },
     {
       "company_id": "CO020",
@@ -217,10 +217,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.9035,
+      "ndcg@20": 0.9421,
       "precision@20": 1.0,
-      "map": 0.8039,
-      "kendall_tau": 0.4938
+      "map": 0.8096,
+      "kendall_tau": 0.4981
     },
     {
       "company_id": "CO019",
@@ -231,8 +231,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8194,
-      "kendall_tau": 0.5175
+      "map": 0.8167,
+      "kendall_tau": 0.5185
     },
     {
       "company_id": "CO035",
@@ -243,8 +243,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9,
-      "kendall_tau": 0.5786
+      "map": 0.9018,
+      "kendall_tau": 0.5833
     },
     {
       "company_id": "CO036",
@@ -255,8 +255,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9451,
-      "kendall_tau": 0.5647
+      "map": 0.9426,
+      "kendall_tau": 0.5545
     },
     {
       "company_id": "CO037",
@@ -267,8 +267,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8826,
-      "kendall_tau": 0.5984
+      "map": 0.8774,
+      "kendall_tau": 0.5954
     },
     {
       "company_id": "CO038",
@@ -279,8 +279,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8341,
-      "kendall_tau": 0.5652
+      "map": 0.8312,
+      "kendall_tau": 0.5577
     },
     {
       "company_id": "CO039",
@@ -291,8 +291,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8893,
-      "kendall_tau": 0.5889
+      "map": 0.8887,
+      "kendall_tau": 0.5919
     },
     {
       "company_id": "CO040",
@@ -303,8 +303,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8639,
-      "kendall_tau": 0.5904
+      "map": 0.866,
+      "kendall_tau": 0.5975
     },
     {
       "company_id": "CO041",
@@ -315,11 +315,11 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8641,
+      "map": 0.8655,
       "kendall_tau": 0.5907
     },
     {
-      "company_id": "CO042",
+      "company_id": "CO026",
       "n_students": 800,
       "ndcg@5": 1.0,
       "precision@5": 1.0,
@@ -327,8 +327,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8927,
-      "kendall_tau": 0.5947
+      "map": 0.8142,
+      "kendall_tau": 0.4935
     },
     {
       "company_id": "CO027",
@@ -339,8 +339,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.7814,
-      "kendall_tau": 0.5196
+      "map": 0.7915,
+      "kendall_tau": 0.5266
     },
     {
       "company_id": "CO028",
@@ -351,8 +351,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8477,
-      "kendall_tau": 0.5307
+      "map": 0.8431,
+      "kendall_tau": 0.53
     },
     {
       "company_id": "CO029",
@@ -363,8 +363,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8166,
-      "kendall_tau": 0.5158
+      "map": 0.8091,
+      "kendall_tau": 0.5131
     },
     {
       "company_id": "CO030",
@@ -373,10 +373,10 @@
       "precision@5": 1.0,
       "ndcg@10": 1.0,
       "precision@10": 1.0,
-      "ndcg@20": 0.9809,
+      "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8496,
-      "kendall_tau": 0.5064
+      "map": 0.8504,
+      "kendall_tau": 0.5082
     },
     {
       "company_id": "CO031",
@@ -387,8 +387,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9628,
-      "kendall_tau": 0.5246
+      "map": 0.964,
+      "kendall_tau": 0.5233
     },
     {
       "company_id": "CO032",
@@ -399,8 +399,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8993,
-      "kendall_tau": 0.6046
+      "map": 0.9004,
+      "kendall_tau": 0.6073
     },
     {
       "company_id": "CO033",
@@ -411,8 +411,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9107,
-      "kendall_tau": 0.5789
+      "map": 0.9112,
+      "kendall_tau": 0.5824
     },
     {
       "company_id": "CO034",
@@ -423,8 +423,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8591,
-      "kendall_tau": 0.5662
+      "map": 0.8513,
+      "kendall_tau": 0.5573
     },
     {
       "company_id": "CO043",
@@ -435,8 +435,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9079,
-      "kendall_tau": 0.5785
+      "map": 0.9064,
+      "kendall_tau": 0.5786
     },
     {
       "company_id": "CO044",
@@ -447,8 +447,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.846,
-      "kendall_tau": 0.5745
+      "map": 0.8442,
+      "kendall_tau": 0.569
     },
     {
       "company_id": "CO045",
@@ -459,8 +459,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8664,
-      "kendall_tau": 0.5865
+      "map": 0.8656,
+      "kendall_tau": 0.5867
     },
     {
       "company_id": "CO046",
@@ -471,8 +471,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9059,
-      "kendall_tau": 0.6021
+      "map": 0.9054,
+      "kendall_tau": 0.6045
     },
     {
       "company_id": "CO047",
@@ -483,8 +483,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8635,
-      "kendall_tau": 0.5893
+      "map": 0.8657,
+      "kendall_tau": 0.5963
     },
     {
       "company_id": "CO048",
@@ -495,8 +495,8 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.9233,
-      "kendall_tau": 0.5243
+      "map": 0.9261,
+      "kendall_tau": 0.5314
     },
     {
       "company_id": "CO049",
@@ -507,8 +507,20 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8584,
-      "kendall_tau": 0.5898
+      "map": 0.8595,
+      "kendall_tau": 0.5915
+    },
+    {
+      "company_id": "CO042",
+      "n_students": 800,
+      "ndcg@5": 1.0,
+      "precision@5": 1.0,
+      "ndcg@10": 1.0,
+      "precision@10": 1.0,
+      "ndcg@20": 1.0,
+      "precision@20": 1.0,
+      "map": 0.8965,
+      "kendall_tau": 0.6041
     },
     {
       "company_id": "CO050",
@@ -519,92 +531,80 @@
       "precision@10": 1.0,
       "ndcg@20": 1.0,
       "precision@20": 1.0,
-      "map": 0.8996,
-      "kendall_tau": 0.5762
+      "map": 0.8948,
+      "kendall_tau": 0.5626
     },
     {
       "company_id": "CO010",
       "n_students": 800,
       "ndcg@5": 1.0,
       "precision@5": 1.0,
-      "ndcg@10": 0.998,
-      "precision@10": 1.0,
-      "ndcg@20": 0.9443,
-      "precision@20": 0.75,
-      "map": 0.7427,
-      "kendall_tau": 0.2761
-    },
-    {
-      "company_id": "CO009",
-      "n_students": 800,
-      "ndcg@5": 1.0,
-      "precision@5": 1.0,
-      "ndcg@10": 0.9636,
-      "precision@10": 1.0,
-      "ndcg@20": 0.9317,
-      "precision@20": 0.9,
-      "map": 0.8199,
-      "kendall_tau": 0.3409
-    },
-    {
-      "company_id": "CO008",
-      "n_students": 800,
-      "ndcg@5": 1.0,
-      "precision@5": 1.0,
-      "ndcg@10": 0.9636,
-      "precision@10": 1.0,
-      "ndcg@20": 0.9766,
-      "precision@20": 0.95,
-      "map": 0.844,
-      "kendall_tau": 0.3311
+      "ndcg@10": 0.9705,
+      "precision@10": 0.9,
+      "ndcg@20": 0.9646,
+      "precision@20": 0.8,
+      "map": 0.7277,
+      "kendall_tau": 0.2755
     },
     {
       "company_id": "CO006",
       "n_students": 800,
       "ndcg@5": 1.0,
       "precision@5": 1.0,
-      "ndcg@10": 0.9621,
+      "ndcg@10": 0.9636,
       "precision@10": 1.0,
-      "ndcg@20": 0.9766,
+      "ndcg@20": 0.959,
+      "precision@20": 0.9,
+      "map": 0.8011,
+      "kendall_tau": 0.3352
+    },
+    {
+      "company_id": "CO008",
+      "n_students": 800,
+      "ndcg@5": 1.0,
+      "precision@5": 1.0,
+      "ndcg@10": 0.9364,
+      "precision@10": 0.9,
+      "ndcg@20": 0.9752,
       "precision@20": 0.95,
-      "map": 0.823,
-      "kendall_tau": 0.3366
+      "map": 0.8404,
+      "kendall_tau": 0.3313
     },
     {
       "company_id": "CO005",
       "n_students": 800,
       "ndcg@5": 1.0,
       "precision@5": 1.0,
-      "ndcg@10": 0.9527,
-      "precision@10": 1.0,
-      "ndcg@20": 0.9466,
-      "precision@20": 0.95,
-      "map": 0.8222,
-      "kendall_tau": 0.3121
-    },
-    {
-      "company_id": "CO004",
-      "n_students": 800,
-      "ndcg@5": 1.0,
-      "precision@5": 1.0,
-      "ndcg@10": 0.9337,
+      "ndcg@10": 0.9219,
       "precision@10": 0.9,
-      "ndcg@20": 0.9393,
-      "precision@20": 0.85,
-      "map": 0.7273,
-      "kendall_tau": 0.3443
+      "ndcg@20": 0.9429,
+      "precision@20": 0.95,
+      "map": 0.7945,
+      "kendall_tau": 0.3109
     },
     {
       "company_id": "CO002",
       "n_students": 800,
       "ndcg@5": 1.0,
       "precision@5": 1.0,
-      "ndcg@10": 0.9133,
+      "ndcg@10": 0.9071,
       "precision@10": 0.9,
-      "ndcg@20": 0.9123,
+      "ndcg@20": 0.9038,
       "precision@20": 0.9,
-      "map": 0.8039,
-      "kendall_tau": 0.3306
+      "map": 0.7801,
+      "kendall_tau": 0.33
+    },
+    {
+      "company_id": "CO009",
+      "n_students": 800,
+      "ndcg@5": 1.0,
+      "precision@5": 1.0,
+      "ndcg@10": 0.8974,
+      "precision@10": 0.9,
+      "ndcg@20": 0.9066,
+      "precision@20": 0.85,
+      "map": 0.7904,
+      "kendall_tau": 0.3392
     },
     {
       "company_id": "CO007",
@@ -613,10 +613,10 @@
       "precision@5": 1.0,
       "ndcg@10": 0.8861,
       "precision@10": 1.0,
-      "ndcg@20": 0.9277,
+      "ndcg@20": 0.9259,
       "precision@20": 0.9,
-      "map": 0.7974,
-      "kendall_tau": 0.39
+      "map": 0.7892,
+      "kendall_tau": 0.3895
     }
   ]
 }

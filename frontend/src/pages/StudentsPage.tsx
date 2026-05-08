@@ -1,5 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { IconChevronLeft, IconChevronRight, IconFilter, IconUsersGroup } from '@tabler/icons-react';
 import { getStudents, Student } from '../services/api';
+
+const departments = ['CSE', 'IT', 'AIML', 'AIDS', 'ECE', 'EEE', 'MECH'];
+const LIMIT = 50;
+
+function readiness(student: Student) {
+  let score = 0;
+  score += Math.min(35, student.cgpa * 3.5);
+  score += student.active_backlogs === 0 ? 20 : 0;
+  score += Math.min(20, student['12th_marks'] / 5);
+  score += Math.min(15, student['10th_marks'] / 7);
+  score += student.year_of_study >= 3 ? 10 : 4;
+  return Math.round(Math.min(100, score));
+}
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -7,7 +21,6 @@ export default function StudentsPage() {
   const [loading, setLoading] = useState(true);
   const [dept, setDept] = useState('');
   const [offset, setOffset] = useState(0);
-  const LIMIT = 50;
 
   useEffect(() => {
     setLoading(true);
@@ -20,108 +33,105 @@ export default function StudentsPage() {
       .finally(() => setLoading(false));
   }, [dept, offset]);
 
+  const pageStats = useMemo(() => {
+    const avgCgpa = students.length ? students.reduce((sum, student) => sum + student.cgpa, 0) / students.length : 0;
+    const activeBacklogs = students.filter((student) => student.active_backlogs > 0).length;
+    const avgReadiness = students.length ? students.reduce((sum, student) => sum + readiness(student), 0) / students.length : 0;
+    return { avgCgpa, activeBacklogs, avgReadiness };
+  }, [students]);
+
   return (
     <div className="container animate-fade">
-      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <header className="workspace-header">
         <div>
+          <p className="dashboard-kicker">Cohort explorer</p>
           <h1>Student Directory</h1>
-          <p>Anonymized Student Profiles (Board Type/Gender Hidden for Bias Prevention)</p>
+          <p>Anonymized placement profiles with bias-sensitive attributes hidden.</p>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <select 
-             className="input" 
-             style={{ width: '200px' }}
-             value={dept}
-             onChange={e => {
-                setDept(e.target.value);
-                setOffset(0);
-             }}
-          >
-            <option value="">All Departments</option>
-            <option value="CSE">CSE</option>
-            <option value="IT">IT</option>
-            <option value="AIML">AIML</option>
-            <option value="AIDS">AIDS</option>
-            <option value="ECE">ECE</option>
-            <option value="EEE">EEE</option>
-            <option value="MECH">MECH</option>
-          </select>
+        <div className="workspace-header-actions">
+          <span>{total} profiles</span>
+          <span>showing {offset + 1}-{Math.min(offset + LIMIT, total)}</span>
         </div>
       </header>
 
-      {loading ? (
-        <div className="loading"><div className="spinner"></div>Loading Students...</div>
-      ) : (
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>ID & Name</th>
-                <th>Department</th>
-                <th>CGPA / Year</th>
-                <th>Prior Academics</th>
-                <th>Backlogs</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map(s => (
-                <tr key={s.student_id}>
-                  <td>
-                    <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{s.full_name}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>{s.student_id}</div>
-                  </td>
-                  <td>
-                    <span className="badge badge-info">{s.department}</span>
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 600 }}>{s.cgpa.toFixed(2)}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Year {s.year_of_study}</div>
-                  </td>
-                  <td>
-                    <div style={{ fontSize: '13px' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>12th:</span> {s['12th_marks'].toFixed(1)}%
-                    </div>
-                    <div style={{ fontSize: '13px' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>10th:</span> {s['10th_marks'].toFixed(1)}%
-                    </div>
-                  </td>
-                  <td>
-                    {s.active_backlogs > 0 ? (
-                      <span className="badge badge-danger" style={{ background: 'transparent', border: '1px solid currentColor' }}>
-                         {s.active_backlogs} Active
-                      </span>
-                    ) : s.backlogs_history > 0 ? (
-                      <span className="badge badge-warning" style={{ background: 'transparent', border: '1px solid currentColor' }}>
-                         {s.backlogs_history} Cleared
-                      </span>
-                    ) : (
-                      <span className="badge badge-success" style={{ background: 'transparent', border: '1px solid currentColor' }}>Clear</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', background: 'var(--bg-tertiary)' }}>
-             <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                Showing {offset + 1} to {Math.min(offset + LIMIT, total)} of {total}
-             </span>
-             <div style={{ display: 'flex', gap: '8px' }}>
-                <button 
-                  className="btn btn-ghost btn-sm" 
-                  disabled={offset === 0}
-                  onClick={() => setOffset(Math.max(0, offset - LIMIT))}
-                >Previous</button>
-                <button 
-                  className="btn btn-ghost btn-sm" 
-                  disabled={offset + LIMIT >= total}
-                  onClick={() => setOffset(offset + LIMIT)}
-                >Next</button>
-             </div>
+      <section className="student-shell">
+        <aside className="bento-card student-filter-panel">
+          <span className="bento-eyebrow"><IconFilter size={15} /> Filters</span>
+          <div className="dept-filter-list">
+            <button className={dept === '' ? 'active' : ''} onClick={() => { setDept(''); setOffset(0); }}>All Departments</button>
+            {departments.map((item) => (
+              <button className={dept === item ? 'active' : ''} key={item} onClick={() => { setDept(item); setOffset(0); }}>{item}</button>
+            ))}
           </div>
-        </div>
-      )}
+
+          <div className="student-page-metrics">
+            <div><span>Avg CGPA</span><strong>{pageStats.avgCgpa.toFixed(2)}</strong></div>
+            <div><span>Avg readiness</span><strong>{pageStats.avgReadiness.toFixed(0)}%</strong></div>
+            <div><span>Active backlog risk</span><strong>{pageStats.activeBacklogs}</strong></div>
+          </div>
+        </aside>
+
+        <main className="student-main">
+          {loading ? (
+            <div className="loading"><div className="spinner"></div>Loading students...</div>
+          ) : (
+            <>
+              <section className="bento-card student-cohort-banner">
+                <div>
+                  <span className="bento-eyebrow"><IconUsersGroup size={15} /> Current Cohort Slice</span>
+                  <h2>{dept || 'All departments'}</h2>
+                </div>
+                <div className="workspace-header-actions">
+                  <span>{students.length} loaded</span>
+                  <span>{pageStats.activeBacklogs} active backlog cases</span>
+                </div>
+              </section>
+
+              <section className="student-card-grid">
+                {students.map((student) => {
+                  const score = readiness(student);
+                  return (
+                    <article className="student-profile-card bento-card" key={student.student_id}>
+                      <div className="bento-card-topline">
+                        <span className="badge badge-info">{student.department}</span>
+                        <span className={`badge ${student.active_backlogs > 0 ? 'badge-danger' : 'badge-success'}`}>
+                          {student.active_backlogs > 0 ? `${student.active_backlogs} active` : 'clear'}
+                        </span>
+                      </div>
+                      <h3>{student.full_name}</h3>
+                      <p>{student.student_id} · Year {student.year_of_study}</p>
+                      <div className="student-score-ring">
+                        <div>
+                          <strong>{score}%</strong>
+                          <span>readiness</span>
+                        </div>
+                        <div className="score-track"><span style={{ width: `${score}%` }} /></div>
+                      </div>
+                      <div className="student-academic-grid">
+                        <div><span>CGPA</span><strong>{student.cgpa.toFixed(2)}</strong></div>
+                        <div><span>12th</span><strong>{student['12th_marks'].toFixed(1)}%</strong></div>
+                        <div><span>10th</span><strong>{student['10th_marks'].toFixed(1)}%</strong></div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </section>
+
+              <div className="student-pagination bento-card">
+                <span>Showing {offset + 1} to {Math.min(offset + LIMIT, total)} of {total}</span>
+                <div>
+                  <button className="btn btn-ghost btn-sm" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - LIMIT))}>
+                    <IconChevronLeft size={16} /> Previous
+                  </button>
+                  <button className="btn btn-ghost btn-sm" disabled={offset + LIMIT >= total} onClick={() => setOffset(offset + LIMIT)}>
+                    Next <IconChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </main>
+      </section>
     </div>
   );
 }
