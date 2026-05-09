@@ -37,6 +37,7 @@ from app.services.bias_reduction import (
     counterfactual_rules,
     fairness_comparison,
     get_fairness_history,
+    load_bias_recommendations,
     preview_substitution,
     retrain_constrained_model,
     save_bias_recommendation,
@@ -792,6 +793,16 @@ async def post_bias_recommendation(request: BiasRecommendationRequest):
         raise HTTPException(status_code=503, detail=str(exc))
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Failed to save recommendation: {exc}")
+
+
+@app.get("/api/bias/recommendations")
+async def get_bias_recommendations(company_id: Optional[str] = None):
+    try:
+        return load_bias_recommendations(company_id)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to load recommendations: {exc}")
 
 
 @app.post("/api/bias/counterfactual-rules")

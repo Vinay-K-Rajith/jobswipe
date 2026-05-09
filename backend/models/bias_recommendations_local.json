@@ -58,5 +58,137 @@
     },
     "created_at": "2026-05-08T22:36:47.339176+00:00",
     "persistence_mode": "local"
+  },
+  {
+    "id": 1778326290877,
+    "company_id": "CO001",
+    "criterion": "12th",
+    "current_threshold": 82,
+    "recommended_threshold": 1,
+    "current_disparity": 0.1821,
+    "projected_disparity": 0.1786,
+    "current_pool_size": 87,
+    "projected_pool_size": 79,
+    "status": "proposed",
+    "recommendation_type": "substitution",
+    "simulation_payload": {
+      "candidate_id": "CO001-12th-internship_months-3",
+      "description": "Replace the 12th-grade cutoff with Internship duration at least 1.0 months.",
+      "confidence": "medium",
+      "composite_score": 0.4013,
+      "current_rule": {
+        "criterion": "12th",
+        "threshold": 82,
+        "gender_disparity": 0.1821,
+        "pool_size": 87
+      },
+      "alternative_rule": {
+        "criterion": "internship_months",
+        "threshold": 1,
+        "label": "Internship duration at least 1.0 months",
+        "gender_disparity": 0.1786,
+        "pool_size": 79,
+        "p_value": 0.000566,
+        "performance_preservation_score": 0.7323,
+        "pool_similarity": 0.908
+      },
+      "spec": {
+        "remove_criterion": "12th",
+        "substitution": {
+          "kind": "internship_months",
+          "value": 1
+        }
+      }
+    },
+    "created_at": "2026-05-09T11:31:30.877076+00:00",
+    "persistence_mode": "local"
+  },
+  {
+    "id": 1778326470129,
+    "company_id": "CO001",
+    "criterion": "12th",
+    "current_threshold": 82,
+    "recommended_threshold": 1,
+    "current_disparity": 0.1821,
+    "projected_disparity": 0.1759,
+    "current_pool_size": 87,
+    "projected_pool_size": 92,
+    "status": "proposed",
+    "recommendation_type": "substitution",
+    "simulation_payload": {
+      "candidate_id": "CO001-12th-verified_skills-2",
+      "description": "Replace the 12th-grade cutoff with Verified skills at least 1.",
+      "confidence": "medium",
+      "composite_score": 0.9377,
+      "current_rule": {
+        "criterion": "12th",
+        "threshold": 82,
+        "gender_disparity": 0.1821,
+        "pool_size": 87
+      },
+      "alternative_rule": {
+        "criterion": "verified_skills",
+        "threshold": 1,
+        "label": "Verified skills at least 1",
+        "gender_disparity": 0.1759,
+        "pool_size": 92,
+        "p_value": 0.045003,
+        "performance_preservation_score": 0.8306,
+        "pool_similarity": 0.9425
+      },
+      "spec": {
+        "remove_criterion": "12th",
+        "substitution": {
+          "kind": "verified_skills",
+          "value": 1
+        }
+      }
+    },
+    "created_at": "2026-05-09T11:34:30.129854+00:00",
+    "persistence_mode": "local"
+  },
+  {
+    "id": 1778329673774,
+    "company_id": "CO001",
+    "criterion": "12th",
+    "current_threshold": 82,
+    "recommended_threshold": 1,
+    "current_disparity": 0.1821,
+    "projected_disparity": 0.1759,
+    "current_pool_size": 87,
+    "projected_pool_size": 92,
+    "status": "proposed",
+    "recommendation_type": "substitution",
+    "simulation_payload": {
+      "candidate_id": "CO001-12th-verified_skills-2",
+      "description": "Replace the 12th-grade cutoff with Verified skills at least 1.",
+      "confidence": "medium",
+      "composite_score": 0.9377,
+      "current_rule": {
+        "criterion": "12th",
+        "threshold": 82,
+        "gender_disparity": 0.1821,
+        "pool_size": 87
+      },
+      "alternative_rule": {
+        "criterion": "verified_skills",
+        "threshold": 1,
+        "label": "Verified skills at least 1",
+        "gender_disparity": 0.1759,
+        "pool_size": 92,
+        "p_value": 0.045003,
+        "performance_preservation_score": 0.8306,
+        "pool_similarity": 0.9425
+      },
+      "spec": {
+        "remove_criterion": "12th",
+        "substitution": {
+          "kind": "verified_skills",
+          "value": 1
+        }
+      }
+    },
+    "created_at": "2026-05-09T12:27:53.774090+00:00",
+    "persistence_mode": "local"
   }
 ]

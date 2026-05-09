@@ -22,5 +22,29 @@
     "trained_at": "2026-05-08T22:37:49.410350+00:00",
     "triggered_by": "admin-dashboard",
     "persistence_mode": "local"
+  },
+  {
+    "id": 1778326340391,
+    "company_id": "CO001",
+    "epsilon": 0.019,
+    "accuracy": 0.6818,
+    "f1": 0.5333,
+    "delta_dp": 0.3077,
+    "delta_eo": 0.6,
+    "trained_at": "2026-05-09T11:32:20.391259+00:00",
+    "triggered_by": "admin-dashboard",
+    "persistence_mode": "local"
+  },
+  {
+    "id": 1778329747126,
+    "company_id": "CO001",
+    "epsilon": 0.028,
+    "accuracy": 0.6818,
+    "f1": 0.5333,
+    "delta_dp": 0.3077,
+    "delta_eo": 0.6,
+    "trained_at": "2026-05-09T12:29:07.126212+00:00",
+    "triggered_by": "admin-dashboard",
+    "persistence_mode": "local"
   }
 ]

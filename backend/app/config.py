@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+ENV_PATH = os.path.join(os.path.dirname(__file__), "..", ".env")
+load_dotenv(ENV_PATH)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")

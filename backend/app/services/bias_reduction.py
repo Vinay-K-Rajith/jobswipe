@@ -1,6 +1,7 @@
 import json
 import os
 import pickle
+import re
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -64,6 +65,7 @@ FAIRNESS_ARTIFACTS = {
         "kind": "bundle",
     },
 }
+FAIRNESS_BUNDLE_PATTERN = re.compile(r"^fairlearn_lightgbm_eps_(\d+(?:\.\d+)?)\.pkl$")
 
 
 @dataclass
@@ -618,6 +620,33 @@ def save_bias_recommendation(payload: Dict[str, Any]) -> Dict[str, Any]:
     return clean_nan(record)
 
 
+def load_bias_recommendations(company_id: Optional[str] = None) -> Dict[str, Any]:
+    persistence = get_persistence_client()
+    if persistence.available and persistence.client is not None:
+        try:
+            query = persistence.client.table("bias_recommendations").select("*").order("created_at", desc=True)
+            if company_id:
+                query = query.eq("company_id", company_id)
+            response = query.execute()
+            return clean_nan({
+                "company_id": company_id,
+                "recommendations": response.data or [],
+                "persistence_mode": "supabase",
+            })
+        except Exception:
+            pass
+
+    recommendations = read_local_records(LOCAL_RECOMMENDATIONS_PATH)
+    if company_id:
+        recommendations = [item for item in recommendations if item.get("company_id") == company_id]
+    recommendations.sort(key=lambda item: item.get("created_at", ""), reverse=True)
+    return clean_nan({
+        "company_id": company_id,
+        "recommendations": recommendations,
+        "persistence_mode": "local",
+    })
+
+
 def load_training_labels() -> pd.DataFrame:
     return pd.read_csv(os.path.join(DATA_DIR, "training_labels.csv"))
 
@@ -671,6 +700,46 @@ def shortlist_overlap(shortlist_a: List[str], shortlist_b: List[str]) -> float:
     return float(len(set_a & set_b) / max(len(set_a | set_b), 1))
 
 
+def list_available_fairness_bundles() -> List[Dict[str, Any]]:
+    bundles = []
+    for name in os.listdir(MODEL_DIR):
+        match = FAIRNESS_BUNDLE_PATTERN.match(name)
+        if not match:
+            continue
+        bundles.append({
+            "bundle": name,
+            "epsilon": float(match.group(1)),
+        })
+    bundles.sort(key=lambda item: item["epsilon"])
+    return bundles
+
+
+def resolve_fairness_bundle(key: str) -> Dict[str, Any]:
+    config = FAIRNESS_ARTIFACTS[key]
+    bundle_name = config["bundle"]
+    bundle_path = os.path.join(MODEL_DIR, bundle_name)
+    if os.path.exists(bundle_path):
+        return {
+            "bundle": bundle_name,
+            "label": config["label"],
+            "auto_selected": False,
+        }
+
+    available = list_available_fairness_bundles()
+    if not available:
+        raise FileNotFoundError(f"Missing fairness artifact '{bundle_name}'")
+
+    fallback_index = 0 if key == "champion" else 1
+    if fallback_index >= len(available):
+        fallback_index = len(available) - 1
+    fallback = available[fallback_index]
+    return {
+        "bundle": fallback["bundle"],
+        "label": f"{config['label']} (using eps={fallback['epsilon']:.3f})",
+        "auto_selected": True,
+    }
+
+
 def load_variant_artifact(key: str) -> Dict[str, Any]:
     config = FAIRNESS_ARTIFACTS[key]
     if config["kind"] == "classic":
@@ -685,14 +754,24 @@ def load_variant_artifact(key: str) -> Dict[str, Any]:
             scaler = pickle.load(scaler_file)
         with open(feature_path, "r", encoding="utf-8") as feature_file:
             feature_cols = json.load(feature_file)
-        return {"model": model, "scaler": scaler, "feature_cols": feature_cols, "label": config["label"]}
+        return {
+            "model": model,
+            "scaler": scaler,
+            "feature_cols": feature_cols,
+            "label": config["label"],
+            "artifact_path": config["model"],
+            "auto_selected": False,
+        }
 
-    bundle_path = os.path.join(MODEL_DIR, config["bundle"])
+    resolved = resolve_fairness_bundle(key)
+    bundle_path = os.path.join(MODEL_DIR, resolved["bundle"])
     if not os.path.exists(bundle_path):
-        raise FileNotFoundError(f"Missing fairness artifact '{config['bundle']}'")
+        raise FileNotFoundError(f"Missing fairness artifact '{resolved['bundle']}'")
     with open(bundle_path, "rb") as bundle_file:
         bundle = pickle.load(bundle_file)
-    bundle["label"] = config["label"]
+    bundle["label"] = resolved["label"]
+    bundle["artifact_path"] = resolved["bundle"]
+    bundle["auto_selected"] = resolved["auto_selected"]
     return bundle
 
 
@@ -724,6 +803,15 @@ def ranker_shortlist_for_company(
         .tolist()
     )
     return shortlist
+
+
+def score_variant_probabilities(model: Any, X_scaled: Any) -> np.ndarray:
+    if hasattr(model, "predict_proba"):
+        return model.predict_proba(X_scaled)[:, 1]
+    if hasattr(model, "_pmf_predict"):
+        return model._pmf_predict(X_scaled)[:, 1]
+    predictions = model.predict(X_scaled)
+    return np.asarray(predictions, dtype=float)
 
 
 def fairness_comparison(
@@ -766,7 +854,7 @@ def fairness_comparison(
 
         X = audit[artifact["feature_cols"]].fillna(0)
         X_scaled = artifact["scaler"].transform(X)
-        probabilities = artifact["model"].predict_proba(X_scaled)[:, 1]
+        probabilities = score_variant_probabilities(artifact["model"], X_scaled)
         predictions = (probabilities >= 0.5).astype(int)
 
         shortlist_df = audit.assign(score=probabilities).sort_values("score", ascending=False).head(20)
@@ -776,6 +864,7 @@ def fairness_comparison(
             "key": key,
             "label": artifact["label"],
             "available": True,
+            "artifact_path": artifact.get("artifact_path"),
             "accuracy": round(float(accuracy_score(audit["eligible"], predictions)), 4),
             "f1": round(float(f1_score(audit["eligible"], predictions, zero_division=0)), 4),
             "delta_dp": round(demographic_parity_gap(predictions, audit["gender"]), 4),

@@ -228,6 +228,29 @@ export interface BiasRecommendationPayload {
   simulation_payload?: Record<string, any> | null;
 }
 
+export interface SavedBiasRecommendation {
+  id: number;
+  company_id: string;
+  criterion: string;
+  current_threshold?: string | number | null;
+  recommended_threshold?: string | number | null;
+  current_disparity?: number | null;
+  projected_disparity?: number | null;
+  current_pool_size?: number | null;
+  projected_pool_size?: number | null;
+  status: 'proposed' | 'accepted' | 'rejected' | 'implemented';
+  recommendation_type: 'threshold' | 'substitution';
+  simulation_payload?: Record<string, any> | null;
+  created_at: string;
+  persistence_mode: 'supabase' | 'local';
+}
+
+export interface BiasRecommendationListResponse {
+  company_id?: string | null;
+  recommendations: SavedBiasRecommendation[];
+  persistence_mode: 'supabase' | 'local';
+}
+
 export interface BiasDriver {
   criterion: string;
   baseline_disparity: number;
@@ -310,6 +333,7 @@ export interface FairnessVariant {
   label: string;
   available: boolean;
   detail?: string;
+  artifact_path?: string;
   accuracy?: number;
   f1?: number;
   delta_dp?: number;
@@ -420,7 +444,10 @@ export const simulateBiasFix = (companyId: string, criterion: string) =>
   });
 
 export const saveBiasRecommendation = (payload: BiasRecommendationPayload) =>
-  api.post('/api/bias/recommendations', payload);
+  api.post<SavedBiasRecommendation>('/api/bias/recommendations', payload);
+
+export const getBiasRecommendations = (companyId?: string) =>
+  api.get<BiasRecommendationListResponse>('/api/bias/recommendations', { params: { company_id: companyId } });
 
 export const getCounterfactualRules = (companyId: string) =>
   api.post<CounterfactualRulesResult>('/api/bias/counterfactual-rules', {

@@ -125,6 +125,36 @@ CREATE TABLE IF NOT EXISTS improvement_plans (
     UNIQUE(student_id, company_id)
 );
 
+-- Bias reduction recommendations persisted from the admin workflow
+CREATE TABLE IF NOT EXISTS bias_recommendations (
+    id BIGINT PRIMARY KEY,
+    company_id TEXT REFERENCES companies(company_id),
+    criterion TEXT NOT NULL,
+    current_threshold JSONB,
+    recommended_threshold JSONB,
+    current_disparity FLOAT,
+    projected_disparity FLOAT,
+    current_pool_size INTEGER,
+    projected_pool_size INTEGER,
+    status TEXT DEFAULT 'proposed',
+    recommendation_type TEXT DEFAULT 'threshold',
+    simulation_payload JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Level 3 fairness retraining audit trail
+CREATE TABLE IF NOT EXISTS model_fairness_history (
+    id BIGINT PRIMARY KEY,
+    company_id TEXT REFERENCES companies(company_id),
+    epsilon FLOAT NOT NULL,
+    accuracy FLOAT,
+    f1 FLOAT,
+    delta_dp FLOAT,
+    delta_eo FLOAT,
+    trained_at TIMESTAMPTZ DEFAULT NOW(),
+    triggered_by TEXT
+);
+
 -- Indexes for common queries
 CREATE INDEX IF NOT EXISTS idx_certs_student ON certifications(student_id);
 CREATE INDEX IF NOT EXISTS idx_projects_student ON projects(student_id);
@@ -134,11 +164,15 @@ CREATE INDEX IF NOT EXISTS idx_skills_student ON skills(student_id);
 CREATE INDEX IF NOT EXISTS idx_eligibility_student ON eligibility_results(student_id);
 CREATE INDEX IF NOT EXISTS idx_eligibility_company ON eligibility_results(company_id);
 CREATE INDEX IF NOT EXISTS idx_improvement_student ON improvement_plans(student_id);
+CREATE INDEX IF NOT EXISTS idx_bias_recommendations_company ON bias_recommendations(company_id);
+CREATE INDEX IF NOT EXISTS idx_fairness_history_company ON model_fairness_history(company_id);
 
 -- Enable Row Level Security (optional but recommended)
 ALTER TABLE students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE eligibility_results ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bias_recommendations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE model_fairness_history ENABLE ROW LEVEL SECURITY;
 
 -- Allow read access for anon users
 CREATE POLICY IF NOT EXISTS "Allow read students" ON students FOR SELECT USING (true);
@@ -150,3 +184,5 @@ CREATE POLICY IF NOT EXISTS "Allow read projects" ON projects FOR SELECT USING (
 CREATE POLICY IF NOT EXISTS "Allow read internships" ON internships FOR SELECT USING (true);
 CREATE POLICY IF NOT EXISTS "Allow read papers" ON research_papers FOR SELECT USING (true);
 CREATE POLICY IF NOT EXISTS "Allow read skills" ON skills FOR SELECT USING (true);
+CREATE POLICY IF NOT EXISTS "Allow read bias recommendations" ON bias_recommendations FOR SELECT USING (true);
+CREATE POLICY IF NOT EXISTS "Allow read fairness history" ON model_fairness_history FOR SELECT USING (true);

@@ -32,8 +32,10 @@ import {
   CounterfactualRulesResult,
   FairnessHistoryResponse,
   MLFairnessComparison,
+  SavedBiasRecommendation,
   SubstitutionPreviewResult,
   getBiasReport,
+  getBiasRecommendations,
   getCounterfactualRules,
   getMLFairnessComparison,
   getModelFairnessHistory,
@@ -80,6 +82,11 @@ function shortlistMembership(studentId: string, otherIds: Set<string>) {
   return otherIds.has(studentId) ? 'shared' : 'unique';
 }
 
+function formatSavedAt(value?: string) {
+  if (!value) return '--';
+  return new Date(value).toLocaleString();
+}
+
 export default function BiasDetection() {
   const [biasReport, setBiasReport] = useState<BiasReport | null>(null);
   const [pageError, setPageError] = useState('');
@@ -99,6 +106,9 @@ export default function BiasDetection() {
   const [previewLoading, setPreviewLoading] = useState<Record<string, boolean>>({});
   const [previewError, setPreviewError] = useState<Record<string, string>>({});
   const [previewByCandidate, setPreviewByCandidate] = useState<Record<string, SubstitutionPreviewResult>>({});
+  const [savedRecommendationsByCompany, setSavedRecommendationsByCompany] = useState<Record<string, SavedBiasRecommendation[]>>({});
+  const [recommendationPersistenceByCompany, setRecommendationPersistenceByCompany] = useState<Record<string, 'supabase' | 'local'>>({});
+  const [recommendationLoadError, setRecommendationLoadError] = useState<Record<string, string>>({});
 
   const [fairnessByCompany, setFairnessByCompany] = useState<Record<string, MLFairnessComparison>>({});
   const [fairnessLoading, setFairnessLoading] = useState<Record<string, boolean>>({});
@@ -167,6 +177,8 @@ export default function BiasDetection() {
   const shortlistB = championVariant?.shortlist || [];
   const shortlistBSet = new Set(shortlistB.map((student) => student.student_id));
   const shortlistASet = new Set(shortlistA.map((student) => student.student_id));
+  const selectedSavedRecommendations = selectedCompany ? (savedRecommendationsByCompany[selectedCompany.company_id] || []) : [];
+  const selectedRecommendationPersistence = selectedCompany ? recommendationPersistenceByCompany[selectedCompany.company_id] : undefined;
 
   const fairnessCallout = useMemo(() => {
     if (!baselineVariant?.available || !tightenedVariant?.available) {
@@ -219,7 +231,7 @@ export default function BiasDetection() {
 
     setSavingCompanyId(selectedCompany.company_id);
     try {
-      await saveBiasRecommendation({
+      const response = await saveBiasRecommendation({
         company_id: selectedCompany.company_id,
         criterion: selectedSimulation.criterion,
         current_threshold: selectedSimulation.current_threshold,
@@ -231,9 +243,17 @@ export default function BiasDetection() {
         recommendation_type: 'threshold',
         simulation_payload: selectedSimulation,
       });
+      setSavedRecommendationsByCompany((current) => ({
+        ...current,
+        [selectedCompany.company_id]: [response.data, ...(current[selectedCompany.company_id] || [])],
+      }));
+      setRecommendationPersistenceByCompany((current) => ({
+        ...current,
+        [selectedCompany.company_id]: response.data.persistence_mode,
+      }));
       setSaveMessage((current) => ({
         ...current,
-        [selectedCompany.company_id]: 'Recommendation saved to bias_recommendations.',
+        [selectedCompany.company_id]: `Recommendation saved via ${response.data.persistence_mode}.`,
       }));
     } catch (error: any) {
       setSaveMessage((current) => ({
@@ -269,7 +289,7 @@ export default function BiasDetection() {
 
     setSavingCompanyId(candidate.candidate_id);
     try {
-      await saveBiasRecommendation({
+      const response = await saveBiasRecommendation({
         company_id: selectedCompany.company_id,
         criterion: candidate.current_rule.criterion,
         current_threshold: candidate.current_rule.threshold,
@@ -281,9 +301,17 @@ export default function BiasDetection() {
         recommendation_type: 'substitution',
         simulation_payload: candidate,
       });
+      setSavedRecommendationsByCompany((current) => ({
+        ...current,
+        [selectedCompany.company_id]: [response.data, ...(current[selectedCompany.company_id] || [])],
+      }));
+      setRecommendationPersistenceByCompany((current) => ({
+        ...current,
+        [selectedCompany.company_id]: response.data.persistence_mode,
+      }));
       setSaveMessage((current) => ({
         ...current,
-        [candidate.candidate_id]: 'Substitution draft saved to bias_recommendations.',
+        [candidate.candidate_id]: `Substitution draft saved via ${response.data.persistence_mode}.`,
       }));
     } catch (error: any) {
       setSaveMessage((current) => ({
@@ -292,6 +320,20 @@ export default function BiasDetection() {
       }));
     } finally {
       setSavingCompanyId('');
+    }
+  }
+
+  async function loadSavedRecommendations(companyId: string) {
+    setRecommendationLoadError((current) => ({ ...current, [companyId]: '' }));
+    try {
+      const response = await getBiasRecommendations(companyId);
+      setSavedRecommendationsByCompany((current) => ({ ...current, [companyId]: response.data.recommendations }));
+      setRecommendationPersistenceByCompany((current) => ({ ...current, [companyId]: response.data.persistence_mode }));
+    } catch (error: any) {
+      setRecommendationLoadError((current) => ({
+        ...current,
+        [companyId]: error?.response?.data?.detail || 'Failed to load saved recommendations.',
+      }));
     }
   }
 
@@ -332,6 +374,13 @@ export default function BiasDetection() {
     }
     void loadFairness(selectedCompany.company_id);
   }, [detailTab, selectedCompany, fairnessByCompany, fairnessLoading]);
+
+  useEffect(() => {
+    if (!selectedCompany || savedRecommendationsByCompany[selectedCompany.company_id]) {
+      return;
+    }
+    void loadSavedRecommendations(selectedCompany.company_id);
+  }, [selectedCompany, savedRecommendationsByCompany]);
 
   useEffect(() => {
     if (!selectedCompany || detailTab !== 'ml' || committedEpsilon === null) {
@@ -739,6 +788,51 @@ export default function BiasDetection() {
                               </>
                             )}
                           </section>
+
+                          <section className="bias-level-card">
+                            <div className="bento-card-topline">
+                              <div>
+                                <span className="bento-eyebrow"><IconBuildingSkyscraper size={15} /> Saved Recommendations</span>
+                                <p className="muted-text">Review the proposals stored for this company and confirm whether they landed in Supabase or local fallback storage.</p>
+                              </div>
+                              {selectedRecommendationPersistence && (
+                                <span className="bento-pill">Persistence: {selectedRecommendationPersistence}</span>
+                              )}
+                            </div>
+
+                            {recommendationLoadError[selectedCompany.company_id] && (
+                              <div className="bias-inline-error">{recommendationLoadError[selectedCompany.company_id]}</div>
+                            )}
+
+                            {!selectedSavedRecommendations.length ? (
+                              <div className="bias-empty-panel slim">
+                                <strong>No saved recommendations yet</strong>
+                                <span>Once you save a threshold or substitution proposal, it will appear here with its actual storage mode.</span>
+                              </div>
+                            ) : (
+                              <div className="candidate-stack">
+                                {selectedSavedRecommendations.slice(0, 6).map((item) => (
+                                  <article className="candidate-card" key={item.id}>
+                                    <div className="candidate-grid">
+                                      <div className="candidate-column">
+                                        <span className="candidate-label">{item.recommendation_type}</span>
+                                        <strong>{formatCriterionLabel(item.criterion)}</strong>
+                                        <small>Saved {formatSavedAt(item.created_at)}</small>
+                                      </div>
+                                      <div className="candidate-column">
+                                        <span className="candidate-label">Change</span>
+                                        <strong>{String(item.current_threshold ?? '--')} to {String(item.recommended_threshold ?? '--')}</strong>
+                                        <small>
+                                          Disparity {formatPercent(item.current_disparity)} to {formatPercent(item.projected_disparity)} and pool {item.current_pool_size ?? '--'} to {item.projected_pool_size ?? '--'}
+                                        </small>
+                                      </div>
+                                    </div>
+                                    <p className="muted-text">Stored via {item.persistence_mode} with status {item.status}.</p>
+                                  </article>
+                                ))}
+                              </div>
+                            )}
+                          </section>
                         </>
                       )}
                     </section>
@@ -778,7 +872,9 @@ export default function BiasDetection() {
                                   <td>Availability</td>
                                   {selectedFairness.variants.map((variant) => (
                                     <td key={`${variant.key}-available`} className={variant.available ? 'tone-success' : 'tone-warning'}>
-                                      {variant.available ? 'Ready' : variant.detail || 'Missing artifact'}
+                                      {variant.available
+                                        ? (variant.artifact_path ? `Ready (${variant.artifact_path})` : 'Ready')
+                                        : variant.detail || 'Missing artifact'}
                                     </td>
                                   ))}
                                 </tr>
