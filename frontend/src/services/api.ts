@@ -30,6 +30,26 @@ export interface Student {
   year_of_study: number;
   features?: Record<string, number>;
   skill_list?: string[];
+  resume_url?: string;
+  resume_parse_confidence?: Record<string, any>;
+}
+
+export interface ResumeUploadResponse {
+  student_id: string;
+  parsed: Record<string, any>;
+  confidence: {
+    cgpa: 'high' | 'medium' | 'low';
+    skills: 'high' | 'medium' | 'low';
+    certifications: 'high' | 'medium' | 'low';
+    overall: 'high' | 'medium' | 'low';
+    format_type: string;
+    fields_missing: string[];
+    is_resume?: boolean;
+    resume_score?: number;
+    resume_reason?: string;
+  };
+  resume_url: string;
+  message: string;
 }
 
 export interface Company {
@@ -113,8 +133,71 @@ export interface ModelMetrics {
     precision: number;
     recall: number;
     f1: number;
+    cv_accuracy_mean?: number;
+    cv_accuracy_std?: number;
+    cv_f1_mean?: number;
+    cv_f1_std?: number;
   };
   fairness?: Record<string, any>;
+}
+
+export interface CVFoldResult {
+  fold: number;
+  accuracy: number;
+  f1: number;
+  precision: number;
+  recall: number;
+}
+
+export interface CVResults {
+  accuracy_mean: number;
+  accuracy_std: number;
+  f1_mean: number;
+  f1_std: number;
+  n_folds: number;
+  folds: CVFoldResult[];
+}
+
+export interface EpsilonSweepPoint {
+  eps: number;
+  accuracy: number;
+  f1: number;
+  gender_parity_gap: number;
+}
+
+export interface ScalabilityMetric {
+  total_ms: number;
+  per_student_ms: number;
+  per_pair_ms: number;
+}
+
+export interface ScalabilityResults {
+  classifier?: Record<string, ScalabilityMetric>;
+  ranker?: Record<string, ScalabilityMetric>;
+  projected_5000?: {
+    note: string;
+    classifier_total_ms: number;
+    ranker_total_ms: number;
+  };
+}
+
+export interface ResumeParserBucket {
+  cgpa_mae: number | null;
+  skills_recall: number | null;
+  n: number;
+}
+
+export interface ModelArtifacts {
+  cv_results: CVResults | null;
+  epsilon_sweep: EpsilonSweepPoint[];
+  best_epsilon: EpsilonSweepPoint | null;
+  scalability: ScalabilityResults | null;
+  resume_parser_accuracy: Record<string, ResumeParserBucket | string> | null;
+  dept_constrained: Record<string, any> | null;
+  available_charts: {
+    pareto_frontier: boolean;
+    epsilon_sweep: boolean;
+  };
 }
 
 export interface Stats {
@@ -408,6 +491,14 @@ export const getStudents = (params?: { department?: string; min_cgpa?: number; l
 export const getStudent = (id: string) =>
   api.get<Student>(`/api/students/${id}`);
 
+export const uploadStudentResume = (studentId: string, file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return api.post<ResumeUploadResponse>(`/resume/upload/${studentId}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
 export const getCompanies = (params?: { tier?: string; industry?: string }) =>
   api.get<{ total: number; companies: Company[] }>('/api/companies', { params });
 
@@ -428,6 +519,9 @@ export const batchCheckEligibility = (companyId: string, studentIds?: string[]) 
 
 export const getModelMetrics = () =>
   api.get<ModelMetrics>('/api/model/metrics');
+
+export const getModelArtifacts = () =>
+  api.get<ModelArtifacts>('/api/model/artifacts');
 
 export const getStats = () =>
   api.get<Stats>('/api/stats');

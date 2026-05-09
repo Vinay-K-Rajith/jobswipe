@@ -3,8 +3,82 @@ Improvement Planner: Generate actionable improvement suggestions for ineligible 
 For each gap identified in the criteria check, produces specific, achievable recommendations.
 """
 
+FEASIBILITY_BY_YEAR = {
+    ("cgpa_improvement", 1): 0.9,
+    ("cgpa_improvement", 2): 0.7,
+    ("cgpa_improvement", 3): 0.4,
+    ("cgpa_improvement", 4): 0.0,
+    ("skill_addition", 1): 1.0,
+    ("skill_addition", 2): 1.0,
+    ("skill_addition", 3): 1.0,
+    ("skill_addition", 4): 1.0,
+    ("internship", 1): 0.9,
+    ("internship", 2): 0.9,
+    ("internship", 3): 0.7,
+    ("internship", 4): 0.2,
+    ("certification", 1): 1.0,
+    ("certification", 2): 1.0,
+    ("certification", 3): 1.0,
+    ("certification", 4): 0.8,
+    ("project_complexity", 1): 1.0,
+    ("project_complexity", 2): 1.0,
+    ("project_complexity", 3): 0.8,
+    ("project_complexity", 4): 0.3,
+    ("10th_marks", "any"): 0.0,
+    ("12th_marks", "any"): 0.0,
+    ("backlogs", "any"): 0.6,
+    ("department_change", "any"): 0.0,
+}
 
-def generate_improvement_plan(scorecard, company_name="the company", company_data=None):
+DIFFICULTY_INDEX = {
+    "cgpa_improvement": 3,
+    "skill_addition": 1,
+    "internship": 2,
+    "certification": 1,
+    "project_complexity": 2,
+    "backlogs": 2,
+}
+
+
+def _feasibility_label(weight):
+    if weight == 0.0:
+        return "Not feasible"
+    if weight < 0.4:
+        return "Hard"
+    if weight < 0.8:
+        return "Achievable"
+    return "Easy"
+
+
+def _suggestion_type_from_key(gap_key):
+    return {
+        "cgpa_check": "cgpa_improvement",
+        "10th_check": "10th_marks",
+        "12th_check": "12th_marks",
+        "backlog_check": "backlogs",
+        "department_check": "department_change",
+        "required_skills_score": "skill_addition",
+        "internship_score": "internship",
+        "project_score": "project_complexity",
+        "cert_score": "certification",
+        "research_score": "project_complexity",
+    }.get(gap_key, "skill_addition")
+
+
+def _annotate_suggestion(suggestion, suggestion_type, opportunity_count, year_of_study):
+    fw = FEASIBILITY_BY_YEAR.get(
+        (suggestion_type, year_of_study),
+        FEASIBILITY_BY_YEAR.get((suggestion_type, "any"), 0.5),
+    )
+    difficulty = DIFFICULTY_INDEX.get(suggestion_type, 2)
+    suggestion["suggestion_type"] = suggestion_type
+    suggestion["feasibility_weight"] = fw
+    suggestion["feasibility_label"] = _feasibility_label(fw)
+    suggestion["adjusted_score"] = opportunity_count * fw * (1.0 + (1.0 / difficulty))
+    return suggestion
+
+
+def generate_improvement_plan(scorecard, company_name="the company", company_data=None, year_of_study=3):
     """
     Generate a personalized improvement plan based on criteria gaps.
     Returns structured suggestions with priority levels.
@@ -19,7 +93,7 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
 
         if failure_key == "cgpa_check":
             gap = item["required_value"] - item["student_value"]
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Academic",
                 "type": "hard_requirement",
@@ -33,11 +107,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "1-2 semesters",
                 "difficulty": "High" if gap > 1.0 else "Medium",
-            })
+            }, _suggestion_type_from_key(failure_key), 1, year_of_study))
             priority += 1
 
         elif failure_key == "10th_check":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Academic",
                 "type": "hard_requirement",
@@ -51,11 +125,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "N/A",
                 "difficulty": "Cannot be changed",
-            })
+            }, _suggestion_type_from_key(failure_key), 1, year_of_study))
             priority += 1
 
         elif failure_key == "12th_check":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Academic",
                 "type": "hard_requirement",
@@ -69,11 +143,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "N/A",
                 "difficulty": "Cannot be changed",
-            })
+            }, _suggestion_type_from_key(failure_key), 1, year_of_study))
             priority += 1
 
         elif failure_key == "backlog_check":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Academic",
                 "type": "hard_requirement",
@@ -87,11 +161,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "Next exam cycle",
                 "difficulty": "Medium",
-            })
+            }, _suggestion_type_from_key(failure_key), 1, year_of_study))
             priority += 1
 
         elif failure_key == "department_check":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Eligibility",
                 "type": "hard_requirement",
@@ -105,7 +179,7 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "N/A",
                 "difficulty": "Cannot be changed",
-            })
+            }, _suggestion_type_from_key(failure_key), 1, year_of_study))
             priority += 1
 
     # Soft weaknesses (improvable)
@@ -115,7 +189,7 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
         if weakness_key == "required_skills_score":
             missing = item.get("missing", [])
             if missing:
-                suggestions.append({
+                suggestions.append(_annotate_suggestion({
                     "priority": priority,
                     "category": "Skills",
                     "type": "soft_improvement",
@@ -130,11 +204,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                     ],
                     "timeline": "1-3 months per skill",
                     "difficulty": "Medium",
-                })
+                }, _suggestion_type_from_key(weakness_key), len(missing), year_of_study))
                 priority += 1
 
         elif weakness_key == "internship_score":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Experience",
                 "type": "soft_improvement",
@@ -149,11 +223,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "1-3 months",
                 "difficulty": "Medium",
-            })
+            }, _suggestion_type_from_key(weakness_key), 1, year_of_study))
             priority += 1
 
         elif weakness_key == "project_score":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Projects",
                 "type": "soft_improvement",
@@ -168,11 +242,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "2-6 weeks per project",
                 "difficulty": "Low-Medium",
-            })
+            }, _suggestion_type_from_key(weakness_key), 1, year_of_study))
             priority += 1
 
         elif weakness_key == "cert_score":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Certifications",
                 "type": "soft_improvement",
@@ -186,11 +260,11 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "1-2 months per certification",
                 "difficulty": "Medium",
-            })
+            }, _suggestion_type_from_key(weakness_key), 1, year_of_study))
             priority += 1
 
         elif weakness_key == "research_score":
-            suggestions.append({
+            suggestions.append(_annotate_suggestion({
                 "priority": priority,
                 "category": "Research",
                 "type": "soft_improvement",
@@ -205,15 +279,25 @@ def generate_improvement_plan(scorecard, company_name="the company", company_dat
                 ],
                 "timeline": "3-6 months",
                 "difficulty": "High",
-            })
+            }, _suggestion_type_from_key(weakness_key), 1, year_of_study))
             priority += 1
+
+    active_suggestions = sorted(
+        [item for item in suggestions if item["feasibility_weight"] > 0.0],
+        key=lambda item: item["adjusted_score"],
+        reverse=True,
+    )
+    long_term_suggestions = [item for item in suggestions if item["feasibility_weight"] == 0.0]
 
     return {
         "company_name": company_name,
         "total_suggestions": len(suggestions),
         "hard_blockers": len(summary.get("hard_failures", [])),
         "soft_improvements": len(summary.get("soft_weaknesses", [])),
-        "suggestions": suggestions,
+        "year_of_study": year_of_study,
+        "suggestions": active_suggestions,
+        "long_term_suggestions": long_term_suggestions,
+        "long_term_note": "These changes are not feasible in your current year but matter for future students.",
     }
 
 

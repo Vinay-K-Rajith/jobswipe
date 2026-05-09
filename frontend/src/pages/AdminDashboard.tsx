@@ -4,6 +4,8 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -25,10 +27,12 @@ import {
 } from '@tabler/icons-react';
 import {
   BiasReport,
+  ModelArtifacts,
   ModelMetrics,
   Stats,
   SkillDeficitReport,
   getBiasReport,
+  getModelArtifacts,
   getModelMetrics,
   getSkillDeficits,
   getStats,
@@ -144,9 +148,25 @@ function getActivityIcon(kind: ActivityEntry['kind']) {
   return icons[kind];
 }
 
+function formatPercent(value?: number | null, digits = 1) {
+  if (value === undefined || value === null) return '--';
+  return `${(value * 100).toFixed(digits)}%`;
+}
+
+function formatArtifactPercent(value?: number | null, digits = 1) {
+  if (value === undefined || value === null) return '--';
+  return `${value.toFixed(digits)}%`;
+}
+
+function formatMs(value?: number | null) {
+  if (value === undefined || value === null) return '--';
+  return `${value.toFixed(value >= 10 ? 1 : 2)}ms`;
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [metrics, setMetrics] = useState<ModelMetrics | null>(null);
+  const [artifacts, setArtifacts] = useState<ModelArtifacts | null>(null);
   const [biasReport, setBiasReport] = useState<BiasReport | null>(null);
   const [skillDeficitReport, setSkillDeficitReport] = useState<SkillDeficitReport | null>(null);
   const [activityLog, setActivityLog] = useState<ActivityEntry[]>([]);
@@ -158,9 +178,10 @@ export default function AdminDashboard() {
 
     const loadDashboard = async () => {
       const startedAt = performance.now();
-      const [statsRes, metricsRes, biasRes, skillDeficitsRes] = await Promise.all([
+      const [statsRes, metricsRes, artifactsRes, biasRes, skillDeficitsRes] = await Promise.all([
         getStats().catch(() => null),
         getModelMetrics().catch(() => null),
+        getModelArtifacts().catch(() => null),
         getBiasReport(false).catch(() => null),
         getSkillDeficits(8).catch(() => null),
       ]);
@@ -169,6 +190,7 @@ export default function AdminDashboard() {
 
       if (statsRes?.data) setStats(statsRes.data);
       if (metricsRes?.data) setMetrics(metricsRes.data);
+      if (artifactsRes?.data) setArtifacts(artifactsRes.data);
       if (biasRes?.data) setBiasReport(biasRes.data);
       if (skillDeficitsRes?.data) setSkillDeficitReport(skillDeficitsRes.data);
       setLatency(Math.max(28, Math.round(performance.now() - startedAt)));
@@ -211,6 +233,14 @@ export default function AdminDashboard() {
   const topBiasRisks = biasReport?.flagged_companies?.slice(0, 4) || [];
   const readinessScore = trendData[trendData.length - 1].score;
   const avgCgpa = stats?.avg_cgpa?.toFixed(2) || '--';
+  const cv = artifacts?.cv_results;
+  const bestEpsilon = artifacts?.best_epsilon;
+  const epsilonSweep = artifacts?.epsilon_sweep || [];
+  const parserBuckets = artifacts?.resume_parser_accuracy
+    ? Object.entries(artifacts.resume_parser_accuracy).filter(([, value]) => typeof value === 'object') as Array<[string, { n: number; cgpa_mae: number | null; skills_recall: number | null }]>
+    : [];
+  const parserSamples = parserBuckets.reduce((sum, [, bucket]) => sum + (bucket.n || 0), 0);
+  const projectedScale = artifacts?.scalability?.projected_5000;
 
   if (loading) {
     return <div className="loading"><div className="spinner"></div> Loading Dashboard...</div>;
@@ -394,16 +424,67 @@ export default function AdminDashboard() {
           <span className="bento-eyebrow"><IconChartBar size={15} /> Model Quality</span>
           <div className="metric-grid">
             {[
-              { label: 'Accuracy', value: metrics?.metrics ? `${(metrics.metrics.accuracy * 100).toFixed(1)}%` : '--' },
+              { label: 'Accuracy', value: metrics?.metrics ? formatPercent(metrics.metrics.accuracy) : '--' },
               { label: 'F1', value: metrics?.metrics ? metrics.metrics.f1.toFixed(3) : '--' },
-              { label: 'Precision', value: metrics?.metrics ? `${(metrics.metrics.precision * 100).toFixed(1)}%` : '--' },
-              { label: 'Recall', value: metrics?.metrics ? `${(metrics.metrics.recall * 100).toFixed(1)}%` : '--' },
+              { label: 'CV Accuracy', value: cv ? `${formatPercent(cv.accuracy_mean)} ± ${(cv.accuracy_std * 100).toFixed(2)}` : metrics?.metrics?.cv_accuracy_mean ? `${formatPercent(metrics.metrics.cv_accuracy_mean)} ± ${((metrics.metrics.cv_accuracy_std || 0) * 100).toFixed(2)}` : '--' },
+              { label: 'CV F1', value: cv ? `${cv.f1_mean.toFixed(3)} ± ${cv.f1_std.toFixed(3)}` : metrics?.metrics?.cv_f1_mean ? `${metrics.metrics.cv_f1_mean.toFixed(3)} ± ${(metrics.metrics.cv_f1_std || 0).toFixed(3)}` : '--' },
             ].map((item) => (
               <div key={item.label}>
                 <strong>{item.value}</strong>
                 <span>{item.label}</span>
               </div>
             ))}
+          </div>
+        </article>
+
+        <article className="bento-card artifact-card">
+          <div className="bento-card-topline">
+            <div>
+              <span className="bento-eyebrow"><IconBrain size={15} /> Validation & Tradeoffs</span>
+              <h3 className="bento-section-title">Model evidence from latest artifacts</h3>
+            </div>
+            <span className="bento-pill">{cv?.n_folds ? `${cv.n_folds}-fold CV` : 'Artifacts'}</span>
+          </div>
+
+          <div className="artifact-summary-grid">
+            <div>
+              <strong>{bestEpsilon ? bestEpsilon.eps.toFixed(3) : '--'}</strong>
+              <span>best epsilon</span>
+            </div>
+            <div>
+              <strong>{bestEpsilon ? formatArtifactPercent(bestEpsilon.gender_parity_gap, 2) : '--'}</strong>
+              <span>gender parity gap</span>
+            </div>
+            <div>
+              <strong>{projectedScale ? formatMs(projectedScale.classifier_total_ms) : '--'}</strong>
+              <span>5k classifier projection</span>
+            </div>
+            <div>
+              <strong>{parserSamples || '--'}</strong>
+              <span>parser test samples</span>
+            </div>
+          </div>
+
+          {epsilonSweep.length ? (
+            <div className="artifact-chart-shell">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={epsilonSweep} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+                  <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
+                  <XAxis dataKey="eps" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                  <Tooltip contentStyle={{ background: '#050505', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 8 }} />
+                  <Line type="monotone" dataKey="accuracy" stroke="#22c55e" strokeWidth={2} dot={false} name="Accuracy %" />
+                  <Line type="monotone" dataKey="gender_parity_gap" stroke="#fbbf24" strokeWidth={2} dot={false} name="Parity gap %" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <p className="text-muted">No epsilon sweep artifact found yet.</p>
+          )}
+
+          <div className="artifact-note-row">
+            <span>Pareto chart artifact {artifacts?.available_charts?.pareto_frontier ? 'available' : 'missing'}</span>
+            <span>Epsilon chart artifact {artifacts?.available_charts?.epsilon_sweep ? 'available' : 'missing'}</span>
           </div>
         </article>
       </section>

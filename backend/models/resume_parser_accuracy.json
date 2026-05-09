@@ -1,0 +1,28 @@
+{
+  "standard_single_column": {
+    "cgpa_mae": null,
+    "skills_recall": null,
+    "n": 0
+  },
+  "two_column": {
+    "cgpa_mae": null,
+    "skills_recall": null,
+    "n": 0
+  },
+  "table_heavy": {
+    "cgpa_mae": null,
+    "skills_recall": null,
+    "n": 0
+  },
+  "latex_generated": {
+    "cgpa_mae": null,
+    "skills_recall": null,
+    "n": 0
+  },
+  "scanned_ocr": {
+    "cgpa_mae": null,
+    "skills_recall": null,
+    "n": 0
+  },
+  "note": "Synthetic ReportLab resumes are expected to be mostly standard_single_column; non-standard buckets may have n=0 until targeted fixtures are added."
+}

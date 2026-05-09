@@ -1,0 +1,10 @@
+{
+  "eps": 0.05,
+  "accuracy": 0.912125,
+  "f1": 0.7919502811482687,
+  "gender_parity_gap": 0.061536088834053065,
+  "department_parity_gap": 0.12895509662751042,
+  "department_group_parity_gap": 0.009514472455648904,
+  "model_path": "C:\\Users\\Asus\\Desktop\\jobswipe-main\\backend\\src\\model\\..\\..\\models\\fairlearn_lightgbm_dept_constrained.pkl",
+  "note": "Department-constrained variant saved separately; model.pkl is not overwritten."
+}

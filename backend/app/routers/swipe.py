@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from app.database import supabase
 from app.routers.deps import get_current_recruiter, get_current_user
-from app.services.talentforge_matcher import enrich_student_row, score_student_for_job
+from app.services.talentforge_matcher import all_student_rows, enrich_student_row, is_canonical_job, score_student_for_job
 
 router = APIRouter(tags=["swipe"])
 _SUPABASE_LOCK = threading.Lock()
@@ -195,6 +195,7 @@ def student_feed(limit: int = Query(default=20, le=50), offset: int = 0, user=De
     liked = {row["job_id"] for row in (execute_supabase(lambda: supabase.table("student_interest").select("job_id").eq("student_id", sid)).data or [])}
     passed = {row["job_id"] for row in (execute_supabase(lambda: supabase.table("student_pass").select("job_id").eq("student_id", sid)).data or [])}
     jobs = execute_supabase(lambda: supabase.table("jobs").select("*").eq("is_active", True)).data or []
+    jobs = [job for job in jobs if is_canonical_job(job) or job.get("recruiter_id")]
     visible = [job for job in jobs if job["id"] not in liked and job["id"] not in passed]
     cards = [job_to_card(job, get_recruiter(job.get("recruiter_id"))) for job in visible]
     cards.sort(key=lambda item: (bool(item.get("job_type")), item["phi_score"]), reverse=True)
@@ -249,6 +250,9 @@ def student_swipe_left(req: JobSwipeRequest, user=Depends(get_current_user)):
 @router.get("/recruiter/jobs")
 def recruiter_jobs(user=Depends(get_current_recruiter)):
     rows = execute_supabase(lambda: supabase.table("jobs").select("*").eq("recruiter_id", user["id"])).data or []
+    canonical_rows = [row for row in rows if is_canonical_job(row)]
+    if canonical_rows:
+        rows = canonical_rows
     return {"jobs": [job_to_card(row, user) for row in rows]}
 
 
@@ -279,7 +283,15 @@ def recruiter_feed(job_id: Optional[str] = None, limit: int = Query(default=20, 
         if row.get("student_id")
     ]
     interested_rank = {sid: index for index, sid in enumerate(interested)}
-    students = execute_supabase(lambda: supabase.table("students").select("*")).data or []
+    supabase_students = execute_supabase(lambda: supabase.table("students").select("*")).data or []
+    students_by_id = {
+        student_id(row): row
+        for row in all_student_rows()
+    }
+    for row in supabase_students:
+        sid = student_id(row)
+        students_by_id[sid] = {**students_by_id.get(sid, {}), **row}
+    students = list(students_by_id.values())
     visible = [row for row in students if student_id(row) not in liked and student_id(row) not in passed]
     scored = []
     for row in visible:

@@ -78,12 +78,28 @@ def build_inference_features(student_features, company_data):
     return features
 
 
-def run_inference(student_features, company_data, model=None, scaler=None, feature_cols=None):
+def run_inference(student_features, company_data, model=None, scaler=None, feature_cols=None, pdf_path=None):
     """
     Full inference for one student–company pair.
     Returns eligibility result with explanation.
     """
     from src.explainability.criteria_checker import check_criteria
+
+    if pdf_path:
+        from src.preprocessing.resume_parser import parse_resume
+
+        parsed_resume, confidence = parse_resume(pdf_path)
+        if confidence["overall"] == "low" or confidence["cgpa"] == "low":
+            return {
+                "status": "VERIFICATION_REQUIRED",
+                "reason": "parsing_uncertainty",
+                "format_detected": confidence["format_type"],
+                "fields_to_verify": confidence["fields_missing"],
+                "message": "Parser confidence is low. Student should confirm extracted data.",
+                "parsed_resume": parsed_resume,
+                "confidence": confidence,
+            }
+        student_features = {**student_features, **parsed_resume}
 
     if model is None:
         model, scaler, feature_cols = load_model()

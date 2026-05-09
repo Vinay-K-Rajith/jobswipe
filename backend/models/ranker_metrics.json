@@ -54,5 +54,12 @@
       "num_queries": 10,
       "fold": 5
     }
-  ]
+  ],
+  "fairness_by_gender": {
+    "F": 0.9122518616285383,
+    "M": 0.9859884928859788,
+    "Non-binary": 0.9672490412375012,
+    "ndcg@10_fairness_gap": 0.0737
+  },
+  "ndcg_fairness_gap": 0.0737
 }

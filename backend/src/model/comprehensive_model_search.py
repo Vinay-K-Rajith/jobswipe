@@ -63,7 +63,10 @@ try:
 except ImportError:
     HAS_MPL = False
 
-from .fairness_audit import demographic_parity
+try:
+    from .fairness_audit import demographic_parity
+except ImportError:
+    from fairness_audit import demographic_parity
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
 MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'models')
@@ -102,6 +105,65 @@ def composite_score(acc, f1, bias):
     if bias > 0.03:
         score -= (bias * 4)  # Very harsh penalty
     return score
+
+
+def sweep_epsilon_values(eps_values=None):
+    """
+    Regenerate a complete Fairlearn epsilon sweep on a fixed 70/15/15 split.
+    Saves one model per epsilon and writes epsilon_sweep_results.json.
+    """
+    if ExponentiatedGradient is None or DemographicParity is None:
+        raise ImportError("fairlearn is required for sweep_epsilon_values")
+
+    eps_values = eps_values or [0.005, 0.010, 0.015, 0.017, 0.019, 0.020, 0.025, 0.028, 0.029, 0.034, 0.040, 0.050]
+    os.makedirs(MODEL_DIR, exist_ok=True)
+
+    data, feature_cols = load_data()
+    X = data[feature_cols].fillna(0)
+    y = data["eligible"]
+    meta = data[["gender", "department"]]
+
+    X_train, X_temp, y_train, y_temp, meta_train, meta_temp = train_test_split(
+        X, y, meta, test_size=0.30, random_state=42, stratify=y
+    )
+    _, X_test, _, y_test, _, meta_test = train_test_split(
+        X_temp, y_temp, meta_temp, test_size=0.50, random_state=42, stratify=y_temp
+    )
+
+    scaler = StandardScaler()
+    X_train_s = scaler.fit_transform(X_train)
+    X_test_s = scaler.transform(X_test)
+    sensitive_train = meta_train["gender"].astype(str)
+
+    results = []
+    for eps in eps_values:
+        print(f"Training Fairlearn LightGBM epsilon={eps:.3f}")
+        base = lgb.LGBMClassifier(n_estimators=200, learning_rate=0.05, random_state=42, verbose=-1)
+        fair_model = ExponentiatedGradient(
+            base,
+            constraints=DemographicParity(),
+            eps=eps,
+            max_iter=15,
+        )
+        fair_model.fit(X_train_s, y_train, sensitive_features=sensitive_train)
+        preds = fair_model.predict(X_test_s)
+        audit = meta_test.copy()
+        audit["predicted"] = preds
+        gap = demographic_parity(audit, "gender")["disparity"]
+        row = {
+            "eps": float(eps),
+            "accuracy": round(float(accuracy_score(y_test, preds)) * 100, 3),
+            "f1": round(float(f1_score(y_test, preds, zero_division=0)), 4),
+            "gender_parity_gap": round(float(gap) * 100, 3),
+        }
+        results.append(row)
+        with open(os.path.join(MODEL_DIR, f"fairlearn_lightgbm_eps_{eps:.3f}.pkl"), "wb") as f:
+            pickle.dump(fair_model, f)
+
+    with open(os.path.join(MODEL_DIR, "epsilon_sweep_results.json"), "w") as f:
+        json.dump(results, f, indent=2)
+    print(f"Saved epsilon sweep results -> {os.path.join(MODEL_DIR, 'epsilon_sweep_results.json')}")
+    return results
 
 
 def generate_charts(results_df, output_dir):

@@ -27,6 +27,8 @@ create table if not exists public.students (
     skills text[] default '{}',
     certifications text[] default '{}',
     projects text[] default '{}',
+    resume_url text,
+    resume_parse_confidence jsonb default '{}'::jsonb,
     portfolio_url text,
     created_at timestamptz not null default now()
 );

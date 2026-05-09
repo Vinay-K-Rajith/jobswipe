@@ -1,0 +1,51 @@
+{
+  "classifier": {
+    "n_1": {
+      "total_ms": 0.973,
+      "per_student_ms": 0.973,
+      "per_pair_ms": 0.019462
+    },
+    "n_10": {
+      "total_ms": 1.018,
+      "per_student_ms": 0.102,
+      "per_pair_ms": 0.002036
+    },
+    "n_100": {
+      "total_ms": 2.206,
+      "per_student_ms": 0.022,
+      "per_pair_ms": 0.000441
+    },
+    "n_800": {
+      "total_ms": 13.624,
+      "per_student_ms": 0.017,
+      "per_pair_ms": 0.000341
+    }
+  },
+  "ranker": {
+    "n_1": {
+      "total_ms": 0.889,
+      "per_student_ms": 0.889,
+      "per_pair_ms": 0.017771
+    },
+    "n_10": {
+      "total_ms": 1.247,
+      "per_student_ms": 0.125,
+      "per_pair_ms": 0.002493
+    },
+    "n_100": {
+      "total_ms": 2.749,
+      "per_student_ms": 0.027,
+      "per_pair_ms": 0.00055
+    },
+    "n_800": {
+      "total_ms": 15.217,
+      "per_student_ms": 0.019,
+      "per_pair_ms": 0.00038
+    }
+  },
+  "projected_5000": {
+    "note": "Linear extrapolation from 800-student measurements",
+    "classifier_total_ms": 85.15,
+    "ranker_total_ms": 95.106
+  }
+}

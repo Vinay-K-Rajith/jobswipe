@@ -191,6 +191,19 @@ def train_ranker(
     with open(rmetrics_path, "w") as f:
         json.dump(metrics, f, indent=2)
 
+    ranking_eval_path = os.path.join(MODEL_DIR, "ranking_evaluation.json")
+    if os.path.exists(ranking_eval_path):
+        with open(ranking_eval_path) as f:
+            rank_eval = json.load(f)
+        with open(rmetrics_path) as f:
+            existing = json.load(f)
+        existing["fairness_by_gender"] = rank_eval.get("fairness_by_gender", {})
+        existing["ndcg_fairness_gap"] = existing["fairness_by_gender"].get("ndcg@10_fairness_gap")
+        with open(rmetrics_path, "w") as f:
+            json.dump(existing, f, indent=2)
+        if existing["ndcg_fairness_gap"] is not None:
+            print(f"Merged NDCG fairness gap: {existing['ndcg_fairness_gap']:.4f}")
+
     print(f"\nRanker saved  -> {ranker_path}")
     print(f"Scaler saved  -> {rscaler_path}")
     print(f"Metrics saved -> {rmetrics_path}")

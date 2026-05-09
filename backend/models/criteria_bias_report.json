@@ -1,15 +1,16 @@
 {
   "summary": {
-    "n_companies": 50,
-    "n_flagged": 3,
-    "flag_rate": 0.06,
+    "n_companies": 80,
+    "n_flagged": 16,
+    "flag_rate": 0.2,
     "threshold": 0.1,
     "significance": 0.05,
-    "student_pool_size": 800,
+    "student_pool_size": 818,
     "gender_pool_dist": {
-      "M": 0.55625,
-      "F": 0.4,
-      "Non-binary": 0.04375
+      "M": 0.5440097799511002,
+      "F": 0.39119804400978,
+      "Non-binary": 0.042787286063569685,
+      "Prefer not to say": 0.022004889975550123
     }
   },
   "flagged_companies": [
@@ -17,12 +18,13 @@
       "company_id": "CO001",
       "company_name": "Google India",
       "tier": "Tier1",
-      "disparity": 0.1821,
+      "disparity": 0.2571,
       "p_value": 0.048995,
       "pass_rates": {
         "F": 0.075,
         "M": 0.1213,
-        "Non-binary": 0.2571
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
       },
       "top_bias_criterion": "10th"
     },
@@ -30,27 +32,211 @@
       "company_id": "CO004",
       "company_name": "Goldman Sachs",
       "tier": "Tier1",
-      "disparity": 0.1665,
+      "disparity": 0.2571,
       "p_value": 0.042933,
       "pass_rates": {
         "F": 0.0906,
         "M": 0.1416,
-        "Non-binary": 0.2571
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
       },
-      "top_bias_criterion": "12th"
+      "top_bias_criterion": "dept"
     },
     {
       "company_id": "CO016",
       "company_name": "Tech Mahindra",
       "tier": "Tier2",
-      "disparity": 0.1022,
+      "disparity": 0.3429,
       "p_value": 0.036367,
       "pass_rates": {
         "F": 0.2406,
         "M": 0.3124,
-        "Non-binary": 0.3429
+        "Non-binary": 0.3429,
+        "Prefer not to say": 0.0
       },
       "top_bias_criterion": "10th"
+    },
+    {
+      "company_id": "TFJ002",
+      "company_name": "Google",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFJ004",
+      "company_name": "Microsoft",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFJ005",
+      "company_name": "Amazon",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFJ009",
+      "company_name": "Paytm",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFJ012",
+      "company_name": "Capgemini",
+      "tier": "Tier2",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFJ017",
+      "company_name": "1mg",
+      "tier": "Startup",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFJ018",
+      "company_name": "upGrad",
+      "tier": "Startup",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFI002",
+      "company_name": "Google",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFI003",
+      "company_name": "Microsoft",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFI005",
+      "company_name": "Paytm",
+      "tier": "Tier1",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFI008",
+      "company_name": "Capgemini",
+      "tier": "Tier2",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFI011",
+      "company_name": "1mg",
+      "tier": "Startup",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
+    },
+    {
+      "company_id": "TFI012",
+      "company_name": "upGrad",
+      "tier": "Startup",
+      "disparity": 0.2571,
+      "p_value": 0.026151,
+      "pass_rates": {
+        "F": 0.0844,
+        "M": 0.1393,
+        "Non-binary": 0.2571,
+        "Prefer not to say": 0.0
+      },
+      "top_bias_criterion": "dept"
     }
   ],
   "all_companies": [
@@ -58,14 +244,15 @@
       "company_id": "CO001",
       "company_name": "Google India",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1087,
+      "pool_pass_rate": 0.1064,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.075,
           "M": 0.1213,
-          "Non-binary": 0.2571
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1821,
+        "disparity": 0.2571,
         "odds_ratio": null,
         "p_value": 0.048995,
         "significant": true,
@@ -73,6 +260,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.2212,
           "AIML": 0.2462,
           "BCA": 0.0,
@@ -80,9 +268,11 @@
           "CSE": 0.2078,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.2462,
         "p_value": 0.0,
@@ -94,41 +284,46 @@
           "pass_rates": {
             "F": 0.4125,
             "M": 0.4022,
-            "Non-binary": 0.5143
+            "Non-binary": 0.5143,
+            "Prefer not to say": 0.7778
           },
-          "disparity": 0.112
+          "disparity": 0.3755
         },
         "10th": {
           "pass_rates": {
             "F": 0.4188,
             "M": 0.4449,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1812
+          "disparity": 0.6
         },
         "12th": {
           "pass_rates": {
             "F": 0.3594,
             "M": 0.3573,
-            "Non-binary": 0.4571
+            "Non-binary": 0.4571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0998
+          "disparity": 0.4571
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.4531,
             "M": 0.5011,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1183
+          "disparity": 0.5714
         }
       },
       "flagged_gender_bias": true
@@ -137,14 +332,15 @@
       "company_id": "CO002",
       "company_name": "Microsoft India",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1062,
+      "pool_pass_rate": 0.1039,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.1031,
           "M": 0.1056,
-          "Non-binary": 0.1429
+          "Non-binary": 0.1429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0397,
+        "disparity": 0.1429,
         "odds_ratio": null,
         "p_value": 1.0,
         "significant": false,
@@ -152,6 +348,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -159,9 +356,11 @@
           "CSE": 0.3052,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.3605,
           "MBA": 0.2414,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.3605,
         "p_value": 0.0,
@@ -173,41 +372,46 @@
           "pass_rates": {
             "F": 0.5281,
             "M": 0.4899,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.8333
           },
-          "disparity": 0.0815
+          "disparity": 0.3434
         },
         "10th": {
           "pass_rates": {
             "F": 0.5875,
             "M": 0.591,
-            "Non-binary": 0.6857
+            "Non-binary": 0.6857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0982
+          "disparity": 0.6857
         },
         "12th": {
           "pass_rates": {
             "F": 0.5625,
             "M": 0.5528,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0186
+          "disparity": 0.5714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.3469,
             "M": 0.3281,
-            "Non-binary": 0.3429
+            "Non-binary": 0.3429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0188
+          "disparity": 0.3469
         }
       },
       "flagged_gender_bias": false
@@ -216,14 +420,15 @@
       "company_id": "CO003",
       "company_name": "Amazon Development Center",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1487,
+      "pool_pass_rate": 0.1455,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.1156,
           "M": 0.1618,
-          "Non-binary": 0.2857
+          "Non-binary": 0.2857,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1701,
+        "disparity": 0.2857,
         "odds_ratio": null,
         "p_value": 0.089627,
         "significant": false,
@@ -231,6 +436,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.2212,
           "AIML": 0.2769,
           "BCA": 0.0,
@@ -238,9 +444,11 @@
           "CSE": 0.2403,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.2674,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.2769,
         "p_value": 0.0,
@@ -252,41 +460,46 @@
           "pass_rates": {
             "F": 0.4688,
             "M": 0.4472,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.8333
           },
-          "disparity": 0.1242
+          "disparity": 0.3861
         },
         "10th": {
           "pass_rates": {
             "F": 0.5344,
             "M": 0.5348,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0942
+          "disparity": 0.6286
         },
         "12th": {
           "pass_rates": {
             "F": 0.3594,
             "M": 0.3573,
-            "Non-binary": 0.4571
+            "Non-binary": 0.4571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0998
+          "disparity": 0.4571
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.575,
             "M": 0.6022,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0536
+          "disparity": 0.6286
         }
       },
       "flagged_gender_bias": false
@@ -295,14 +508,15 @@
       "company_id": "CO004",
       "company_name": "Goldman Sachs",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1263,
+      "pool_pass_rate": 0.1235,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.0906,
           "M": 0.1416,
-          "Non-binary": 0.2571
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1665,
+        "disparity": 0.2571,
         "odds_ratio": null,
         "p_value": 0.042933,
         "significant": true,
@@ -310,6 +524,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.2019,
           "AIML": 0.2462,
           "BCA": 0.0,
@@ -317,9 +532,11 @@
           "CSE": 0.1753,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.1628,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.2462,
         "p_value": 0.0,
@@ -331,41 +548,46 @@
           "pass_rates": {
             "F": 0.4125,
             "M": 0.4022,
-            "Non-binary": 0.5143
+            "Non-binary": 0.5143,
+            "Prefer not to say": 0.7778
           },
-          "disparity": 0.112
+          "disparity": 0.3755
         },
         "10th": {
           "pass_rates": {
             "F": 0.3375,
             "M": 0.364,
-            "Non-binary": 0.4571
+            "Non-binary": 0.4571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1196
+          "disparity": 0.4571
         },
         "12th": {
           "pass_rates": {
             "F": 0.2969,
             "M": 0.3101,
-            "Non-binary": 0.4286
+            "Non-binary": 0.4286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1317
+          "disparity": 0.4286
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6125,
             "M": 0.6584,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0459
+          "disparity": 0.6584
         }
       },
       "flagged_gender_bias": true
@@ -374,14 +596,15 @@
       "company_id": "CO005",
       "company_name": "Adobe Systems",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1275,
+      "pool_pass_rate": 0.1247,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.1375,
           "M": 0.1169,
-          "Non-binary": 0.1714
+          "Non-binary": 0.1714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0546,
+        "disparity": 0.1714,
         "odds_ratio": null,
         "p_value": 0.459495,
         "significant": false,
@@ -389,6 +612,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -396,9 +620,11 @@
           "CSE": 0.2662,
           "ECE": 0.3505,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.3293
+          "MECH": 0.3293,
+          "ROOKIE": 0.0
         },
         "disparity": 0.3505,
         "p_value": 0.0,
@@ -410,41 +636,46 @@
           "pass_rates": {
             "F": 0.4125,
             "M": 0.4022,
-            "Non-binary": 0.5143
+            "Non-binary": 0.5143,
+            "Prefer not to say": 0.7778
           },
-          "disparity": 0.112
+          "disparity": 0.3755
         },
         "10th": {
           "pass_rates": {
             "F": 0.4969,
             "M": 0.5011,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1031
+          "disparity": 0.6
         },
         "12th": {
           "pass_rates": {
             "F": 0.5625,
             "M": 0.5528,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0186
+          "disparity": 0.5714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.4188,
             "M": 0.4067,
-            "Non-binary": 0.5143
+            "Non-binary": 0.5143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1075
+          "disparity": 0.5143
         }
       },
       "flagged_gender_bias": false
@@ -453,14 +684,15 @@
       "company_id": "CO006",
       "company_name": "Oracle India",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1212,
+      "pool_pass_rate": 0.1186,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.1,
           "M": 0.1326,
-          "Non-binary": 0.1714
+          "Non-binary": 0.1714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0714,
+        "disparity": 0.1714,
         "odds_ratio": null,
         "p_value": 0.20766,
         "significant": false,
@@ -468,6 +700,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.2615,
           "BCA": 0.0,
@@ -475,9 +708,11 @@
           "CSE": 0.2273,
           "ECE": 0.2887,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.2887,
         "p_value": 0.0,
@@ -489,41 +724,46 @@
           "pass_rates": {
             "F": 0.4688,
             "M": 0.4472,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.8333
           },
-          "disparity": 0.1242
+          "disparity": 0.3861
         },
         "10th": {
           "pass_rates": {
             "F": 0.325,
             "M": 0.3348,
-            "Non-binary": 0.4
+            "Non-binary": 0.4,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.075
+          "disparity": 0.4
         },
         "12th": {
           "pass_rates": {
             "F": 0.6188,
             "M": 0.627,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.027
+          "disparity": 0.627
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.4531,
             "M": 0.4876,
-            "Non-binary": 0.5429
+            "Non-binary": 0.5429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0897
+          "disparity": 0.5429
         }
       },
       "flagged_gender_bias": false
@@ -532,14 +772,15 @@
       "company_id": "CO007",
       "company_name": "Salesforce India",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1713,
+      "pool_pass_rate": 0.1675,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.1906,
           "M": 0.1528,
-          "Non-binary": 0.2286
+          "Non-binary": 0.2286,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0758,
+        "disparity": 0.2286,
         "odds_ratio": null,
         "p_value": 0.200515,
         "significant": false,
@@ -547,6 +788,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -554,9 +796,11 @@
           "CSE": 0.2857,
           "ECE": 0.3918,
           "EEE": 0.3115,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.2414,
-          "MECH": 0.3537
+          "MECH": 0.3537,
+          "ROOKIE": 0.0
         },
         "disparity": 0.3918,
         "p_value": 0.0,
@@ -568,41 +812,46 @@
           "pass_rates": {
             "F": 0.5625,
             "M": 0.5169,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.8889
           },
-          "disparity": 0.0831
+          "disparity": 0.372
         },
         "10th": {
           "pass_rates": {
             "F": 0.4969,
             "M": 0.5011,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1031
+          "disparity": 0.6
         },
         "12th": {
           "pass_rates": {
             "F": 0.5375,
             "M": 0.5371,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0343
+          "disparity": 0.5714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.5344,
             "M": 0.5191,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0809
+          "disparity": 0.6
         }
       },
       "flagged_gender_bias": false
@@ -611,14 +860,15 @@
       "company_id": "CO008",
       "company_name": "JPMorgan Chase",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1062,
+      "pool_pass_rate": 0.1039,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.0781,
           "M": 0.1191,
-          "Non-binary": 0.2
+          "Non-binary": 0.2,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1219,
+        "disparity": 0.2,
         "odds_ratio": null,
         "p_value": 0.084272,
         "significant": false,
@@ -626,6 +876,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.2308,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -633,9 +884,11 @@
           "CSE": 0.2403,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.2791,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.2791,
         "p_value": 0.0,
@@ -647,41 +900,46 @@
           "pass_rates": {
             "F": 0.3125,
             "M": 0.3348,
-            "Non-binary": 0.4286
+            "Non-binary": 0.4286,
+            "Prefer not to say": 0.7222
           },
-          "disparity": 0.1161
+          "disparity": 0.4097
         },
         "10th": {
           "pass_rates": {
             "F": 0.5344,
             "M": 0.5348,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0942
+          "disparity": 0.6286
         },
         "12th": {
           "pass_rates": {
             "F": 0.4594,
             "M": 0.4584,
-            "Non-binary": 0.4857
+            "Non-binary": 0.4857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0273
+          "disparity": 0.4857
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.4281,
             "M": 0.4292,
-            "Non-binary": 0.4571
+            "Non-binary": 0.4571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.029
+          "disparity": 0.4571
         }
       },
       "flagged_gender_bias": false
@@ -690,14 +948,15 @@
       "company_id": "CO009",
       "company_name": "Apple India",
       "tier": "Tier1",
-      "pool_pass_rate": 0.1125,
+      "pool_pass_rate": 0.11,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.0844,
           "M": 0.1236,
-          "Non-binary": 0.2286
+          "Non-binary": 0.2286,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1442,
+        "disparity": 0.2286,
         "odds_ratio": null,
         "p_value": 0.107119,
         "significant": false,
@@ -705,6 +964,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.2385,
           "BCA": 0.0,
@@ -712,9 +972,11 @@
           "CSE": 0.2403,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.2558,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.2558,
         "p_value": 0.0,
@@ -726,41 +988,46 @@
           "pass_rates": {
             "F": 0.2844,
             "M": 0.3056,
-            "Non-binary": 0.4
+            "Non-binary": 0.4,
+            "Prefer not to say": 0.7222
           },
-          "disparity": 0.1156
+          "disparity": 0.4378
         },
         "10th": {
           "pass_rates": {
             "F": 0.5188,
             "M": 0.5146,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0854
+          "disparity": 0.6
         },
         "12th": {
           "pass_rates": {
             "F": 0.6188,
             "M": 0.627,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.027
+          "disparity": 0.627
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.45,
             "M": 0.4674,
-            "Non-binary": 0.5143
+            "Non-binary": 0.5143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0643
+          "disparity": 0.5143
         }
       },
       "flagged_gender_bias": false
@@ -769,14 +1036,15 @@
       "company_id": "CO010",
       "company_name": "Meta Platforms",
       "tier": "Tier1",
-      "pool_pass_rate": 0.085,
+      "pool_pass_rate": 0.0831,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.0594,
           "M": 0.0966,
-          "Non-binary": 0.1714
+          "Non-binary": 0.1714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1121,
+        "disparity": 0.1714,
         "odds_ratio": null,
         "p_value": 0.083957,
         "significant": false,
@@ -784,6 +1052,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.1846,
           "BCA": 0.0,
@@ -791,9 +1060,11 @@
           "CSE": 0.1688,
           "ECE": 0.1856,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.1856,
         "p_value": 0.0,
@@ -805,41 +1076,46 @@
           "pass_rates": {
             "F": 0.2062,
             "M": 0.227,
-            "Non-binary": 0.3143
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
           },
-          "disparity": 0.108
+          "disparity": 0.4049
         },
         "10th": {
           "pass_rates": {
             "F": 0.325,
             "M": 0.3348,
-            "Non-binary": 0.4
+            "Non-binary": 0.4,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.075
+          "disparity": 0.4
         },
         "12th": {
           "pass_rates": {
             "F": 0.475,
             "M": 0.4742,
-            "Non-binary": 0.5143
+            "Non-binary": 0.5143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0401
+          "disparity": 0.5143
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.4531,
             "M": 0.4876,
-            "Non-binary": 0.5429
+            "Non-binary": 0.5429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0897
+          "disparity": 0.5429
         }
       },
       "flagged_gender_bias": false
@@ -848,14 +1124,15 @@
       "company_id": "CO011",
       "company_name": "Infosys",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3412,
+      "pool_pass_rate": 0.3337,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3125,
           "M": 0.3573,
-          "Non-binary": 0.4
+          "Non-binary": 0.4,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0875,
+        "disparity": 0.4,
         "odds_ratio": null,
         "p_value": 0.224639,
         "significant": false,
@@ -863,6 +1140,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4038,
           "AIML": 0.4154,
           "BCA": 0.3684,
@@ -870,9 +1148,11 @@
           "CSE": 0.3961,
           "ECE": 0.5052,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4884,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5052,
         "p_value": 0.0,
@@ -884,41 +1164,46 @@
           "pass_rates": {
             "F": 0.7094,
             "M": 0.6921,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0222
+          "disparity": 0.2523
         },
         "10th": {
           "pass_rates": {
             "F": 0.7,
             "M": 0.6966,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0177
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.6438,
             "M": 0.6652,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0652
+          "disparity": 0.6652
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7719,
             "M": 0.7955,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0241
+          "disparity": 0.7955
         }
       },
       "flagged_gender_bias": false
@@ -927,14 +1212,15 @@
       "company_id": "CO012",
       "company_name": "TCS",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2512,
+      "pool_pass_rate": 0.2457,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2625,
           "M": 0.2449,
-          "Non-binary": 0.2286
+          "Non-binary": 0.2286,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0339,
+        "disparity": 0.2625,
         "odds_ratio": null,
         "p_value": 0.640419,
         "significant": false,
@@ -942,6 +1228,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4135,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -949,9 +1236,11 @@
           "CSE": 0.4091,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.5116,
           "MBA": 0.3448,
-          "MECH": 0.5
+          "MECH": 0.5,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5116,
         "p_value": 0.0,
@@ -963,41 +1252,46 @@
           "pass_rates": {
             "F": 0.6281,
             "M": 0.5888,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.8889
           },
-          "disparity": 0.0398
+          "disparity": 0.3001
         },
         "10th": {
           "pass_rates": {
             "F": 0.7,
             "M": 0.6966,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0177
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.7875,
             "M": 0.8292,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0417
+          "disparity": 0.8292
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.5844,
             "M": 0.5551,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0449
+          "disparity": 0.6
         }
       },
       "flagged_gender_bias": false
@@ -1006,14 +1300,15 @@
       "company_id": "CO013",
       "company_name": "Wipro",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3713,
+      "pool_pass_rate": 0.3631,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3719,
           "M": 0.3663,
-          "Non-binary": 0.4286
+          "Non-binary": 0.4286,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0623,
+        "disparity": 0.4286,
         "odds_ratio": null,
         "p_value": 0.934709,
         "significant": false,
@@ -1021,6 +1316,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4327,
           "AIML": 0.4231,
           "BCA": 0.3684,
@@ -1028,9 +1324,11 @@
           "CSE": 0.4481,
           "ECE": 0.5258,
           "EEE": 0.459,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.5122
+          "MECH": 0.5122,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5258,
         "p_value": 0.0,
@@ -1042,41 +1340,46 @@
           "pass_rates": {
             "F": 0.6594,
             "M": 0.6337,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0257
+          "disparity": 0.3107
         },
         "10th": {
           "pass_rates": {
             "F": 0.6719,
             "M": 0.6719,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0424
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.8562,
             "M": 0.8652,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.058
+          "disparity": 0.9143
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7969,
             "M": 0.809,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1174
+          "disparity": 0.9143
         }
       },
       "flagged_gender_bias": false
@@ -1085,14 +1388,15 @@
       "company_id": "CO014",
       "company_name": "HCL Technologies",
       "tier": "Tier2",
-      "pool_pass_rate": 0.23,
+      "pool_pass_rate": 0.2249,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2062,
           "M": 0.2427,
-          "Non-binary": 0.2857
+          "Non-binary": 0.2857,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0795,
+        "disparity": 0.2857,
         "odds_ratio": null,
         "p_value": 0.271846,
         "significant": false,
@@ -1100,6 +1404,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.3654,
           "AIML": 0.3692,
           "BCA": 0.0,
@@ -1107,9 +1412,11 @@
           "CSE": 0.3506,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4302,
           "MBA": 0.2414,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4302,
         "p_value": 0.0,
@@ -1121,41 +1428,46 @@
           "pass_rates": {
             "F": 0.6281,
             "M": 0.5888,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.8889
           },
-          "disparity": 0.0398
+          "disparity": 0.3001
         },
         "10th": {
           "pass_rates": {
             "F": 0.7,
             "M": 0.6966,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0177
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.5969,
             "M": 0.5955,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0254
+          "disparity": 0.5969
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6188,
             "M": 0.636,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0172
+          "disparity": 0.636
         }
       },
       "flagged_gender_bias": false
@@ -1164,14 +1476,15 @@
       "company_id": "CO015",
       "company_name": "Cognizant",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3625,
+      "pool_pass_rate": 0.3545,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3406,
           "M": 0.3798,
-          "Non-binary": 0.3429
+          "Non-binary": 0.3429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0392,
+        "disparity": 0.3798,
         "odds_ratio": null,
         "p_value": 0.300975,
         "significant": false,
@@ -1179,6 +1492,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4904,
           "AIML": 0.4769,
           "BCA": 0.0,
@@ -1186,9 +1500,11 @@
           "CSE": 0.526,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.5698,
           "MBA": 0.0,
-          "MECH": 0.5732
+          "MECH": 0.5732,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5732,
         "p_value": 0.0,
@@ -1200,41 +1516,46 @@
           "pass_rates": {
             "F": 0.7562,
             "M": 0.7618,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0189
+          "disparity": 0.2571
         },
         "10th": {
           "pass_rates": {
             "F": 0.7156,
             "M": 0.7236,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0093
+          "disparity": 0.7236
         },
         "12th": {
           "pass_rates": {
             "F": 0.8281,
             "M": 0.8472,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.029
+          "disparity": 0.8571
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6875,
             "M": 0.6944,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0839
+          "disparity": 0.7714
         }
       },
       "flagged_gender_bias": false
@@ -1243,14 +1564,15 @@
       "company_id": "CO016",
       "company_name": "Tech Mahindra",
       "tier": "Tier2",
-      "pool_pass_rate": 0.285,
+      "pool_pass_rate": 0.2787,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2406,
           "M": 0.3124,
-          "Non-binary": 0.3429
+          "Non-binary": 0.3429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1022,
+        "disparity": 0.3429,
         "odds_ratio": null,
         "p_value": 0.036367,
         "significant": true,
@@ -1258,6 +1580,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.3942,
           "AIML": 0.3923,
           "BCA": 0.3684,
@@ -1265,9 +1588,11 @@
           "CSE": 0.3896,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4884,
           "MBA": 0.3103,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4884,
         "p_value": 0.0,
@@ -1279,41 +1604,46 @@
           "pass_rates": {
             "F": 0.6594,
             "M": 0.6337,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0257
+          "disparity": 0.3107
         },
         "10th": {
           "pass_rates": {
             "F": 0.8531,
             "M": 0.8719,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1469
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.5969,
             "M": 0.5955,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0254
+          "disparity": 0.5969
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6906,
             "M": 0.7079,
-            "Non-binary": 0.6857
+            "Non-binary": 0.6857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0222
+          "disparity": 0.7079
         }
       },
       "flagged_gender_bias": true
@@ -1322,14 +1652,15 @@
       "company_id": "CO017",
       "company_name": "Capgemini",
       "tier": "Tier2",
-      "pool_pass_rate": 0.35,
+      "pool_pass_rate": 0.3423,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3312,
           "M": 0.3573,
-          "Non-binary": 0.4286
+          "Non-binary": 0.4286,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0973,
+        "disparity": 0.4286,
         "odds_ratio": null,
         "p_value": 0.502847,
         "significant": false,
@@ -1337,6 +1668,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4038,
           "AIML": 0.4154,
           "BCA": 0.3684,
@@ -1344,9 +1676,11 @@
           "CSE": 0.4156,
           "ECE": 0.5052,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.5233,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5233,
         "p_value": 0.0,
@@ -1358,41 +1692,46 @@
           "pass_rates": {
             "F": 0.6375,
             "M": 0.6135,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.024
+          "disparity": 0.331
         },
         "10th": {
           "pass_rates": {
             "F": 0.7,
             "M": 0.6966,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0177
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.75,
             "M": 0.7888,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0388
+          "disparity": 0.7888
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7719,
             "M": 0.7955,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0241
+          "disparity": 0.7955
         }
       },
       "flagged_gender_bias": false
@@ -1401,14 +1740,15 @@
       "company_id": "CO018",
       "company_name": "Accenture",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2612,
+      "pool_pass_rate": 0.2555,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2531,
           "M": 0.2674,
-          "Non-binary": 0.2571
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0143,
+        "disparity": 0.2674,
         "odds_ratio": null,
         "p_value": 0.718614,
         "significant": false,
@@ -1416,6 +1756,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4327,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -1423,9 +1764,11 @@
           "CSE": 0.4091,
           "ECE": 0.5258,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4651,
           "MBA": 0.3448,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5258,
         "p_value": 0.0,
@@ -1437,41 +1780,46 @@
           "pass_rates": {
             "F": 0.7812,
             "M": 0.7798,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0384
+          "disparity": 0.2571
         },
         "10th": {
           "pass_rates": {
             "F": 0.7156,
             "M": 0.7236,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0093
+          "disparity": 0.7236
         },
         "12th": {
           "pass_rates": {
             "F": 0.6188,
             "M": 0.627,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.027
+          "disparity": 0.627
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.5969,
             "M": 0.5843,
-            "Non-binary": 0.5429
+            "Non-binary": 0.5429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.054
+          "disparity": 0.5969
         }
       },
       "flagged_gender_bias": false
@@ -1480,14 +1828,15 @@
       "company_id": "CO019",
       "company_name": "L&T Infotech",
       "tier": "Tier2",
-      "pool_pass_rate": 0.32,
+      "pool_pass_rate": 0.313,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3156,
           "M": 0.3236,
-          "Non-binary": 0.3143
+          "Non-binary": 0.3143,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0093,
+        "disparity": 0.3236,
         "odds_ratio": null,
         "p_value": 0.877196,
         "significant": false,
@@ -1495,6 +1844,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.4538,
           "BCA": 0.0,
@@ -1502,9 +1852,11 @@
           "CSE": 0.4351,
           "ECE": 0.5464,
           "EEE": 0.5082,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.561
+          "MECH": 0.561,
+          "ROOKIE": 0.0
         },
         "disparity": 0.561,
         "p_value": 0.0,
@@ -1516,41 +1868,46 @@
           "pass_rates": {
             "F": 0.7438,
             "M": 0.7213,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0224
+          "disparity": 0.2231
         },
         "10th": {
           "pass_rates": {
             "F": 0.7812,
             "M": 0.791,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0188
+          "disparity": 0.8
         },
         "12th": {
           "pass_rates": {
             "F": 0.6656,
             "M": 0.6809,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0523
+          "disparity": 0.6809
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6375,
             "M": 0.6584,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1339
+          "disparity": 0.7714
         }
       },
       "flagged_gender_bias": false
@@ -1559,14 +1916,15 @@
       "company_id": "CO020",
       "company_name": "Mindtree",
       "tier": "Tier2",
-      "pool_pass_rate": 0.33,
+      "pool_pass_rate": 0.3227,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3625,
           "M": 0.3079,
-          "Non-binary": 0.3143
+          "Non-binary": 0.3143,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0546,
+        "disparity": 0.3625,
         "odds_ratio": null,
         "p_value": 0.131942,
         "significant": false,
@@ -1574,6 +1932,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4808,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -1581,9 +1940,11 @@
           "CSE": 0.4545,
           "ECE": 0.567,
           "EEE": 0.541,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.4138,
-          "MECH": 0.5366
+          "MECH": 0.5366,
+          "ROOKIE": 0.0
         },
         "disparity": 0.567,
         "p_value": 0.0,
@@ -1595,41 +1956,46 @@
           "pass_rates": {
             "F": 0.6594,
             "M": 0.6337,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0257
+          "disparity": 0.3107
         },
         "10th": {
           "pass_rates": {
             "F": 0.7812,
             "M": 0.791,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0188
+          "disparity": 0.8
         },
         "12th": {
           "pass_rates": {
             "F": 0.5969,
             "M": 0.5955,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0254
+          "disparity": 0.5969
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.6594,
             "M": 0.6539,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0604
+          "disparity": 0.7143
         }
       },
       "flagged_gender_bias": false
@@ -1638,14 +2004,15 @@
       "company_id": "CO021",
       "company_name": "Zoho Corporation",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2475,
+      "pool_pass_rate": 0.2421,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2625,
           "M": 0.236,
-          "Non-binary": 0.2571
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0265,
+        "disparity": 0.2625,
         "odds_ratio": null,
         "p_value": 0.45041,
         "significant": false,
@@ -1653,6 +2020,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -1660,9 +2028,11 @@
           "CSE": 0.3636,
           "ECE": 0.4536,
           "EEE": 0.4098,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4535,
           "MBA": 0.0,
-          "MECH": 0.4146
+          "MECH": 0.4146,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4536,
         "p_value": 0.0,
@@ -1674,41 +2044,46 @@
           "pass_rates": {
             "F": 0.6594,
             "M": 0.6337,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0257
+          "disparity": 0.3107
         },
         "10th": {
           "pass_rates": {
             "F": 0.5875,
             "M": 0.591,
-            "Non-binary": 0.6857
+            "Non-binary": 0.6857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0982
+          "disparity": 0.6857
         },
         "12th": {
           "pass_rates": {
             "F": 0.6188,
             "M": 0.627,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.027
+          "disparity": 0.627
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6125,
             "M": 0.5865,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0706
+          "disparity": 0.6571
         }
       },
       "flagged_gender_bias": false
@@ -1717,14 +2092,15 @@
       "company_id": "CO022",
       "company_name": "Freshworks",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2812,
+      "pool_pass_rate": 0.2751,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2844,
           "M": 0.2742,
-          "Non-binary": 0.3429
+          "Non-binary": 0.3429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0687,
+        "disparity": 0.3429,
         "odds_ratio": null,
         "p_value": 0.818673,
         "significant": false,
@@ -1732,6 +2108,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.4154,
           "BCA": 0.0,
@@ -1739,9 +2116,11 @@
           "CSE": 0.3896,
           "ECE": 0.4742,
           "EEE": 0.4426,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.4634
+          "MECH": 0.4634,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4742,
         "p_value": 0.0,
@@ -1753,41 +2132,46 @@
           "pass_rates": {
             "F": 0.6281,
             "M": 0.5888,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.8889
           },
-          "disparity": 0.0398
+          "disparity": 0.3001
         },
         "10th": {
           "pass_rates": {
             "F": 0.6375,
             "M": 0.6472,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0768
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.7125,
             "M": 0.7416,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0291
+          "disparity": 0.7416
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6375,
             "M": 0.6584,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1339
+          "disparity": 0.7714
         }
       },
       "flagged_gender_bias": false
@@ -1796,14 +2180,15 @@
       "company_id": "CO023",
       "company_name": "Razorpay",
       "tier": "Tier2",
-      "pool_pass_rate": 0.26,
+      "pool_pass_rate": 0.2543,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2781,
           "M": 0.2472,
-          "Non-binary": 0.2571
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0309,
+        "disparity": 0.2781,
         "odds_ratio": null,
         "p_value": 0.379678,
         "significant": false,
@@ -1811,6 +2196,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -1818,9 +2204,11 @@
           "CSE": 0.4545,
           "ECE": 0.6082,
           "EEE": 0.541,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.561
+          "MECH": 0.561,
+          "ROOKIE": 0.0
         },
         "disparity": 0.6082,
         "p_value": 0.0,
@@ -1832,41 +2220,46 @@
           "pass_rates": {
             "F": 0.7094,
             "M": 0.6921,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0222
+          "disparity": 0.2523
         },
         "10th": {
           "pass_rates": {
             "F": 0.7156,
             "M": 0.7236,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0093
+          "disparity": 0.7236
         },
         "12th": {
           "pass_rates": {
             "F": 0.6188,
             "M": 0.627,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.027
+          "disparity": 0.627
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.4906,
             "M": 0.4854,
-            "Non-binary": 0.6
+            "Non-binary": 0.6,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1146
+          "disparity": 0.6
         }
       },
       "flagged_gender_bias": false
@@ -1875,14 +2268,15 @@
       "company_id": "CO024",
       "company_name": "PhonePe",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3225,
+      "pool_pass_rate": 0.3154,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3187,
           "M": 0.3213,
-          "Non-binary": 0.3714
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0527,
+        "disparity": 0.3714,
         "odds_ratio": null,
         "p_value": 1.0,
         "significant": false,
@@ -1890,6 +2284,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4712,
           "AIML": 0.5385,
           "BCA": 0.4737,
@@ -1897,9 +2292,11 @@
           "CSE": 0.4416,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.5349,
           "MBA": 0.5517,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5517,
         "p_value": 0.0,
@@ -1911,41 +2308,46 @@
           "pass_rates": {
             "F": 0.6031,
             "M": 0.5618,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.8889
           },
-          "disparity": 0.0668
+          "disparity": 0.3271
         },
         "10th": {
           "pass_rates": {
             "F": 0.7,
             "M": 0.6966,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0177
+          "disparity": 0.7143
         },
         "12th": {
           "pass_rates": {
             "F": 0.7344,
             "M": 0.7708,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0364
+          "disparity": 0.7708
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.6531,
             "M": 0.6517,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0055
+          "disparity": 0.6571
         }
       },
       "flagged_gender_bias": false
@@ -1954,14 +2356,15 @@
       "company_id": "CO025",
       "company_name": "Flipkart",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2562,
+      "pool_pass_rate": 0.2506,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.25,
           "M": 0.2562,
-          "Non-binary": 0.3143
+          "Non-binary": 0.3143,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0643,
+        "disparity": 0.3143,
         "odds_ratio": null,
         "p_value": 0.912759,
         "significant": false,
@@ -1969,6 +2372,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.0,
           "AIML": 0.3615,
           "BCA": 0.0,
@@ -1976,9 +2380,11 @@
           "CSE": 0.3766,
           "ECE": 0.4639,
           "EEE": 0.3443,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.4146
+          "MECH": 0.4146,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4639,
         "p_value": 0.0,
@@ -1990,41 +2396,46 @@
           "pass_rates": {
             "F": 0.7438,
             "M": 0.7213,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0224
+          "disparity": 0.2231
         },
         "10th": {
           "pass_rates": {
             "F": 0.5594,
             "M": 0.5663,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0978
+          "disparity": 0.6571
         },
         "12th": {
           "pass_rates": {
             "F": 0.5969,
             "M": 0.5955,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0254
+          "disparity": 0.5969
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6375,
             "M": 0.6584,
-            "Non-binary": 0.7714
+            "Non-binary": 0.7714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1339
+          "disparity": 0.7714
         }
       },
       "flagged_gender_bias": false
@@ -2033,14 +2444,15 @@
       "company_id": "CO026",
       "company_name": "Mphasis",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2988,
+      "pool_pass_rate": 0.2922,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2781,
           "M": 0.3079,
-          "Non-binary": 0.3714
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0933,
+        "disparity": 0.3714,
         "odds_ratio": null,
         "p_value": 0.418492,
         "significant": false,
@@ -2048,6 +2460,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.375,
           "AIML": 0.3769,
           "BCA": 0.3158,
@@ -2055,9 +2468,11 @@
           "CSE": 0.3831,
           "ECE": 0.4845,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4535,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4845,
         "p_value": 0.0,
@@ -2069,41 +2484,46 @@
           "pass_rates": {
             "F": 0.6813,
             "M": 0.6607,
-            "Non-binary": 0.6571
+            "Non-binary": 0.6571,
+            "Prefer not to say": 0.9444
           },
-          "disparity": 0.0241
+          "disparity": 0.2873
         },
         "10th": {
           "pass_rates": {
             "F": 0.7812,
             "M": 0.791,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0188
+          "disparity": 0.8
         },
         "12th": {
           "pass_rates": {
             "F": 0.5625,
             "M": 0.5528,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0186
+          "disparity": 0.5714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7344,
             "M": 0.7393,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0085
+          "disparity": 0.7429
         }
       },
       "flagged_gender_bias": false
@@ -2112,14 +2532,15 @@
       "company_id": "CO027",
       "company_name": "KPMG India",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3125,
+      "pool_pass_rate": 0.3056,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2875,
           "M": 0.3258,
-          "Non-binary": 0.3714
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0839,
+        "disparity": 0.3714,
         "odds_ratio": null,
         "p_value": 0.292779,
         "significant": false,
@@ -2127,6 +2548,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.3846,
           "AIML": 0.4154,
           "BCA": 0.0,
@@ -2134,9 +2556,11 @@
           "CSE": 0.4026,
           "ECE": 0.0,
           "EEE": 0.459,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4767,
           "MBA": 0.2759,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4767,
         "p_value": 0.0,
@@ -2148,41 +2572,46 @@
           "pass_rates": {
             "F": 0.8063,
             "M": 0.7933,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.013
+          "disparity": 0.2067
         },
         "10th": {
           "pass_rates": {
             "F": 0.8156,
             "M": 0.8382,
-            "Non-binary": 0.8857
+            "Non-binary": 0.8857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0701
+          "disparity": 0.8857
         },
         "12th": {
           "pass_rates": {
             "F": 0.5625,
             "M": 0.5528,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0186
+          "disparity": 0.5714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7281,
             "M": 0.7708,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0427
+          "disparity": 0.7708
         }
       },
       "flagged_gender_bias": false
@@ -2191,14 +2620,15 @@
       "company_id": "CO028",
       "company_name": "Deloitte India",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3412,
+      "pool_pass_rate": 0.3337,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3156,
           "M": 0.3551,
-          "Non-binary": 0.4
+          "Non-binary": 0.4,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0844,
+        "disparity": 0.4,
         "odds_ratio": null,
         "p_value": 0.289418,
         "significant": false,
@@ -2206,6 +2636,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4904,
           "AIML": 0.4769,
           "BCA": 0.4211,
@@ -2213,9 +2644,11 @@
           "CSE": 0.5325,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.5698,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5698,
         "p_value": 0.0,
@@ -2227,41 +2660,46 @@
           "pass_rates": {
             "F": 0.7812,
             "M": 0.7798,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0384
+          "disparity": 0.2571
         },
         "10th": {
           "pass_rates": {
             "F": 0.7156,
             "M": 0.7236,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0093
+          "disparity": 0.7236
         },
         "12th": {
           "pass_rates": {
             "F": 0.8281,
             "M": 0.8472,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.029
+          "disparity": 0.8571
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6469,
             "M": 0.6742,
-            "Non-binary": 0.6857
+            "Non-binary": 0.6857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0388
+          "disparity": 0.6857
         }
       },
       "flagged_gender_bias": false
@@ -2270,14 +2708,15 @@
       "company_id": "CO029",
       "company_name": "EY India",
       "tier": "Tier2",
-      "pool_pass_rate": 0.2913,
+      "pool_pass_rate": 0.2848,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2875,
           "M": 0.2921,
-          "Non-binary": 0.3143
+          "Non-binary": 0.3143,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0268,
+        "disparity": 0.3143,
         "odds_ratio": null,
         "p_value": 0.953285,
         "significant": false,
@@ -2285,6 +2724,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4808,
           "AIML": 0.0,
           "BCA": 0.0,
@@ -2292,9 +2732,11 @@
           "CSE": 0.4935,
           "ECE": 0.0,
           "EEE": 0.5246,
+          "INTERMEDIATE": 0.0,
           "IT": 0.5116,
           "MBA": 0.3793,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.5263,
         "p_value": 0.0,
@@ -2306,41 +2748,46 @@
           "pass_rates": {
             "F": 0.8156,
             "M": 0.8112,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0173
+          "disparity": 0.1888
         },
         "10th": {
           "pass_rates": {
             "F": 0.7281,
             "M": 0.7438,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0157
+          "disparity": 0.7438
         },
         "12th": {
           "pass_rates": {
             "F": 0.7125,
             "M": 0.7416,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0291
+          "disparity": 0.7416
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.5813,
             "M": 0.5978,
-            "Non-binary": 0.5714
+            "Non-binary": 0.5714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0263
+          "disparity": 0.5978
         }
       },
       "flagged_gender_bias": false
@@ -2349,14 +2796,15 @@
       "company_id": "CO030",
       "company_name": "PwC India",
       "tier": "Tier2",
-      "pool_pass_rate": 0.3162,
+      "pool_pass_rate": 0.3093,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.2969,
           "M": 0.3258,
-          "Non-binary": 0.3714
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0746,
+        "disparity": 0.3714,
         "odds_ratio": null,
         "p_value": 0.439656,
         "significant": false,
@@ -2364,6 +2812,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.4615,
           "AIML": 0.4538,
           "BCA": 0.3684,
@@ -2371,9 +2820,11 @@
           "CSE": 0.4351,
           "ECE": 0.0,
           "EEE": 0.4918,
+          "INTERMEDIATE": 0.0,
           "IT": 0.4884,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.4918,
         "p_value": 0.0,
@@ -2385,41 +2836,46 @@
           "pass_rates": {
             "F": 0.8063,
             "M": 0.7933,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.013
+          "disparity": 0.2067
         },
         "10th": {
           "pass_rates": {
             "F": 0.7156,
             "M": 0.7236,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0093
+          "disparity": 0.7236
         },
         "12th": {
           "pass_rates": {
             "F": 0.6656,
             "M": 0.6809,
-            "Non-binary": 0.6286
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0523
+          "disparity": 0.6809
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6813,
             "M": 0.6966,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0616
+          "disparity": 0.7429
         }
       },
       "flagged_gender_bias": false
@@ -2428,14 +2884,15 @@
       "company_id": "CO031",
       "company_name": "DataSolve Analytics",
       "tier": "Tier3",
-      "pool_pass_rate": 0.8512,
+      "pool_pass_rate": 0.8325,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.8438,
           "M": 0.8517,
-          "Non-binary": 0.9143
+          "Non-binary": 0.9143,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0705,
+        "disparity": 0.9143,
         "odds_ratio": null,
         "p_value": 0.84173,
         "significant": false,
@@ -2443,6 +2900,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.8654,
           "AIML": 0.8692,
           "BCA": 0.8947,
@@ -2450,9 +2908,11 @@
           "CSE": 0.8831,
           "ECE": 0.9278,
           "EEE": 0.8852,
+          "INTERMEDIATE": 0.0,
           "IT": 0.907,
           "MBA": 0.8966,
-          "MECH": 0.939
+          "MECH": 0.939,
+          "ROOKIE": 0.0
         },
         "disparity": 0.939,
         "p_value": 0.0,
@@ -2464,7 +2924,8 @@
           "pass_rates": {
             "F": 0.9406,
             "M": 0.9461,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0594
         },
@@ -2472,23 +2933,26 @@
           "pass_rates": {
             "F": 0.9531,
             "M": 0.9596,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0469
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9,
             "M": 0.9146,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0429
+          "disparity": 0.9429
         },
         "backlog": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0
         },
@@ -2496,9 +2960,10 @@
           "pass_rates": {
             "F": 0.9625,
             "M": 0.9438,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0276
+          "disparity": 0.9714
         }
       },
       "flagged_gender_bias": false
@@ -2507,14 +2972,15 @@
       "company_id": "CO032",
       "company_name": "CloudNine Solutions",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5988,
+      "pool_pass_rate": 0.5856,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.5813,
           "M": 0.6067,
-          "Non-binary": 0.6571
+          "Non-binary": 0.6571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0759,
+        "disparity": 0.6571,
         "odds_ratio": null,
         "p_value": 0.52601,
         "significant": false,
@@ -2522,6 +2988,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.8077,
           "AIML": 0.7923,
           "BCA": 0.7368,
@@ -2529,9 +2996,11 @@
           "CSE": 0.7727,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.7907,
           "MBA": 0.8621,
-          "MECH": 0.8049
+          "MECH": 0.8049,
+          "ROOKIE": 0.0
         },
         "disparity": 0.8621,
         "p_value": 0.0,
@@ -2543,7 +3012,8 @@
           "pass_rates": {
             "F": 0.9437,
             "M": 0.9573,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0563
         },
@@ -2551,23 +3021,26 @@
           "pass_rates": {
             "F": 0.9531,
             "M": 0.9596,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0469
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.7875,
             "M": 0.8292,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0417
+          "disparity": 0.8292
         },
         "backlog": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0
         },
@@ -2575,9 +3048,10 @@
           "pass_rates": {
             "F": 0.7656,
             "M": 0.7438,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0562
+          "disparity": 0.8
         }
       },
       "flagged_gender_bias": false
@@ -2586,14 +3060,15 @@
       "company_id": "CO033",
       "company_name": "WebCraft Studios",
       "tier": "Tier3",
-      "pool_pass_rate": 0.8475,
+      "pool_pass_rate": 0.8289,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.8625,
           "M": 0.8382,
-          "Non-binary": 0.8286
+          "Non-binary": 0.8286,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0339,
+        "disparity": 0.8625,
         "odds_ratio": null,
         "p_value": 0.411022,
         "significant": false,
@@ -2601,6 +3076,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.8173,
           "AIML": 0.8462,
           "BCA": 0.8421,
@@ -2608,45 +3084,51 @@
           "CSE": 0.7987,
           "ECE": 0.8866,
           "EEE": 0.8525,
+          "INTERMEDIATE": 0.0,
           "IT": 0.8721,
           "MBA": 0.8276,
-          "MECH": 0.9146
+          "MECH": 0.9146,
+          "ROOKIE": 0.0
         },
-        "disparity": 0.1159,
-        "p_value": 0.524556,
-        "significant": false,
-        "flagged": false
+        "disparity": 0.9146,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
       },
       "criteria_diagnosis": {
         "cgpa": {
           "pass_rates": {
             "F": 0.875,
             "M": 0.8494,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0256
+          "disparity": 0.1506
         },
         "10th": {
           "pass_rates": {
             "F": 0.9625,
             "M": 0.9618,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0382
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9375,
             "M": 0.9371,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0343
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0
         },
@@ -2654,9 +3136,10 @@
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0
+          "disparity": 1.0
         }
       },
       "flagged_gender_bias": false
@@ -2665,14 +3148,15 @@
       "company_id": "CO034",
       "company_name": "AlphaSoft Technologies",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5825,
+      "pool_pass_rate": 0.5697,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.5781,
           "M": 0.573,
-          "Non-binary": 0.7429
+          "Non-binary": 0.7429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1698,
+        "disparity": 0.7429,
         "odds_ratio": null,
         "p_value": 0.947072,
         "significant": false,
@@ -2680,6 +3164,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.875,
           "AIML": 0.0,
           "BCA": 0.8421,
@@ -2687,9 +3172,11 @@
           "CSE": 0.8961,
           "ECE": 0.9278,
           "EEE": 0.8852,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.0,
-          "MECH": 0.939
+          "MECH": 0.939,
+          "ROOKIE": 0.0
         },
         "disparity": 0.939,
         "p_value": 0.0,
@@ -2701,7 +3188,8 @@
           "pass_rates": {
             "F": 0.95,
             "M": 0.9618,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.05
         },
@@ -2709,23 +3197,26 @@
           "pass_rates": {
             "F": 0.9094,
             "M": 0.9146,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0906
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9375,
             "M": 0.9371,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0343
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0
         },
@@ -2733,9 +3224,10 @@
           "pass_rates": {
             "F": 0.65,
             "M": 0.636,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1069
+          "disparity": 0.7429
         }
       },
       "flagged_gender_bias": false
@@ -2744,14 +3236,15 @@
       "company_id": "CO035",
       "company_name": "ByteWorks Systems",
       "tier": "Tier3",
-      "pool_pass_rate": 0.7837,
+      "pool_pass_rate": 0.7665,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.7844,
           "M": 0.7865,
-          "Non-binary": 0.7429
+          "Non-binary": 0.7429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0437,
+        "disparity": 0.7865,
         "odds_ratio": null,
         "p_value": 1.0,
         "significant": false,
@@ -2759,6 +3252,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.7404,
           "AIML": 0.7692,
           "BCA": 0.7368,
@@ -2766,55 +3260,62 @@
           "CSE": 0.7403,
           "ECE": 0.8557,
           "EEE": 0.7377,
+          "INTERMEDIATE": 0.0,
           "IT": 0.8372,
           "MBA": 0.7241,
-          "MECH": 0.8659
+          "MECH": 0.8659,
+          "ROOKIE": 0.0
         },
-        "disparity": 0.1417,
-        "p_value": 0.195274,
-        "significant": false,
-        "flagged": false
+        "disparity": 0.8659,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
       },
       "criteria_diagnosis": {
         "cgpa": {
           "pass_rates": {
             "F": 0.875,
             "M": 0.8494,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0256
+          "disparity": 0.1506
         },
         "10th": {
           "pass_rates": {
             "F": 0.9469,
             "M": 0.9506,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0531
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9,
             "M": 0.9146,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0429
+          "disparity": 0.9429
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0
+          "disparity": 1.0
         }
       },
       "flagged_gender_bias": false
@@ -2823,14 +3324,15 @@
       "company_id": "CO036",
       "company_name": "NexGen Software",
       "tier": "Tier3",
-      "pool_pass_rate": 0.7638,
+      "pool_pass_rate": 0.7469,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.7531,
           "M": 0.7708,
-          "Non-binary": 0.7714
+          "Non-binary": 0.7714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0183,
+        "disparity": 0.7714,
         "odds_ratio": null,
         "p_value": 0.630694,
         "significant": false,
@@ -2838,6 +3340,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.875,
           "AIML": 0.8923,
           "BCA": 0.8947,
@@ -2845,9 +3348,11 @@
           "CSE": 0.8896,
           "ECE": 0.9278,
           "EEE": 0.8852,
+          "INTERMEDIATE": 0.0,
           "IT": 0.9186,
           "MBA": 0.931,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.931,
         "p_value": 0.0,
@@ -2859,7 +3364,8 @@
           "pass_rates": {
             "F": 0.95,
             "M": 0.9618,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.05
         },
@@ -2867,23 +3373,26 @@
           "pass_rates": {
             "F": 0.9625,
             "M": 0.9618,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0382
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9,
             "M": 0.9146,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0429
+          "disparity": 0.9429
         },
         "backlog": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0
         },
@@ -2891,9 +3400,10 @@
           "pass_rates": {
             "F": 0.85,
             "M": 0.8517,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0231
+          "disparity": 0.8517
         }
       },
       "flagged_gender_bias": false
@@ -2902,14 +3412,15 @@
       "company_id": "CO037",
       "company_name": "PixelPerfect Design",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5675,
+      "pool_pass_rate": 0.555,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.5469,
           "M": 0.5798,
-          "Non-binary": 0.6
+          "Non-binary": 0.6,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0531,
+        "disparity": 0.6,
         "odds_ratio": null,
         "p_value": 0.40556,
         "significant": false,
@@ -2917,6 +3428,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.7404,
           "AIML": 0.8077,
           "BCA": 0.0,
@@ -2924,9 +3436,11 @@
           "CSE": 0.7662,
           "ECE": 0.866,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.814,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.866,
         "p_value": 0.0,
@@ -2938,7 +3452,8 @@
           "pass_rates": {
             "F": 0.95,
             "M": 0.9618,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.05
         },
@@ -2946,33 +3461,37 @@
           "pass_rates": {
             "F": 0.8656,
             "M": 0.8899,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1344
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.8656,
             "M": 0.8764,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0487
+          "disparity": 0.9143
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.7,
             "M": 0.7236,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0236
+          "disparity": 0.7236
         }
       },
       "flagged_gender_bias": false
@@ -2981,14 +3500,15 @@
       "company_id": "CO038",
       "company_name": "CodeBase Solutions",
       "tier": "Tier3",
-      "pool_pass_rate": 0.4,
+      "pool_pass_rate": 0.3912,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.3875,
           "M": 0.4045,
-          "Non-binary": 0.4571
+          "Non-binary": 0.4571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0696,
+        "disparity": 0.4571,
         "odds_ratio": null,
         "p_value": 0.689952,
         "significant": false,
@@ -2996,6 +3516,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.5577,
           "AIML": 0.5769,
           "BCA": 0.4737,
@@ -3003,9 +3524,11 @@
           "CSE": 0.6234,
           "ECE": 0.7113,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.0,
           "MBA": 0.4483,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.7113,
         "p_value": 0.0,
@@ -3017,41 +3540,46 @@
           "pass_rates": {
             "F": 0.8594,
             "M": 0.8337,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0308
+          "disparity": 0.1714
         },
         "10th": {
           "pass_rates": {
             "F": 0.8812,
             "M": 0.9079,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1188
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.8812,
             "M": 0.8989,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.033
+          "disparity": 0.9143
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6562,
             "M": 0.6719,
-            "Non-binary": 0.6857
+            "Non-binary": 0.6857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0295
+          "disparity": 0.6857
         }
       },
       "flagged_gender_bias": false
@@ -3060,14 +3588,15 @@
       "company_id": "CO039",
       "company_name": "TechVista Global",
       "tier": "Tier3",
-      "pool_pass_rate": 0.6587,
+      "pool_pass_rate": 0.6443,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.6687,
           "M": 0.6494,
-          "Non-binary": 0.6857
+          "Non-binary": 0.6857,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0363,
+        "disparity": 0.6857,
         "odds_ratio": null,
         "p_value": 0.632648,
         "significant": false,
@@ -3075,6 +3604,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.7788,
           "AIML": 0.0,
           "BCA": 0.6316,
@@ -3082,9 +3612,11 @@
           "CSE": 0.7338,
           "ECE": 0.8557,
           "EEE": 0.7869,
+          "INTERMEDIATE": 0.0,
           "IT": 0.814,
           "MBA": 0.7241,
-          "MECH": 0.8659
+          "MECH": 0.8659,
+          "ROOKIE": 0.0
         },
         "disparity": 0.8659,
         "p_value": 0.0,
@@ -3096,41 +3628,46 @@
           "pass_rates": {
             "F": 0.9031,
             "M": 0.8742,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.046
+          "disparity": 0.1429
         },
         "10th": {
           "pass_rates": {
             "F": 0.8656,
             "M": 0.8899,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1344
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9437,
             "M": 0.9461,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0277
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.8531,
             "M": 0.827,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0262
+          "disparity": 0.8531
         }
       },
       "flagged_gender_bias": false
@@ -3139,14 +3676,15 @@
       "company_id": "CO040",
       "company_name": "SmartBuild Software",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5613,
+      "pool_pass_rate": 0.5489,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.5563,
           "M": 0.5618,
-          "Non-binary": 0.6
+          "Non-binary": 0.6,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0437,
+        "disparity": 0.6,
         "odds_ratio": null,
         "p_value": 0.937316,
         "significant": false,
@@ -3154,6 +3692,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.5769,
           "AIML": 0.5385,
           "BCA": 0.4737,
@@ -3161,9 +3700,11 @@
           "CSE": 0.6039,
           "ECE": 0.6804,
           "EEE": 0.6066,
+          "INTERMEDIATE": 0.0,
           "IT": 0.6744,
           "MBA": 0.0,
-          "MECH": 0.6829
+          "MECH": 0.6829,
+          "ROOKIE": 0.0
         },
         "disparity": 0.6829,
         "p_value": 0.0,
@@ -3175,41 +3716,46 @@
           "pass_rates": {
             "F": 0.875,
             "M": 0.8494,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0256
+          "disparity": 0.1506
         },
         "10th": {
           "pass_rates": {
             "F": 0.8156,
             "M": 0.8382,
-            "Non-binary": 0.8857
+            "Non-binary": 0.8857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0701
+          "disparity": 0.8857
         },
         "12th": {
           "pass_rates": {
             "F": 0.925,
             "M": 0.9303,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0464
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.9187,
             "M": 0.9101,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0613
+          "disparity": 0.9714
         }
       },
       "flagged_gender_bias": false
@@ -3218,14 +3764,15 @@
       "company_id": "CO041",
       "company_name": "DigiCraft IT",
       "tier": "Tier3",
-      "pool_pass_rate": 0.4913,
+      "pool_pass_rate": 0.4804,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.475,
           "M": 0.4966,
-          "Non-binary": 0.5714
+          "Non-binary": 0.5714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0964,
+        "disparity": 0.5714,
         "odds_ratio": null,
         "p_value": 0.605115,
         "significant": false,
@@ -3233,6 +3780,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.6058,
           "AIML": 0.5538,
           "BCA": 0.0,
@@ -3240,9 +3788,11 @@
           "CSE": 0.6364,
           "ECE": 0.6598,
           "EEE": 0.623,
+          "INTERMEDIATE": 0.0,
           "IT": 0.6744,
           "MBA": 0.0,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.6744,
         "p_value": 0.0,
@@ -3254,7 +3804,8 @@
           "pass_rates": {
             "F": 0.9437,
             "M": 0.9573,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0563
         },
@@ -3262,33 +3813,37 @@
           "pass_rates": {
             "F": 0.7969,
             "M": 0.8112,
-            "Non-binary": 0.8857
+            "Non-binary": 0.8857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0888
+          "disparity": 0.8857
         },
         "12th": {
           "pass_rates": {
             "F": 0.9437,
             "M": 0.9461,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0277
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7719,
             "M": 0.8022,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0304
+          "disparity": 0.8022
         }
       },
       "flagged_gender_bias": false
@@ -3297,14 +3852,15 @@
       "company_id": "CO042",
       "company_name": "SoftStack India",
       "tier": "Tier3",
-      "pool_pass_rate": 0.68,
+      "pool_pass_rate": 0.665,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.6781,
           "M": 0.6809,
-          "Non-binary": 0.6857
+          "Non-binary": 0.6857,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0076,
+        "disparity": 0.6857,
         "odds_ratio": null,
         "p_value": 0.997952,
         "significant": false,
@@ -3312,6 +3868,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.6731,
           "AIML": 0.6923,
           "BCA": 0.0,
@@ -3319,9 +3876,11 @@
           "CSE": 0.6948,
           "ECE": 0.7938,
           "EEE": 0.6885,
+          "INTERMEDIATE": 0.0,
           "IT": 0.7326,
           "MBA": 0.0,
-          "MECH": 0.8171
+          "MECH": 0.8171,
+          "ROOKIE": 0.0
         },
         "disparity": 0.8171,
         "p_value": 0.0,
@@ -3333,41 +3892,46 @@
           "pass_rates": {
             "F": 0.8594,
             "M": 0.8337,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0308
+          "disparity": 0.1714
         },
         "10th": {
           "pass_rates": {
             "F": 0.8125,
             "M": 0.8202,
-            "Non-binary": 0.8857
+            "Non-binary": 0.8857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0732
+          "disparity": 0.8857
         },
         "12th": {
           "pass_rates": {
             "F": 0.8812,
             "M": 0.8989,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.033
+          "disparity": 0.9143
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.9219,
             "M": 0.9506,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0496
+          "disparity": 0.9714
         }
       },
       "flagged_gender_bias": false
@@ -3376,14 +3940,15 @@
       "company_id": "CO043",
       "company_name": "AppForge Technologies",
       "tier": "Tier3",
-      "pool_pass_rate": 0.7975,
+      "pool_pass_rate": 0.78,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.7906,
           "M": 0.7955,
-          "Non-binary": 0.8857
+          "Non-binary": 0.8857,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0951,
+        "disparity": 0.8857,
         "odds_ratio": null,
         "p_value": 0.941041,
         "significant": false,
@@ -3391,6 +3956,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.8942,
           "AIML": 0.9,
           "BCA": 0.8947,
@@ -3398,9 +3964,11 @@
           "CSE": 0.9026,
           "ECE": 0.0,
           "EEE": 0.918,
+          "INTERMEDIATE": 0.0,
           "IT": 0.907,
           "MBA": 0.931,
-          "MECH": 0.9512
+          "MECH": 0.9512,
+          "ROOKIE": 0.0
         },
         "disparity": 0.9512,
         "p_value": 0.0,
@@ -3412,7 +3980,8 @@
           "pass_rates": {
             "F": 0.9406,
             "M": 0.9461,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0594
         },
@@ -3420,23 +3989,26 @@
           "pass_rates": {
             "F": 0.9531,
             "M": 0.9528,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0472
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9375,
             "M": 0.9371,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0343
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0
         },
@@ -3444,9 +4016,10 @@
           "pass_rates": {
             "F": 0.875,
             "M": 0.8787,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0393
+          "disparity": 0.9143
         }
       },
       "flagged_gender_bias": false
@@ -3455,14 +4028,15 @@
       "company_id": "CO044",
       "company_name": "NetGenius Solutions",
       "tier": "Tier3",
-      "pool_pass_rate": 0.4525,
+      "pool_pass_rate": 0.4425,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.4375,
           "M": 0.4562,
-          "Non-binary": 0.5429
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.1054,
+        "disparity": 0.5429,
         "odds_ratio": null,
         "p_value": 0.660833,
         "significant": false,
@@ -3470,6 +4044,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.6442,
           "AIML": 0.5846,
           "BCA": 0.0,
@@ -3477,9 +4052,11 @@
           "CSE": 0.6623,
           "ECE": 0.0,
           "EEE": 0.6393,
+          "INTERMEDIATE": 0.0,
           "IT": 0.7442,
           "MBA": 0.4828,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.7442,
         "p_value": 0.0,
@@ -3491,7 +4068,8 @@
           "pass_rates": {
             "F": 0.9437,
             "M": 0.9573,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0563
         },
@@ -3499,33 +4077,37 @@
           "pass_rates": {
             "F": 0.8406,
             "M": 0.8539,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1308
+          "disparity": 0.9714
         },
         "12th": {
           "pass_rates": {
             "F": 0.9437,
             "M": 0.9461,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0277
+          "disparity": 0.9714
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.6906,
             "M": 0.7146,
-            "Non-binary": 0.7143
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.024
+          "disparity": 0.7146
         }
       },
       "flagged_gender_bias": false
@@ -3534,14 +4116,15 @@
       "company_id": "CO045",
       "company_name": "InnovateTech",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5275,
+      "pool_pass_rate": 0.5159,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.525,
           "M": 0.5191,
-          "Non-binary": 0.6571
+          "Non-binary": 0.6571,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.138,
+        "disparity": 0.6571,
         "odds_ratio": null,
         "p_value": 0.930077,
         "significant": false,
@@ -3549,6 +4132,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.6731,
           "AIML": 0.6308,
           "BCA": 0.5263,
@@ -3556,9 +4140,11 @@
           "CSE": 0.6883,
           "ECE": 0.7423,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.7674,
           "MBA": 0.5517,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.7674,
         "p_value": 0.0,
@@ -3570,41 +4156,46 @@
           "pass_rates": {
             "F": 0.9281,
             "M": 0.9056,
-            "Non-binary": 0.9714
+            "Non-binary": 0.9714,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0658
+          "disparity": 0.0944
         },
         "10th": {
           "pass_rates": {
             "F": 0.925,
             "M": 0.9303,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.075
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9656,
             "M": 0.9573,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0427
+          "disparity": 1.0
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7781,
             "M": 0.773,
-            "Non-binary": 0.7429
+            "Non-binary": 0.7429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0353
+          "disparity": 0.7781
         }
       },
       "flagged_gender_bias": false
@@ -3613,14 +4204,15 @@
       "company_id": "CO046",
       "company_name": "CyberPulse",
       "tier": "Tier3",
-      "pool_pass_rate": 0.6987,
+      "pool_pass_rate": 0.6834,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.6687,
           "M": 0.7169,
-          "Non-binary": 0.7429
+          "Non-binary": 0.7429,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0741,
+        "disparity": 0.7429,
         "odds_ratio": null,
         "p_value": 0.177644,
         "significant": false,
@@ -3628,6 +4220,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.7308,
           "AIML": 0.8,
           "BCA": 0.6842,
@@ -3635,9 +4228,11 @@
           "CSE": 0.7662,
           "ECE": 0.8557,
           "EEE": 0.7541,
+          "INTERMEDIATE": 0.0,
           "IT": 0.8256,
           "MBA": 0.6897,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.8557,
         "p_value": 0.0,
@@ -3649,7 +4244,8 @@
           "pass_rates": {
             "F": 0.9406,
             "M": 0.9461,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0594
         },
@@ -3657,33 +4253,37 @@
           "pass_rates": {
             "F": 0.8812,
             "M": 0.9079,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.1188
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.8562,
             "M": 0.8652,
-            "Non-binary": 0.9143
+            "Non-binary": 0.9143,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.058
+          "disparity": 0.9143
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.8875,
             "M": 0.9079,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0507
+          "disparity": 0.9079
         }
       },
       "flagged_gender_bias": false
@@ -3692,14 +4292,15 @@
       "company_id": "CO047",
       "company_name": "DataDriven Co",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5038,
+      "pool_pass_rate": 0.4927,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.4781,
           "M": 0.5213,
-          "Non-binary": 0.5143
+          "Non-binary": 0.5143,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0432,
+        "disparity": 0.5213,
         "odds_ratio": null,
         "p_value": 0.268658,
         "significant": false,
@@ -3707,6 +4308,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.5673,
           "AIML": 0.5308,
           "BCA": 0.0,
@@ -3714,9 +4316,11 @@
           "CSE": 0.5974,
           "ECE": 0.0,
           "EEE": 0.5574,
+          "INTERMEDIATE": 0.0,
           "IT": 0.686,
           "MBA": 0.4828,
-          "MECH": 0.6463
+          "MECH": 0.6463,
+          "ROOKIE": 0.0
         },
         "disparity": 0.686,
         "p_value": 0.0,
@@ -3728,41 +4332,46 @@
           "pass_rates": {
             "F": 0.9031,
             "M": 0.8742,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.046
+          "disparity": 0.1429
         },
         "10th": {
           "pass_rates": {
             "F": 0.9094,
             "M": 0.9146,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0906
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.7719,
             "M": 0.818,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0461
+          "disparity": 0.818
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.8406,
             "M": 0.8629,
-            "Non-binary": 0.8857
+            "Non-binary": 0.8857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0451
+          "disparity": 0.8857
         }
       },
       "flagged_gender_bias": false
@@ -3771,14 +4380,15 @@
       "company_id": "CO048",
       "company_name": "CloudFirst India",
       "tier": "Tier3",
-      "pool_pass_rate": 0.7662,
+      "pool_pass_rate": 0.7494,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.75,
           "M": 0.7753,
-          "Non-binary": 0.8
+          "Non-binary": 0.8,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.05,
+        "disparity": 0.8,
         "odds_ratio": null,
         "p_value": 0.467384,
         "significant": false,
@@ -3786,6 +4396,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.7404,
           "AIML": 0.7385,
           "BCA": 0.6842,
@@ -3793,21 +4404,24 @@
           "CSE": 0.7597,
           "ECE": 0.8144,
           "EEE": 0.7705,
+          "INTERMEDIATE": 0.0,
           "IT": 0.7674,
           "MBA": 0.7241,
-          "MECH": 0.8415
+          "MECH": 0.8415,
+          "ROOKIE": 0.0
         },
-        "disparity": 0.1573,
-        "p_value": 0.737519,
-        "significant": false,
-        "flagged": false
+        "disparity": 0.8415,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
       },
       "criteria_diagnosis": {
         "cgpa": {
           "pass_rates": {
             "F": 0.95,
             "M": 0.9618,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.05
         },
@@ -3815,33 +4429,37 @@
           "pass_rates": {
             "F": 0.8125,
             "M": 0.8202,
-            "Non-binary": 0.8857
+            "Non-binary": 0.8857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0732
+          "disparity": 0.8857
         },
         "12th": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9303,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0272
+          "disparity": 0.9429
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 1.0,
             "M": 1.0,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0
+          "disparity": 1.0
         }
       },
       "flagged_gender_bias": false
@@ -3850,14 +4468,15 @@
       "company_id": "CO049",
       "company_name": "UrbanTech Solutions",
       "tier": "Tier3",
-      "pool_pass_rate": 0.4625,
+      "pool_pass_rate": 0.4523,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.4562,
           "M": 0.4652,
-          "Non-binary": 0.4857
+          "Non-binary": 0.4857,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0295,
+        "disparity": 0.4857,
         "odds_ratio": null,
         "p_value": 0.86456,
         "significant": false,
@@ -3865,6 +4484,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.5962,
           "AIML": 0.5846,
           "BCA": 0.5263,
@@ -3872,9 +4492,11 @@
           "CSE": 0.6494,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.7442,
           "MBA": 0.0,
-          "MECH": 0.7073
+          "MECH": 0.7073,
+          "ROOKIE": 0.0
         },
         "disparity": 0.7442,
         "p_value": 0.0,
@@ -3886,41 +4508,46 @@
           "pass_rates": {
             "F": 0.9031,
             "M": 0.8742,
-            "Non-binary": 0.8571
+            "Non-binary": 0.8571,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.046
+          "disparity": 0.1429
         },
         "10th": {
           "pass_rates": {
             "F": 0.925,
             "M": 0.9303,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.075
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9,
             "M": 0.9146,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0429
+          "disparity": 0.9429
         },
         "backlog": {
           "pass_rates": {
             "F": 0.7188,
             "M": 0.7281,
-            "Non-binary": 0.8286
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.1098
+          "disparity": 0.2812
         },
         "dept": {
           "pass_rates": {
             "F": 0.7219,
             "M": 0.7101,
-            "Non-binary": 0.8
+            "Non-binary": 0.8,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0899
+          "disparity": 0.8
         }
       },
       "flagged_gender_bias": false
@@ -3929,14 +4556,15 @@
       "company_id": "CO050",
       "company_name": "GreenCode Systems",
       "tier": "Tier3",
-      "pool_pass_rate": 0.5887,
+      "pool_pass_rate": 0.5758,
       "gender_analysis": {
         "pass_rates": {
           "F": 0.5656,
           "M": 0.6067,
-          "Non-binary": 0.5714
+          "Non-binary": 0.5714,
+          "Prefer not to say": 0.0
         },
-        "disparity": 0.0411,
+        "disparity": 0.6067,
         "odds_ratio": null,
         "p_value": 0.286478,
         "significant": false,
@@ -3944,6 +4572,7 @@
       },
       "dept_analysis": {
         "pass_rates": {
+          "ADVANCED": 0.0,
           "AIDS": 0.8269,
           "AIML": 0.8308,
           "BCA": 0.7895,
@@ -3951,9 +4580,11 @@
           "CSE": 0.8571,
           "ECE": 0.0,
           "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
           "IT": 0.8721,
           "MBA": 0.8276,
-          "MECH": 0.0
+          "MECH": 0.0,
+          "ROOKIE": 0.0
         },
         "disparity": 0.8721,
         "p_value": 0.0,
@@ -3965,7 +4596,8 @@
           "pass_rates": {
             "F": 0.9406,
             "M": 0.9528,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
           },
           "disparity": 0.0594
         },
@@ -3973,36 +4605,2680 @@
           "pass_rates": {
             "F": 0.9531,
             "M": 0.9596,
-            "Non-binary": 1.0
+            "Non-binary": 1.0,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0469
+          "disparity": 1.0
         },
         "12th": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9303,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0272
+          "disparity": 0.9429
         },
         "backlog": {
           "pass_rates": {
             "F": 0.9156,
             "M": 0.9438,
-            "Non-binary": 0.9429
+            "Non-binary": 0.9429,
+            "Prefer not to say": 1.0
           },
-          "disparity": 0.0282
+          "disparity": 0.0844
         },
         "dept": {
           "pass_rates": {
             "F": 0.6906,
             "M": 0.7079,
-            "Non-binary": 0.6857
+            "Non-binary": 0.6857,
+            "Prefer not to say": 0.0
           },
-          "disparity": 0.0222
+          "disparity": 0.7079
         }
       },
       "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ001",
+      "company_name": "Tata Consultancy Services",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ002",
+      "company_name": "Google",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFJ003",
+      "company_name": "Infosys",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ004",
+      "company_name": "Microsoft",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFJ005",
+      "company_name": "Amazon",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFJ006",
+      "company_name": "Wipro",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.3203,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.3125,
+          "M": 0.3348,
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.3714,
+        "odds_ratio": null,
+        "p_value": 0.567299,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.5096,
+          "AIML": 0.4923,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.5584,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.686,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.686,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.7094,
+            "M": 0.6921,
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.9444
+          },
+          "disparity": 0.2523
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ007",
+      "company_name": "Adobe",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ008",
+      "company_name": "Flipkart",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ009",
+      "company_name": "Paytm",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFJ010",
+      "company_name": "Ola",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ011",
+      "company_name": "Cognizant",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ012",
+      "company_name": "Capgemini",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFJ013",
+      "company_name": "Mindtree",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ014",
+      "company_name": "Razorpay",
+      "tier": "Startup",
+      "pool_pass_rate": 0.3203,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.3125,
+          "M": 0.3348,
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.3714,
+        "odds_ratio": null,
+        "p_value": 0.567299,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.5096,
+          "AIML": 0.4923,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.5584,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.686,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.686,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.7094,
+            "M": 0.6921,
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.9444
+          },
+          "disparity": 0.2523
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ015",
+      "company_name": "Meesho",
+      "tier": "Startup",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ016",
+      "company_name": "Urban Company",
+      "tier": "Startup",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFJ017",
+      "company_name": "1mg",
+      "tier": "Startup",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFJ018",
+      "company_name": "upGrad",
+      "tier": "Startup",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFI001",
+      "company_name": "Tata Consultancy Services",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFI002",
+      "company_name": "Google",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFI003",
+      "company_name": "Microsoft",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFI004",
+      "company_name": "Wipro",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.3203,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.3125,
+          "M": 0.3348,
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.3714,
+        "odds_ratio": null,
+        "p_value": 0.567299,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.5096,
+          "AIML": 0.4923,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.5584,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.686,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.686,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.7094,
+            "M": 0.6921,
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.9444
+          },
+          "disparity": 0.2523
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFI005",
+      "company_name": "Paytm",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFI006",
+      "company_name": "Ola",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFI007",
+      "company_name": "Cognizant",
+      "tier": "Tier1",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFI008",
+      "company_name": "Capgemini",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFI009",
+      "company_name": "Mindtree",
+      "tier": "Tier2",
+      "pool_pass_rate": 0.4254,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.4125,
+          "M": 0.4427,
+          "Non-binary": 0.5429,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.5429,
+        "odds_ratio": null,
+        "p_value": 0.448373,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.7212,
+          "AIML": 0.6692,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.7532,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.814,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.814,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFI010",
+      "company_name": "Razorpay",
+      "tier": "Startup",
+      "pool_pass_rate": 0.3203,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.3125,
+          "M": 0.3348,
+          "Non-binary": 0.3714,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.3714,
+        "odds_ratio": null,
+        "p_value": 0.567299,
+        "significant": false,
+        "flagged": false
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.5096,
+          "AIML": 0.4923,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.5584,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.686,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.686,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.7094,
+            "M": 0.6921,
+            "Non-binary": 0.7143,
+            "Prefer not to say": 0.9444
+          },
+          "disparity": 0.2523
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": false
+    },
+    {
+      "company_id": "TFI011",
+      "company_name": "1mg",
+      "tier": "Startup",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
+    },
+    {
+      "company_id": "TFI012",
+      "company_name": "upGrad",
+      "tier": "Startup",
+      "pool_pass_rate": 0.1198,
+      "gender_analysis": {
+        "pass_rates": {
+          "F": 0.0844,
+          "M": 0.1393,
+          "Non-binary": 0.2571,
+          "Prefer not to say": 0.0
+        },
+        "disparity": 0.2571,
+        "odds_ratio": null,
+        "p_value": 0.026151,
+        "significant": true,
+        "flagged": true
+      },
+      "dept_analysis": {
+        "pass_rates": {
+          "ADVANCED": 0.0,
+          "AIDS": 0.1827,
+          "AIML": 0.2385,
+          "BCA": 0.0,
+          "CIVIL": 0.0,
+          "CSE": 0.2078,
+          "ECE": 0.0,
+          "EEE": 0.0,
+          "INTERMEDIATE": 0.0,
+          "IT": 0.186,
+          "MBA": 0.0,
+          "MECH": 0.0,
+          "ROOKIE": 0.0
+        },
+        "disparity": 0.2385,
+        "p_value": 0.0,
+        "significant": true,
+        "flagged": true
+      },
+      "criteria_diagnosis": {
+        "cgpa": {
+          "pass_rates": {
+            "F": 0.2062,
+            "M": 0.227,
+            "Non-binary": 0.3143,
+            "Prefer not to say": 0.6111
+          },
+          "disparity": 0.4049
+        },
+        "10th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "12th": {
+          "pass_rates": {
+            "F": 1.0,
+            "M": 1.0,
+            "Non-binary": 1.0,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.0
+        },
+        "backlog": {
+          "pass_rates": {
+            "F": 0.7188,
+            "M": 0.7281,
+            "Non-binary": 0.8286,
+            "Prefer not to say": 1.0
+          },
+          "disparity": 0.2812
+        },
+        "dept": {
+          "pass_rates": {
+            "F": 0.575,
+            "M": 0.6022,
+            "Non-binary": 0.6286,
+            "Prefer not to say": 0.0
+          },
+          "disparity": 0.6286
+        }
+      },
+      "flagged_gender_bias": true
     }
   ]
 }

@@ -167,6 +167,7 @@ def run_fairness_audit():
     all_fair = all([
         gender_parity["fair"],
         gender_eq["fair"],
+        dept_parity["fair"],
         board10_parity["fair"],
         board12_parity["fair"],
     ])
@@ -178,6 +179,8 @@ def run_fairness_audit():
             print("    → Gender parity gap exceeds 10%")
         if not gender_eq["fair"]:
             print("    → Gender equalized odds gap exceeds 10%")
+        if not dept_parity["fair"]:
+            print("    Department parity gap exceeds 10%")
         if not board10_parity["fair"]:
             print("    → 10th board shows bias (should be neutral)")
         if not board12_parity["fair"]:

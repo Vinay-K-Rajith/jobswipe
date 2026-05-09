@@ -1,0 +1,74 @@
+[
+  {
+    "eps": 0.005,
+    "accuracy": 92.017,
+    "f1": 0.8153,
+    "gender_parity_gap": 5.597
+  },
+  {
+    "eps": 0.01,
+    "accuracy": 91.75,
+    "f1": 0.8094,
+    "gender_parity_gap": 4.031
+  },
+  {
+    "eps": 0.015,
+    "accuracy": 92.0,
+    "f1": 0.8148,
+    "gender_parity_gap": 4.813
+  },
+  {
+    "eps": 0.017,
+    "accuracy": 91.967,
+    "f1": 0.814,
+    "gender_parity_gap": 5.597
+  },
+  {
+    "eps": 0.019,
+    "accuracy": 91.917,
+    "f1": 0.8125,
+    "gender_parity_gap": 5.68
+  },
+  {
+    "eps": 0.02,
+    "accuracy": 91.983,
+    "f1": 0.8142,
+    "gender_parity_gap": 5.639
+  },
+  {
+    "eps": 0.025,
+    "accuracy": 91.95,
+    "f1": 0.8136,
+    "gender_parity_gap": 5.597
+  },
+  {
+    "eps": 0.028,
+    "accuracy": 91.733,
+    "f1": 0.8083,
+    "gender_parity_gap": 4.122
+  },
+  {
+    "eps": 0.029,
+    "accuracy": 91.9,
+    "f1": 0.8125,
+    "gender_parity_gap": 5.06
+  },
+  {
+    "eps": 0.034,
+    "accuracy": 91.817,
+    "f1": 0.8099,
+    "gender_parity_gap": 4.114
+  },
+  {
+    "eps": 0.04,
+    "accuracy": 91.75,
+    "f1": 0.8084,
+    "gender_parity_gap": 4.481
+  },
+  {
+    "eps": 0.05,
+    "accuracy": 91.75,
+    "f1": 0.8084,
+    "gender_parity_gap": 4.522
+  }
+]

@@ -43,7 +43,7 @@ from app.services.bias_reduction import (
     save_bias_recommendation,
     simulate_fix,
 )
-from app.routers import auth, swipe
+from app.routers import auth, resume, swipe
 
 # Try to load classifier model (may not be trained yet)
 try:
@@ -103,6 +103,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(resume.router)
 app.include_router(swipe.router)
 
 # ---------- Load data at startup ----------
@@ -116,6 +117,14 @@ def load_data():
     global students_df, companies_df, student_features_df, skills_df
     try:
         students_raw, certs, projects, internships, papers, skills, companies = load_all_data()
+        students_raw = students_raw[students_raw["student_id"].astype(str).str.startswith("S")].copy()
+        valid_student_ids = set(students_raw["student_id"].astype(str))
+        certs = certs[certs["student_id"].astype(str).isin(valid_student_ids)].copy()
+        projects = projects[projects["student_id"].astype(str).isin(valid_student_ids)].copy()
+        internships = internships[internships["student_id"].astype(str).isin(valid_student_ids)].copy()
+        papers = papers[papers["student_id"].astype(str).isin(valid_student_ids)].copy()
+        skills = skills[skills["student_id"].astype(str).isin(valid_student_ids)].copy()
+        companies = companies[companies["company_id"].astype(str).str.startswith("CO")].copy()
         students_df = students_raw
         companies_df = companies
         skills_df = skills
@@ -359,7 +368,10 @@ async def check_eligibility(request: EligibilityRequest):
     summary = scorecard.get("_summary", {})
     if not summary.get("eligible", False):
         improvement = generate_improvement_plan(
-            scorecard, company_data.get("company_name", ""), company_data
+            scorecard,
+            company_data.get("company_name", ""),
+            company_data,
+            year_of_study=int(student_data.get("year_of_study", 3) or 3),
         )
 
     # Build response (serialize scorecard)
@@ -471,6 +483,48 @@ async def get_model_metrics():
         "metrics": metrics,
         "fairness": fairness,
     }
+
+
+@app.get("/api/model/artifacts")
+async def get_model_artifacts():
+    """Return admin-facing summaries from generated model evaluation artifacts."""
+    model_dir = os.path.join(os.path.dirname(__file__), '..', 'models')
+
+    def read_json(filename: str, default: Any):
+        path = os.path.join(model_dir, filename)
+        if not os.path.exists(path):
+            return default
+        with open(path) as f:
+            return json.load(f)
+
+    epsilon_sweep = read_json("epsilon_sweep_results.json", [])
+    cv_results = read_json("cv_results.json", None)
+    scalability = read_json("scalability_results.json", None)
+    resume_parser_accuracy = read_json("resume_parser_accuracy.json", None)
+    dept_constrained = read_json("fairlearn_lightgbm_dept_constrained_metrics.json", None)
+
+    best_epsilon = None
+    if epsilon_sweep:
+        best_epsilon = min(
+            epsilon_sweep,
+            key=lambda item: (
+                float(item.get("gender_parity_gap", 999)),
+                -float(item.get("accuracy", 0)),
+            ),
+        )
+
+    return clean_nan({
+        "cv_results": cv_results,
+        "epsilon_sweep": epsilon_sweep,
+        "best_epsilon": best_epsilon,
+        "scalability": scalability,
+        "resume_parser_accuracy": resume_parser_accuracy,
+        "dept_constrained": dept_constrained,
+        "available_charts": {
+            "pareto_frontier": os.path.exists(os.path.join(model_dir, "charts", "pareto_frontier.png")),
+            "epsilon_sweep": os.path.exists(os.path.join(model_dir, "charts", "epsilon_sweep.png")),
+        },
+    })
 
 
 @app.get("/api/stats")

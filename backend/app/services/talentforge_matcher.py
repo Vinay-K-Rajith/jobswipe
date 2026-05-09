@@ -68,6 +68,27 @@ def _as_list(value: Any) -> List[str]:
 
 
 @lru_cache(maxsize=1)
+def canonical_company_keys() -> set[Tuple[str, str]]:
+    companies = _read_csv("companies.csv")
+    if companies.empty:
+        return set()
+    companies = companies[companies["company_id"].astype(str).str.startswith("CO")].copy()
+    keys = set()
+    for _, row in companies.iterrows():
+        keys.add((_clean(row.get("company_name")), _clean(row.get("role_offered"))))
+    return keys
+
+
+def is_canonical_job(job: Dict[str, Any]) -> bool:
+    keys = canonical_company_keys()
+    if not keys:
+        return True
+    company = _clean(job.get("company_name"))
+    role = _clean(job.get("role_title") or job.get("role") or job.get("role_offered"))
+    return (company, role) in keys
+
+
+@lru_cache(maxsize=1)
 def load_profiles() -> Dict[str, Dict[str, Any]]:
     students = _read_csv("students.csv")
     skills = _read_csv("skills.csv")
@@ -78,6 +99,9 @@ def load_profiles() -> Dict[str, Dict[str, Any]]:
     profiles: Dict[str, Dict[str, Any]] = {}
     if students.empty:
         return profiles
+
+    students = students[students["student_id"].astype(str).str.startswith("S")].copy()
+    allowed_student_ids = set(students["student_id"].astype(str))
 
     for _, row in students.iterrows():
         sid = str(row.get("student_id"))
@@ -95,11 +119,13 @@ def load_profiles() -> Dict[str, Dict[str, Any]]:
         }
 
     if not skills.empty:
+        skills = skills[skills["student_id"].astype(str).isin(allowed_student_ids)].copy()
         for sid, group in skills.groupby("student_id"):
             if sid in profiles:
                 profiles[sid]["skills"] = group["skill_name"].dropna().astype(str).tolist()
 
     if not projects.empty:
+        projects = projects[projects["student_id"].astype(str).isin(allowed_student_ids)].copy()
         for sid, group in projects.groupby("student_id"):
             if sid in profiles:
                 profiles[sid]["projects"] = [
@@ -113,6 +139,7 @@ def load_profiles() -> Dict[str, Dict[str, Any]]:
                 ]
 
     if not certs.empty:
+        certs = certs[certs["student_id"].astype(str).isin(allowed_student_ids)].copy()
         for sid, group in certs.groupby("student_id"):
             if sid in profiles:
                 profiles[sid]["certifications"] = [
@@ -126,11 +153,28 @@ def load_profiles() -> Dict[str, Dict[str, Any]]:
                 ]
 
     if not internships.empty:
+        internships = internships[internships["student_id"].astype(str).isin(allowed_student_ids)].copy()
         for sid, group in internships.groupby("student_id"):
             if sid in profiles:
                 profiles[sid]["internships"] = group.to_dict("records")
 
     return profiles
+
+
+def all_student_rows() -> List[Dict[str, Any]]:
+    rows = []
+    for profile in load_profiles().values():
+        rows.append({
+            "student_id": profile.get("student_id"),
+            "full_name": profile.get("full_name"),
+            "department": profile.get("department"),
+            "cgpa": profile.get("cgpa"),
+            "active_backlogs": profile.get("active_backlogs"),
+            "year_of_study": profile.get("year_of_study"),
+            "skills": profile.get("skills") or [],
+            "_talentforge_profile": profile,
+        })
+    return rows
 
 
 def profile_for_student(student_id: str) -> Dict[str, Any]:

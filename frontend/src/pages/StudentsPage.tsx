@@ -22,15 +22,19 @@ export default function StudentsPage() {
   const [dept, setDept] = useState('');
   const [offset, setOffset] = useState(0);
 
-  useEffect(() => {
+  const loadStudents = () => {
     setLoading(true);
-    getStudents({ department: dept || undefined, limit: LIMIT, offset })
+    return getStudents({ department: dept || undefined, limit: LIMIT, offset })
       .then((res) => {
         setStudents(res.data.students);
         setTotal(res.data.total);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadStudents();
   }, [dept, offset]);
 
   const pageStats = useMemo(() => {
