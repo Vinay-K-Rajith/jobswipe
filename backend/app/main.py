@@ -43,6 +43,7 @@ from app.services.bias_reduction import (
     save_bias_recommendation,
     simulate_fix,
 )
+from app.routers import auth, swipe
 
 # Try to load classifier model (may not be trained yet)
 try:
@@ -100,6 +101,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(auth.router)
+app.include_router(swipe.router)
 
 # ---------- Load data at startup ----------
 students_df = None

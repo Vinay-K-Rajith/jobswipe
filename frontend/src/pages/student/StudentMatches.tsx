@@ -1,0 +1,39 @@
+import { useEffect, useState } from 'react';
+import { MatchItem, getStudentMatches } from '../../services/swipeApi';
+
+export default function StudentMatches() {
+  const [matches, setMatches] = useState<MatchItem[]>([]);
+  const [error, setError] = useState('');
+  const [chatMessage, setChatMessage] = useState('');
+
+  useEffect(() => {
+    getStudentMatches()
+      .then((response) => setMatches(response.data.matches))
+      .catch((err) => setError(err?.response?.data?.detail || 'Could not load matches.'));
+  }, []);
+
+  return (
+    <main className="portal-page">
+      <header className="portal-header">
+        <span>Student Portal</span>
+        <h1>Mutual matches</h1>
+        <p>Roles where both you and the recruiter said yes.</p>
+      </header>
+      {error && <div className="bias-inline-error">{error}</div>}
+      {chatMessage && <div className="portal-note">{chatMessage}</div>}
+      <section className="portal-list">
+        {matches.length === 0 ? (
+          <div className="portal-empty"><h2>No matches yet</h2><p>Keep browsing roles to create your first match.</p></div>
+        ) : matches.map((match) => (
+          <article className="portal-row" key={match.id}>
+            <div>
+              <strong>{match.company_name || 'Company'}</strong>
+              <span>{match.role_title || 'Role'} / Matched {new Date(match.matched_at).toLocaleDateString()}</span>
+            </div>
+            <button className="btn btn-ghost" type="button" onClick={() => setChatMessage('Chat is coming soon for mutual matches.')}>Chat</button>
+          </article>
+        ))}
+      </section>
+    </main>
+  );
+}

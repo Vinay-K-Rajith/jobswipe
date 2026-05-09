@@ -36,10 +36,14 @@ def upload_table(client, table_name, csv_filename):
     for col in bool_cols:
         df[col] = df[col].astype(bool)
 
-    # Convert NaN to None for JSON serialization
-    df = df.where(pd.notnull(df), None)
-
+    # Convert NaN to None for JSON serialization. Keep this after the
+    # dataframe-to-dict conversion so float columns cannot coerce None back
+    # to NaN.
     records = df.to_dict(orient="records")
+    records = [
+        {key: (None if pd.isna(value) else value) for key, value in record.items()}
+        for record in records
+    ]
     total = len(records)
 
     # Upload in batches

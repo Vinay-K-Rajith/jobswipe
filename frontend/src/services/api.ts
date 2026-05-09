@@ -7,6 +7,14 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+api.interceptors.request.use((config) => {
+  const token = window.localStorage.getItem('jobswipe_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // --- Types ---
 export interface Student {
   student_id: string;

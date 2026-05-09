@@ -14,38 +14,68 @@ CO012,TCS,Finance,Tier2,7.4,69.0,64.0,0,"AIDS,CSE,IT,MBA,MECH","TensorFlow,Panda
 CO013,Wipro,Healthcare,Tier2,7.2,70.0,61.0,0,"AIDS,AIML,BCA,CSE,ECE,EEE,MECH","Node.js,Azure,Spring Boot","React,Git",0.6,Any,3,Intermediate,False,Global_Standard,ML Engineer,13.3,0
 CO014,HCL Technologies,Tech,Tier2,7.4,69.0,73.0,0,"AIDS,AIML,CSE,IT,MBA","Java,Scikit-learn,Node.js","PyTorch,C",1.8,Tier1_or_Tier2,2,Intermediate,False,Global_Standard,SDE,4.8,2
 CO015,Cognizant,Tech,Tier2,6.8,68.0,63.0,0,"AIDS,AIML,CSE,IT,MECH","Django,C++,React","AWS,Scikit-learn",2.0,Any,2,Basic,False,National,Consultant,11.4,2
-CO016,Tech Mahindra,Consulting,Tier2,7.2,60.0,73.0,0,"AIDS,AIML,BCA,CIVIL,CSE,IT,MBA",Node.js,"PostgreSQL,TensorFlow,C++",1.4,Any,2,Intermediate,False,None,Consultant,13.4,1
-CO017,Capgemini,Tech,Tier2,7.3,69.0,66.0,0,"AIDS,AIML,BCA,CIVIL,CSE,ECE,IT","Django,Flask,Scikit-learn",Leadership,2.6,Tier1_or_Tier2,1,Intermediate,False,None,Consultant,10.9,1
+CO016,Tech Mahindra,Consulting,Tier2,7.2,60.0,73.0,0,"AIDS,AIML,BCA,CIVIL,CSE,IT,MBA",Node.js,"PostgreSQL,TensorFlow,C++",1.4,Any,2,Intermediate,False,,Consultant,13.4,1
+CO017,Capgemini,Tech,Tier2,7.3,69.0,66.0,0,"AIDS,AIML,BCA,CIVIL,CSE,ECE,IT","Django,Flask,Scikit-learn",Leadership,2.6,Tier1_or_Tier2,1,Intermediate,False,,Consultant,10.9,1
 CO018,Accenture,Finance,Tier2,6.7,68.0,72.0,0,"AIDS,CSE,ECE,IT,MBA","PyTorch,React,Python",REST APIs,0.7,Any,3,Basic,False,National,SDE,6.0,0
 CO019,L&T Infotech,Manufacturing,Tier2,6.9,65.0,70.0,0,"AIML,CSE,ECE,EEE,MECH","NumPy,React",JavaScript,1.3,Any,3,Intermediate,False,Local,SDE,7.3,2
 CO020,Mindtree,Manufacturing,Tier2,7.2,65.0,73.0,1,"AIDS,CSE,ECE,EEE,MBA,MECH","TensorFlow,Django","C,MySQL",1.0,Tier1_or_Tier2,2,Intermediate,False,Global_Standard,ML Engineer,13.7,2
-CO021,Zoho Corporation,Manufacturing,Tier2,7.2,73.0,72.0,0,"CSE,ECE,EEE,IT,MECH",Pandas,"GCP,Tableau,C++",2.4,Any,3,Basic,False,None,Consultant,6.3,0
+CO021,Zoho Corporation,Manufacturing,Tier2,7.2,73.0,72.0,0,"CSE,ECE,EEE,IT,MECH",Pandas,"GCP,Tableau,C++",2.4,Any,3,Basic,False,,Consultant,6.3,0
 CO022,Freshworks,Manufacturing,Tier2,7.4,71.0,68.0,0,"AIML,CSE,ECE,EEE,MECH",Node.js,"Git,MySQL",2.9,Tier1_or_Tier2,3,Basic,False,Global_Standard,ML Engineer,7.8,1
 CO023,Razorpay,Manufacturing,Tier2,7.0,68.0,72.0,1,"CSE,ECE,EEE,MECH",SQL,"MongoDB,C",0.6,Any,1,Basic,True,Global_Standard,Consultant,7.5,0
 CO024,PhonePe,Consulting,Tier2,7.5,69.0,67.0,1,"AIDS,AIML,BCA,CSE,IT,MBA","SQL,Flask","Python,Tableau",2.8,Tier1_or_Tier2,2,Intermediate,False,National,SDE,12.1,0
 CO025,Flipkart,Manufacturing,Tier2,6.9,74.0,73.0,0,"AIML,CSE,ECE,EEE,MECH","Azure,TypeScript",Excel,0.3,Any,3,Intermediate,False,National,Consultant,11.9,0
 CO026,Mphasis,Healthcare,Tier2,7.1,65.0,74.0,0,"AIDS,AIML,BCA,CSE,ECE,IT","Angular,Flask",JavaScript,1.6,Any,1,Intermediate,False,National,Consultant,11.2,1
-CO027,KPMG India,Consulting,Tier2,6.6,62.0,74.0,0,"AIDS,AIML,CIVIL,CSE,EEE,IT,MBA",Java,"AWS,JavaScript,HTML/CSS",2.0,Any,1,Intermediate,False,None,Data Analyst,13.6,1
+CO027,KPMG India,Consulting,Tier2,6.6,62.0,74.0,0,"AIDS,AIML,CIVIL,CSE,EEE,IT,MBA",Java,"AWS,JavaScript,HTML/CSS",2.0,Any,1,Intermediate,False,,Data Analyst,13.6,1
 CO028,Deloitte India,Consulting,Tier2,6.7,68.0,63.0,0,"AIDS,AIML,BCA,CIVIL,CSE,IT","TypeScript,JavaScript",HTML/CSS,0.2,Tier1_or_Tier2,1,Intermediate,True,National,Data Analyst,6.8,0
 CO029,EY India,Finance,Tier2,6.5,67.0,68.0,0,"AIDS,CIVIL,CSE,EEE,IT,MBA","C++,TypeScript",Angular,2.6,Any,1,Basic,False,Local,ML Engineer,13.2,2
 CO030,PwC India,Consulting,Tier2,6.6,68.0,70.0,0,"AIDS,AIML,BCA,CSE,EEE,IT","SQL,Azure,Spring Boot","Pandas,C++,Communication",1.2,Any,3,Intermediate,False,Global_Standard,Consultant,8.3,1
-CO031,DataSolve Analytics,Manufacturing,Tier3,6.0,52.0,58.0,2,"AIDS,AIML,BCA,CSE,ECE,EEE,IT,MBA,MECH","Django,Java",,0.0,Any,1,Basic,False,None,Consultant,5.4,3
-CO032,CloudNine Solutions,Consulting,Tier3,5.8,52.0,64.0,2,"AIDS,AIML,BCA,CSE,IT,MBA,MECH","TensorFlow,SQL",Redis,0.0,Any,0,Basic,False,None,Web Dev,3.0,2
+CO031,DataSolve Analytics,Manufacturing,Tier3,6.0,52.0,58.0,2,"AIDS,AIML,BCA,CSE,ECE,EEE,IT,MBA,MECH","Django,Java",,0.0,Any,1,Basic,False,,Consultant,5.4,3
+CO032,CloudNine Solutions,Consulting,Tier3,5.8,52.0,64.0,2,"AIDS,AIML,BCA,CSE,IT,MBA,MECH","TensorFlow,SQL",Redis,0.0,Any,0,Basic,False,,Web Dev,3.0,2
 CO033,WebCraft Studios,Tech,Tier3,6.3,51.0,54.0,2,"AIDS,AIML,BCA,CIVIL,CSE,ECE,EEE,IT,MBA,MECH",Python,"C,Django",0.0,Any,0,Basic,False,Local,SDE,3.1,0
 CO034,AlphaSoft Technologies,Manufacturing,Tier3,5.7,57.0,54.0,2,"AIDS,BCA,CSE,ECE,EEE,MECH","Django,Node.js","JavaScript,SQL",0.0,Any,2,Basic,False,Local,Data Analyst,3.4,3
 CO035,ByteWorks Systems,Healthcare,Tier3,6.3,54.0,58.0,1,"AIDS,AIML,BCA,CIVIL,CSE,ECE,EEE,IT,MBA,MECH",C,"Git,Docker",0.0,Any,0,Basic,False,Local,Web Dev,5.5,2
-CO036,NexGen Software,Tech,Tier3,5.7,51.0,58.0,2,"AIDS,AIML,BCA,CSE,ECE,EEE,IT,MBA",SQL,,0.0,Any,2,Intermediate,True,None,SDE,2.8,1
+CO036,NexGen Software,Tech,Tier3,5.7,51.0,58.0,2,"AIDS,AIML,BCA,CSE,ECE,EEE,IT,MBA",SQL,,0.0,Any,2,Intermediate,True,,SDE,2.8,1
 CO037,PixelPerfect Design,Consulting,Tier3,5.7,59.0,60.0,1,"AIDS,AIML,CSE,ECE,IT","C++,Node.js",React,0.0,Any,1,Basic,False,Local,Data Analyst,4.8,1
 CO038,CodeBase Solutions,Healthcare,Tier3,6.4,58.0,59.0,0,"AIDS,AIML,BCA,CSE,ECE,MBA",PyTorch,,0.0,Any,1,Intermediate,False,Local,SDE,3.4,1
-CO039,TechVista Global,Manufacturing,Tier3,6.2,59.0,53.0,1,"AIDS,BCA,CIVIL,CSE,ECE,EEE,IT,MBA,MECH",AWS,Excel,0.0,Any,1,Basic,False,None,SDE,3.6,1
-CO040,SmartBuild Software,Tech,Tier3,6.3,62.0,55.0,0,"AIDS,AIML,BCA,CSE,ECE,EEE,IT,MECH","Pandas,JavaScript",Git,0.0,Any,1,Intermediate,False,None,Web Dev,3.7,3
-CO041,DigiCraft IT,Healthcare,Tier3,5.8,64.0,53.0,0,"AIDS,AIML,CSE,ECE,EEE,IT","Flask,Scikit-learn",,0.0,Any,0,Basic,False,None,Data Analyst,3.6,2
-CO042,SoftStack India,Manufacturing,Tier3,6.4,63.0,59.0,1,"AIDS,AIML,CIVIL,CSE,ECE,EEE,IT,MECH",React,"Pandas,Linux",0.0,Any,2,Basic,True,None,Consultant,4.4,3
+CO039,TechVista Global,Manufacturing,Tier3,6.2,59.0,53.0,1,"AIDS,BCA,CIVIL,CSE,ECE,EEE,IT,MBA,MECH",AWS,Excel,0.0,Any,1,Basic,False,,SDE,3.6,1
+CO040,SmartBuild Software,Tech,Tier3,6.3,62.0,55.0,0,"AIDS,AIML,BCA,CSE,ECE,EEE,IT,MECH","Pandas,JavaScript",Git,0.0,Any,1,Intermediate,False,,Web Dev,3.7,3
+CO041,DigiCraft IT,Healthcare,Tier3,5.8,64.0,53.0,0,"AIDS,AIML,CSE,ECE,EEE,IT","Flask,Scikit-learn",,0.0,Any,0,Basic,False,,Data Analyst,3.6,2
+CO042,SoftStack India,Manufacturing,Tier3,6.4,63.0,59.0,1,"AIDS,AIML,CIVIL,CSE,ECE,EEE,IT,MECH",React,"Pandas,Linux",0.0,Any,2,Basic,True,,Consultant,4.4,3
 CO043,AppForge Technologies,Finance,Tier3,6.0,53.0,54.0,2,"AIDS,AIML,BCA,CIVIL,CSE,EEE,IT,MBA,MECH","Node.js,Flask",C++,0.0,Any,0,Intermediate,False,Local,Data Analyst,3.8,2
-CO044,NetGenius Solutions,Consulting,Tier3,5.8,61.0,53.0,0,"AIDS,AIML,CSE,EEE,IT,MBA",C,,0.0,Any,0,Basic,False,None,Consultant,5.7,0
+CO044,NetGenius Solutions,Consulting,Tier3,5.8,61.0,53.0,0,"AIDS,AIML,CSE,EEE,IT,MBA",C,,0.0,Any,0,Basic,False,,Consultant,5.7,0
 CO045,InnovateTech,Tech,Tier3,6.1,56.0,50.0,0,"AIDS,AIML,BCA,CSE,ECE,IT,MBA","Azure,Node.js","Communication,Git",0.0,Any,2,Intermediate,False,Local,Web Dev,5.8,2
-CO046,CyberPulse,Consulting,Tier3,6.0,58.0,61.0,1,"AIDS,AIML,BCA,CIVIL,CSE,ECE,EEE,IT,MBA","Azure,AWS",Kubernetes,0.0,Any,0,Intermediate,False,None,Consultant,5.1,2
-CO047,DataDriven Co,Finance,Tier3,6.2,57.0,65.0,0,"AIDS,AIML,CIVIL,CSE,EEE,IT,MBA,MECH",Flask,Scikit-learn,0.0,Any,0,Intermediate,False,None,Consultant,3.9,2
-CO048,CloudFirst India,Manufacturing,Tier3,5.7,63.0,56.0,1,"AIDS,AIML,BCA,CIVIL,CSE,ECE,EEE,IT,MBA,MECH",Java,,0.0,Any,2,Basic,False,None,Web Dev,4.3,2
-CO049,UrbanTech Solutions,Consulting,Tier3,6.2,56.0,58.0,0,"AIDS,AIML,BCA,CSE,IT,MECH",SQL,"Java,C++",0.0,Any,1,Basic,False,None,Data Analyst,5.9,3
-CO050,GreenCode Systems,Finance,Tier3,5.9,52.0,56.0,1,"AIDS,AIML,BCA,CIVIL,CSE,IT,MBA",C++,,0.0,Any,0,Basic,False,None,Data Analyst,4.9,0
+CO046,CyberPulse,Consulting,Tier3,6.0,58.0,61.0,1,"AIDS,AIML,BCA,CIVIL,CSE,ECE,EEE,IT,MBA","Azure,AWS",Kubernetes,0.0,Any,0,Intermediate,False,,Consultant,5.1,2
+CO047,DataDriven Co,Finance,Tier3,6.2,57.0,65.0,0,"AIDS,AIML,CIVIL,CSE,EEE,IT,MBA,MECH",Flask,Scikit-learn,0.0,Any,0,Intermediate,False,,Consultant,3.9,2
+CO048,CloudFirst India,Manufacturing,Tier3,5.7,63.0,56.0,1,"AIDS,AIML,BCA,CIVIL,CSE,ECE,EEE,IT,MBA,MECH",Java,,0.0,Any,2,Basic,False,,Web Dev,4.3,2
+CO049,UrbanTech Solutions,Consulting,Tier3,6.2,56.0,58.0,0,"AIDS,AIML,BCA,CSE,IT,MECH",SQL,"Java,C++",0.0,Any,1,Basic,False,,Data Analyst,5.9,3
+CO050,GreenCode Systems,Finance,Tier3,5.9,52.0,56.0,1,"AIDS,AIML,BCA,CIVIL,CSE,IT,MBA",C++,,0.0,Any,0,Basic,False,,Data Analyst,4.9,0
+TFJ001,Tata Consultancy Services,Technology Services & Consulting,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","cpp,dsa,javascript,sql",,0.0,Any,0,Basic,False,None,"Software Engineer (Full-time, Mumbai, large, Rs 600,000 / year)",6.0,0
+TFJ002,Google,Technology,Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","webdev,python,ml,datascience,MERN",,0.0,Any,0,Advanced,False,None,"ml Engineer (Full-time, Delhi,Banglore,Hyderabad, large, Rs 3,000,000 / year)",30.0,0
+TFJ003,Infosys,Technology Services & Consulting,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","java,c,flutter,javascript,sql",,0.0,Any,0,Basic,False,None,"Java Developer (Full-time, Bangalore,Hyderabad,Pune, large, Rs 900,000 / year)",9.0,0
+TFJ004,Microsoft,Technology,Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","ml,python,MERN,flask,django",,0.0,Any,0,Advanced,False,None,"ml Engineer (Full-time, Banglore,Hyderabad,Noida, large, Rs 3,000,000 / year)",30.0,0
+TFJ005,Amazon,"E-commerce, Cloud Computing, AI",Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","ml,python,datascience,cpp,dsa",,0.0,Any,0,Advanced,False,None,"Software Development Engineer (Full-time, Bangalore,Hyderabad, large, Rs 3,000,000 / year)",30.0,0
+TFJ006,Wipro,Technology Services & Consulting,Tier2,7.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","java,c,flutter,javascript,sql",,0.0,Any,0,Intermediate,False,None,"Java Full Stack Developer (Full-time, Bangalore,Hyderabad,Pune, midsize, Rs 800,000 / year)",8.0,0
+TFJ007,Adobe,Software,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","ui/ux,frontend",,0.0,Any,0,Basic,False,None,"UI/UX Designer (Full-time, Noida,Bangalore, large, Rs 1,300,000 / year)",13.0,0
+TFJ008,Flipkart,E-commerce,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","webdev,python,MERN",,0.0,Any,0,Basic,False,None,"Web Developer (Full-time, Bangalore,Delhi, large, Rs 1,700,000 / year)",17.0,0
+TFJ009,Paytm,Fintech,Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","generative ai,flask,django",,0.0,Any,0,Advanced,False,None,"Generative AI Developer (Full-time, Noida,Gurugram, large, Rs 2,200,000 / year)",22.0,0
+TFJ010,Ola,Transportation Technology,Tier2,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","dl,ml,javascript",,0.0,Any,0,Basic,False,None,"dl Engineer (Full-time, Mumbai,Bangalore, midsize, Rs 1,500,000 / year)",15.0,0
+TFJ011,Cognizant,IT Services and Consulting,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","cpp,dsa,javascript,sql,datascience",,0.0,Any,0,Basic,False,None,"Software Engineer (Full-time, Hyderabad,Pune, large, Rs 450,000 / year)",4.5,0
+TFJ012,Capgemini,IT Services and Consulting,Tier2,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","cpp,dsa,javascript,sql",,0.0,Any,0,Advanced,False,None,"App developer (Full-time, Mumbai,Bangalore,Pune, midsize, Rs 1,100,000 / year)",11.0,0
+TFJ013,Mindtree,IT Services and Consulting,Tier2,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","java,c,flutter,javascript,sql",,0.0,Any,0,Basic,False,None,"Java Developer (Full-time, Bangalore,Hyderabad,Pune, midsize, Rs 600,000 / year)",6.0,0
+TFJ014,Razorpay,Fintech,Startup,7.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,backend development",,0.0,Any,0,Intermediate,False,None,"Database developer (Full-time, Bangalore, startup, Rs 900,000 / year)",9.0,0
+TFJ015,Meesho,E-commerce,Startup,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,web development,datascience",,0.0,Any,0,Basic,False,None,"MERN stack developer (Full-time, Bangalore, startup, Rs 1,200,000 / year)",12.0,0
+TFJ016,Urban Company,Service marketplace,Startup,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","web development,ml,datascience,python,javascript",,0.0,Any,0,Basic,False,None,"Data scientist (Full-time, Gurugram, startup, Rs 1,400,000 / year)",14.0,0
+TFJ017,1mg,Healthcare technologyy,Startup,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,ml,webdev",,0.0,Any,0,Advanced,False,None,"dl engineer (Full-time, Gurugram, startup, Rs 1,800,000 / year)",18.0,0
+TFJ018,upGrad,Edtech,Startup,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,MERN,datascience,webdev",,0.0,Any,0,Advanced,False,None,"ml engineer (Full-time, Mumbai, startup, Rs 850,000 / year)",8.5,0
+TFI001,Tata Consultancy Services,Technology Services & Consulting,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","cpp,dsa,javascript,sql",,0.0,Any,0,Basic,False,None,"Front-End Developer  intern (Internship, Mumbai, large, Rs 15,000 / month)",1.8,0
+TFI002,Google,Technology,Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","webdev,python,ml,datascience,MERN",,0.0,Any,0,Advanced,False,None,"ml Engineer intern (Internship, Delhi,Banglore,Hyderabad, large, Rs 43,000 / month)",5.16,0
+TFI003,Microsoft,Technology,Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","ml,python,MERN,flask,django",,0.0,Any,0,Advanced,False,None,"Backend Developer intern (Internship, Banglore,Hyderabad,Noida, large, Rs 39,000 / month)",4.68,0
+TFI004,Wipro,Technology Services & Consulting,Tier2,7.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","java,c,flutter,javascript,sql",,0.0,Any,0,Intermediate,False,None,"SQL Developer intern (Internship, Bangalore,Hyderabad,Pune, midsize, Rs 15,000 / month)",1.8,0
+TFI005,Paytm,Fintech,Tier1,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","generative ai,flask,django",,0.0,Any,0,Advanced,False,None,"Generative AI Developer intern (Internship, Noida,Gurugram, large, Rs 23,000 / month)",2.76,0
+TFI006,Ola,Transportation Technology,Tier2,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","dl,ml,javascript",,0.0,Any,0,Basic,False,None,"dl Engineer intern (Internship, Mumbai,Bangalore, midsize, Rs 28,000 / month)",3.36,0
+TFI007,Cognizant,IT Services and Consulting,Tier1,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","cpp,dsa,javascript,sql,datascience",,0.0,Any,0,Basic,False,None,"Javascript Developer intern (Internship, Hyderabad,Pune, large, Rs 12,000 / month)",1.44,0
+TFI008,Capgemini,IT Services and Consulting,Tier2,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","cpp,dsa,javascript,sql",,0.0,Any,0,Advanced,False,None,"App developer intern (Internship, Mumbai,Bangalore,Pune, midsize, Rs 20,000 / month)",2.4,0
+TFI009,Mindtree,IT Services and Consulting,Tier2,0.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","java,c,flutter,javascript,sql",,0.0,Any,0,Basic,False,None,"Java Developer intern (Internship, Bangalore,Hyderabad,Pune, midsize, Rs 30,000 / month)",3.6,0
+TFI010,Razorpay,Fintech,Startup,7.0,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,backend development",,0.0,Any,0,Intermediate,False,None,"Engineering Intern (Internship, Bangalore, startup, Rs 34,000 / month)",4.08,0
+TFI011,1mg,Healthcare technologyy,Startup,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,ml,webdev",,0.0,Any,0,Advanced,False,None,"ml engineer intern (Internship, Gurugram, startup, Rs 23,000 / month)",2.76,0
+TFI012,upGrad,Edtech,Startup,8.5,0.0,0.0,0,"CSE,IT,AIML,AIDS","python,javascript,MERN,datascience,webdev",,0.0,Any,0,Advanced,False,None,"ml intern (Internship, Mumbai, startup, Rs 27,000 / month)",3.24,0
