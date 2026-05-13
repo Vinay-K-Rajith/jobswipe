@@ -14,6 +14,7 @@ from app.routers.deps import get_current_recruiter, get_current_user
 from app.services.bias_reduction import load_variant_artifact, score_variant_probabilities
 from app.services.talentforge_matcher import all_student_rows, enrich_student_row, is_canonical_job, score_student_for_job
 from src.explainability.criteria_checker import check_criteria
+from src.explainability.improvement_planner import generate_improvement_plan
 from src.model.inference import build_inference_features
 
 router = APIRouter(tags=["swipe"])
@@ -37,6 +38,9 @@ class RecruiterSwipeRequest(BaseModel):
 
 class RecruiterPassRequest(BaseModel):
     student_id: str
+    job_id: str
+    reason_code: str = "selected_stronger_match"
+    reason_note: Optional[str] = None
 
 
 class RecruiterJobCreate(BaseModel):
@@ -389,6 +393,11 @@ def student_preference_track(student: Dict[str, Any]) -> str:
     return infer_student_track(student)
 
 
+def ensure_pair_passes_hard_criteria(student: Dict[str, Any], job: Dict[str, Any], detail: str) -> None:
+    if not passes_hard_criteria(student, job):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+
 def load_current_student(sid: str, user: Dict[str, Any]) -> Dict[str, Any]:
     merged = {}
     for row in all_student_rows():
@@ -461,6 +470,15 @@ def insert_if_missing(table: str, payload: Dict[str, Any], unique_filters: Dict[
     execute_supabase(lambda: supabase.table(table).insert(payload))
 
 
+def upsert_row(table: str, payload: Dict[str, Any], conflict_columns: List[str]) -> None:
+    execute_supabase(
+        lambda: supabase.table(table).upsert(
+            payload,
+            on_conflict=",".join(conflict_columns),
+        )
+    )
+
+
 def create_match_if_ready(student: str, recruiter_id: str, job_id: str) -> bool:
     if not has_row("student_interest", {"student_id": student, "job_id": job_id}):
         return False
@@ -473,6 +491,222 @@ def create_match_if_ready(student: str, recruiter_id: str, job_id: str) -> bool:
     )
     # TODO: persist notifications once a notifications table exists.
     return True
+
+
+REJECTION_REASON_LABELS = {
+    "selected_stronger_match": "Selected stronger matched candidates",
+    "missing_preferred_skills": "Missing preferred skills",
+    "project_depth": "Project depth not strong enough",
+    "experience_gap": "Experience gap",
+    "role_fit": "Role fit concerns",
+    "resume_quality": "Resume quality concerns",
+    "communication": "Communication or interview readiness concerns",
+}
+
+
+def recruiter_reason_label(reason_code: str) -> str:
+    return REJECTION_REASON_LABELS.get(reason_code, "Recruiter passed on this profile")
+
+
+def scorecard_for_job(student: Dict[str, Any], job: Dict[str, Any]) -> Dict[str, Any]:
+    normalized_job = normalize_job_for_rules_and_model(job)
+    student_input = build_student_model_input(student)
+    scorecard = check_criteria(student_input, normalized_job, student_skills=student_input.get("skill_list", []))
+    if not as_list(job.get("allowed_departments") or job.get("allowed_branches")):
+        scorecard["department_check"]["passed"] = True
+        scorecard["department_check"]["required_value"] = "Any"
+        scorecard["department_check"]["message"] = "No department restriction for this job"
+    return refresh_scorecard_summary(scorecard)
+
+
+def compare_against_role_pool(student: Dict[str, Any], job: Dict[str, Any]) -> Dict[str, Any]:
+    supabase_students = execute_supabase(lambda: supabase.table("students").select("*")).data or []
+    students_by_id = {student_id(row): row for row in all_student_rows()}
+    for row in supabase_students:
+        sid = student_id(row)
+        students_by_id[sid] = {**students_by_id.get(sid, {}), **row}
+
+    eligible_students = [build_student_model_input(row) for row in students_by_id.values() if passes_hard_criteria(row, job)]
+    scored_rows = []
+    for row in eligible_students:
+        enriched = enrich_student_row(row)
+        final_score, _ = blended_pair_score(enriched, job)
+        scored_rows.append({
+            "student_id": student_id(enriched),
+            "cgpa": safe_float(enriched.get("cgpa")),
+            "total_internship_months": safe_float(enriched.get("total_internship_months")),
+            "num_verified_skills": safe_int(enriched.get("num_verified_skills"), len(as_list(enriched.get("skill_list")))),
+            "score": final_score,
+        })
+
+    if not scored_rows:
+        return {}
+
+    scored_rows.sort(key=lambda item: item["score"], reverse=True)
+    position = next((index + 1 for index, row in enumerate(scored_rows) if row["student_id"] == student_id(student)), len(scored_rows))
+    benchmark_rows = scored_rows[: min(5, len(scored_rows))]
+    benchmark_count = len(benchmark_rows) or 1
+    top_avg_cgpa = sum(row["cgpa"] for row in benchmark_rows) / benchmark_count
+    top_avg_internship = sum(row["total_internship_months"] for row in benchmark_rows) / benchmark_count
+    top_avg_verified_skills = sum(row["num_verified_skills"] for row in benchmark_rows) / benchmark_count
+
+    student_cgpa = safe_float(student.get("cgpa"))
+    student_internship = safe_float(student.get("total_internship_months"))
+    student_verified_skills = safe_int(student.get("num_verified_skills"), len(as_list(student.get("skill_list"))))
+
+    return {
+        "rank_position": position,
+        "pool_size": len(scored_rows),
+        "top_band_size": benchmark_count,
+        "student_cgpa": round(student_cgpa, 2),
+        "top_band_avg_cgpa": round(top_avg_cgpa, 2),
+        "cgpa_gap": round(top_avg_cgpa - student_cgpa, 2),
+        "student_internship_months": round(student_internship, 1),
+        "top_band_avg_internship_months": round(top_avg_internship, 1),
+        "internship_gap": round(top_avg_internship - student_internship, 1),
+        "student_verified_skills": student_verified_skills,
+        "top_band_avg_verified_skills": round(top_avg_verified_skills, 1),
+        "verified_skill_gap": round(top_avg_verified_skills - student_verified_skills, 1),
+    }
+
+
+def competitive_weaknesses_from_scorecard(scorecard: Dict[str, Any], peer_comparison: Dict[str, Any]) -> List[Dict[str, Any]]:
+    weaknesses: List[Dict[str, Any]] = []
+
+    required_skills = scorecard.get("required_skills_score", {})
+    missing_required = required_skills.get("missing", [])
+    if missing_required:
+        weaknesses.append({
+            "label": "Required skills coverage",
+            "severity": "high",
+            "detail": f"Missing required skills: {', '.join(missing_required[:4])}.",
+        })
+
+    preferred_skills = scorecard.get("preferred_skills_score", {})
+    preferred_ratio = float(preferred_skills.get("score", 1) or 0)
+    if preferred_ratio < 0.5:
+        weaknesses.append({
+            "label": "Preferred skills depth",
+            "severity": "medium",
+            "detail": f"Preferred skills coverage is {round(preferred_ratio * 100)}%, which lowers comparative fit.",
+        })
+
+    internship_score = scorecard.get("internship_score", {})
+    if not internship_score.get("passed", True):
+        weaknesses.append({
+            "label": "Experience depth",
+            "severity": "medium",
+            "detail": internship_score.get("message", "Internship depth is below the role expectation."),
+        })
+
+    project_score = scorecard.get("project_score", {})
+    if not project_score.get("passed", True):
+        weaknesses.append({
+            "label": "Project depth",
+            "severity": "medium",
+            "detail": project_score.get("message", "Project count is below the role expectation."),
+        })
+
+    if peer_comparison.get("cgpa_gap", 0) > 0.3:
+        weaknesses.append({
+            "label": "CGPA competitiveness",
+            "severity": "medium",
+            "detail": f"Your CGPA is {peer_comparison['cgpa_gap']:.2f} below the average of the strongest candidates for this role.",
+        })
+
+    if peer_comparison.get("verified_skill_gap", 0) > 1:
+        weaknesses.append({
+            "label": "Verified skill breadth",
+            "severity": "medium",
+            "detail": f"Top candidates average {peer_comparison['top_band_avg_verified_skills']} verified skills versus your {peer_comparison['student_verified_skills']}.",
+        })
+
+    if peer_comparison.get("internship_gap", 0) > 1:
+        weaknesses.append({
+            "label": "Applied experience",
+            "severity": "low",
+            "detail": f"Top candidates average {peer_comparison['top_band_avg_internship_months']} internship months versus your {peer_comparison['student_internship_months']}.",
+        })
+
+    return weaknesses[:5]
+
+
+def skill_gap_focus(scorecard: Dict[str, Any]) -> List[Dict[str, str]]:
+    recommendations: List[Dict[str, str]] = []
+    required_missing = scorecard.get("required_skills_score", {}).get("missing", []) or []
+    preferred_matched = {skill.lower() for skill in scorecard.get("preferred_skills_score", {}).get("matched", []) or []}
+    preferred_message = scorecard.get("preferred_skills_score", {}).get("message", "")
+
+    for skill in required_missing[:4]:
+        recommendations.append({
+            "skill": skill,
+            "source": "required",
+            "reason": "This role explicitly required this skill.",
+        })
+
+    if preferred_message:
+        recommendations.append({
+            "skill": "Preferred stack depth",
+            "source": "preferred",
+            "reason": preferred_message,
+        })
+
+    deduped: List[Dict[str, str]] = []
+    seen = set(preferred_matched)
+    for item in recommendations:
+        key = item["skill"].strip().lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+    return deduped[:5]
+
+
+def build_rejection_insight(student: Dict[str, Any], job: Dict[str, Any], recruiter_id: str, reason_code: str, reason_note: Optional[str]) -> Dict[str, Any]:
+    student_input = build_student_model_input(student)
+    scorecard = scorecard_for_job(student_input, job)
+    enriched = enrich_student_row(student_input)
+    overall_score, breakdown = blended_pair_score(enriched, job)
+    peer_comparison = compare_against_role_pool(student_input, job)
+    improvement_plan = generate_improvement_plan(
+        scorecard,
+        company_name=job.get("company_name") or job.get("role_title") or "this role",
+        company_data=normalize_job_for_rules_and_model(job),
+        year_of_study=max(safe_int(student_input.get("year_of_study"), 3), 1),
+    )
+    improvements = improvement_plan.get("suggestions", []) if isinstance(improvement_plan, dict) else improvement_plan
+
+    role_title = job.get("role_title") or job.get("role") or "Role"
+    company_name = job.get("company_name") or (get_recruiter(recruiter_id) or {}).get("company_name") or "Company"
+    headline = f"You were shown for {company_name} - {role_title}, but the recruiter chose stronger comparative fit elsewhere."
+    if reason_code != "selected_stronger_match":
+        headline = f"You were shown for {company_name} - {role_title}, but the recruiter passed with reason: {recruiter_reason_label(reason_code).lower()}."
+
+    return {
+        "headline": headline,
+        "recruiter_reason_code": reason_code,
+        "recruiter_reason_label": recruiter_reason_label(reason_code),
+        "recruiter_reason_note": reason_note or "",
+        "company_name": company_name,
+        "role_title": role_title,
+        "match_snapshot": {
+            "overall_score": round(overall_score, 3),
+            "breakdown": breakdown,
+            "rank_position": peer_comparison.get("rank_position"),
+            "pool_size": peer_comparison.get("pool_size"),
+        },
+        "competitive_weaknesses": competitive_weaknesses_from_scorecard(scorecard, peer_comparison),
+        "peer_comparison": peer_comparison,
+        "criteria_snapshot": {
+            "required_skill_match_ratio": scorecard.get("required_skills_score", {}).get("score", 1),
+            "preferred_skill_match_ratio": scorecard.get("preferred_skills_score", {}).get("score", 1),
+            "missing_required_skills": scorecard.get("required_skills_score", {}).get("missing", []),
+            "hard_failures": scorecard.get("_summary", {}).get("hard_failures", []),
+            "soft_weaknesses": scorecard.get("_summary", {}).get("soft_weaknesses", []),
+        },
+        "skill_gap_focus": skill_gap_focus(scorecard),
+        "improvement_plan": improvements[:4],
+    }
 
 
 def student_to_card(student: Dict[str, Any], job_id: Optional[str] = None, hydrate_details: bool = True) -> Dict[str, Any]:
@@ -548,16 +782,11 @@ def student_feed(
         jobs = [job for job in jobs if job_track(job) == requested_track]
     student = enrich_student_row(build_student_model_input(load_current_student(sid, user)))
     unseen_jobs = [job for job in jobs if job["id"] not in liked and job["id"] not in passed]
-    primary_jobs = [
+    eligible_jobs = [
         job for job in unseen_jobs
         if passes_hard_criteria(student, job)
     ]
-    all_unseen_jobs = [job for job in all_jobs if job["id"] not in liked and job["id"] not in passed]
-    fallback_jobs = [
-        job for job in all_unseen_jobs
-        if job["id"] not in {item["id"] for item in primary_jobs}
-    ]
-    ranked_jobs = sort_jobs_for_student(student, primary_jobs) + sort_jobs_for_student(student, fallback_jobs)
+    ranked_jobs = sort_jobs_for_student(student, eligible_jobs)
     cards = [job_to_card(job, get_recruiter(job.get("recruiter_id"))) for job in ranked_jobs]
     return {"jobs": cards[offset:offset + limit]}
 
@@ -574,6 +803,8 @@ def student_interested(user=Depends(get_current_user)):
         if row["job_id"] in responded or row["job_id"] in passed or row["job_id"] in matches:
             continue
         job = get_job(row["job_id"])
+        if not passes_hard_criteria(build_student_model_input(load_current_student(sid, user)), job):
+            continue
         cards.append(job_to_card(job, get_recruiter(row["recruiter_id"])))
     return {"jobs": cards}
 
@@ -590,10 +821,57 @@ def student_matches(user=Depends(get_current_user)):
     return {"matches": matches}
 
 
+@router.get("/student/rejection-insights")
+def student_rejection_insights(user=Depends(get_current_user)):
+    sid = student_id(user)
+    rows = (
+        execute_supabase(
+            lambda: supabase.table("recruiter_pass")
+            .select("*")
+            .eq("student_id", sid)
+            .order("created_at", desc=True)
+        ).data
+        or []
+    )
+    insights = []
+    for row in rows:
+        job_id = row.get("job_id")
+        if not job_id:
+            continue
+        try:
+            job = get_job(job_id)
+        except HTTPException:
+            continue
+        recruiter = get_recruiter(row.get("recruiter_id")) or {}
+        payload = row.get("insight_payload") or {}
+        insights.append({
+            "id": row.get("id"),
+            "student_id": sid,
+            "job_id": job_id,
+            "recruiter_id": row.get("recruiter_id"),
+            "created_at": row.get("created_at"),
+            "company_name": payload.get("company_name") or recruiter.get("company_name") or job.get("company_name") or "Company",
+            "role_title": payload.get("role_title") or job.get("role_title") or job.get("role") or "Role",
+            "reason_code": row.get("reason_code") or payload.get("recruiter_reason_code") or "selected_stronger_match",
+            "reason_label": payload.get("recruiter_reason_label") or recruiter_reason_label(row.get("reason_code") or "selected_stronger_match"),
+            "reason_note": row.get("reason_note") or payload.get("recruiter_reason_note") or "",
+            "headline": payload.get("headline") or "A recruiter passed on your profile after you were recommended for this role.",
+            "match_snapshot": payload.get("match_snapshot") or {},
+            "competitive_weaknesses": payload.get("competitive_weaknesses") or [],
+            "peer_comparison": payload.get("peer_comparison") or {},
+            "criteria_snapshot": payload.get("criteria_snapshot") or {},
+            "skill_gap_focus": payload.get("skill_gap_focus") or [],
+            "improvement_plan": payload.get("improvement_plan") or [],
+        })
+    return {"insights": insights}
+
+
 @router.post("/student/swipe/right")
 def student_swipe_right(req: JobSwipeRequest, user=Depends(get_current_user)):
     sid = student_id(user)
     job = get_job(req.job_id)
+    student = build_student_model_input(load_current_student(sid, user))
+    ensure_pair_passes_hard_criteria(student, job, "You are not eligible for this role.")
     recruiter_id = job.get("recruiter_id")
     insert_if_missing("student_interest", {"student_id": sid, "job_id": req.job_id}, {"student_id": sid, "job_id": req.job_id})
     matched = create_match_if_ready(sid, recruiter_id, req.job_id) if recruiter_id else False
@@ -694,7 +972,15 @@ def recruiter_feed_with_track(
     else:
         job = get_job(job_id)
     liked = {row["student_id"] for row in (execute_supabase(lambda: supabase.table("recruiter_interest").select("student_id").eq("recruiter_id", user["id"]).eq("job_id", job_id)).data or [])}
-    passed = {row["student_id"] for row in (execute_supabase(lambda: supabase.table("recruiter_pass").select("student_id").eq("recruiter_id", user["id"])).data or [])}
+    passed = {
+        row["student_id"]
+        for row in (
+            execute_supabase(
+                lambda: supabase.table("recruiter_pass").select("student_id").eq("recruiter_id", user["id"]).eq("job_id", job_id)
+            ).data
+            or []
+        )
+    }
     interested = [
         row["student_id"]
         for row in (execute_supabase(lambda: supabase.table("student_interest").select("student_id").eq("job_id", job_id)).data or [])
@@ -718,9 +1004,7 @@ def recruiter_feed_with_track(
         matched_track_students = [row for row in unseen_students if student_preference_track(row) == requested_track]
         other_students = [row for row in unseen_students if student_preference_track(row) != requested_track]
         unseen_students = matched_track_students + other_students
-    primary_students = [row for row in unseen_students if passes_hard_criteria(row, job)]
-    primary_ids = {student_id(row) for row in primary_students}
-    fallback_students = [row for row in unseen_students if student_id(row) not in primary_ids]
+    eligible_students = [row for row in unseen_students if passes_hard_criteria(row, job)]
 
     def score_student_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         scored_rows = []
@@ -732,7 +1016,7 @@ def recruiter_feed_with_track(
             scored_rows.append(enriched)
         return scored_rows
 
-    scored = score_student_rows(primary_students) + score_student_rows(fallback_students)
+    scored = score_student_rows(eligible_students)
     scored.sort(key=lambda row: (
         student_id(row) not in interested_rank,
         interested_rank.get(student_id(row), 999999),
@@ -751,9 +1035,13 @@ def recruiter_interested(user=Depends(get_current_recruiter)):
     for row in rows:
         if has_row("matches", {"student_id": row["student_id"], "job_id": row["job_id"]}):
             continue
+        job = get_job(row["job_id"])
         result = execute_supabase(lambda: supabase.table("students").select("*").eq("student_id", row["student_id"]).maybe_single())
         if result and result.data:
-            cards.append(student_to_card(result.data, row["job_id"]))
+            student = build_student_model_input(result.data)
+            if not passes_hard_criteria(student, job):
+                continue
+            cards.append(student_to_card(student, row["job_id"]))
     return {"students": cards}
 
 
@@ -777,6 +1065,14 @@ def recruiter_matches(user=Depends(get_current_recruiter)):
 
 @router.post("/recruiter/swipe/right")
 def recruiter_swipe_right(req: RecruiterSwipeRequest, user=Depends(get_current_recruiter)):
+    job = get_job(req.job_id)
+    if job.get("recruiter_id") != user["id"]:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found.")
+    result = execute_supabase(lambda: supabase.table("students").select("*").eq("student_id", req.student_id).maybe_single())
+    if not result or not result.data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Student not found.")
+    student = build_student_model_input(result.data)
+    ensure_pair_passes_hard_criteria(student, job, "This student does not meet the role's hard eligibility criteria.")
     insert_if_missing(
         "recruiter_interest",
         {"recruiter_id": user["id"], "student_id": req.student_id, "job_id": req.job_id},
@@ -788,9 +1084,26 @@ def recruiter_swipe_right(req: RecruiterSwipeRequest, user=Depends(get_current_r
 
 @router.post("/recruiter/swipe/left")
 def recruiter_swipe_left(req: RecruiterPassRequest, user=Depends(get_current_recruiter)):
-    insert_if_missing(
+    job = get_job(req.job_id)
+    if job.get("recruiter_id") != user["id"]:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found.")
+    result = execute_supabase(lambda: supabase.table("students").select("*").eq("student_id", req.student_id).maybe_single())
+    if not result or not result.data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Student not found.")
+
+    student = build_student_model_input(result.data)
+    ensure_pair_passes_hard_criteria(student, job, "This student does not meet the role's hard eligibility criteria.")
+    insight_payload = build_rejection_insight(student, job, user["id"], req.reason_code, req.reason_note)
+    upsert_row(
         "recruiter_pass",
-        {"recruiter_id": user["id"], "student_id": req.student_id},
-        {"recruiter_id": user["id"], "student_id": req.student_id},
+        {
+            "recruiter_id": user["id"],
+            "student_id": req.student_id,
+            "job_id": req.job_id,
+            "reason_code": req.reason_code,
+            "reason_note": req.reason_note,
+            "insight_payload": insight_payload,
+        },
+        ["recruiter_id", "student_id", "job_id"],
     )
     return {"passed": True}

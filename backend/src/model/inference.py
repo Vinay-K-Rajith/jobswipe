@@ -15,13 +15,10 @@ MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'models')
 
 def load_model():
     """Load trained model and scaler."""
-    with open(os.path.join(MODEL_DIR, "model.pkl"), "rb") as f:
-        model = pickle.load(f)
-    with open(os.path.join(MODEL_DIR, "scaler.pkl"), "rb") as f:
-        scaler = pickle.load(f)
-    with open(os.path.join(MODEL_DIR, "feature_columns.json"), "r") as f:
-        feature_cols = json.load(f)
-    return model, scaler, feature_cols
+    from app.services.artifact_registry import load_classifier_artifact
+
+    artifact = load_classifier_artifact()
+    return artifact["model"], artifact["scaler"], artifact["feature_cols"]
 
 
 def build_inference_features(student_features, company_data):

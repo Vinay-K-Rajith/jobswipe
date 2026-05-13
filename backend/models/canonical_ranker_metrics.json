@@ -1,0 +1,7 @@
+{
+  "trained_on": "canonical_data",
+  "num_pairs": 40000,
+  "num_queries": 50,
+  "score_mean": -3.9652960300445557,
+  "score_std": 2.0943589210510254
+}

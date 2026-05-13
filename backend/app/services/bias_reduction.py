@@ -15,6 +15,7 @@ from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from app.services.artifact_registry import load_classifier_artifact, load_fair_champion_artifact
 from src.model.inference import build_inference_features
 
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "models")
@@ -48,20 +49,16 @@ CRITERION_ALIASES = {
 SOFT_THRESHOLD = 0.35
 FAIRNESS_ARTIFACTS = {
     "baseline": {
-        "model": "model.pkl",
-        "scaler": "scaler.pkl",
-        "features": "feature_columns.json",
-        "label": "Baseline XGBoost",
-        "kind": "classic",
+        "label": "Canonical Baseline Classifier",
+        "kind": "registry_classifier",
     },
     "champion": {
-        "bundle": "fairlearn_lightgbm_eps_0.01.pkl",
-        "label": "Fairlearn LightGBM ε=0.01",
-        "kind": "bundle",
+        "label": "Canonical Fair Champion",
+        "kind": "registry_fair_champion",
     },
     "tightened": {
         "bundle": "fairlearn_lightgbm_eps_0.005.pkl",
-        "label": "Fairlearn LightGBM ε=0.005",
+        "label": "Fairlearn LightGBM eps=0.005",
         "kind": "bundle",
     },
 }
@@ -744,24 +741,25 @@ def resolve_fairness_bundle(key: str) -> Dict[str, Any]:
 
 def load_variant_artifact(key: str) -> Dict[str, Any]:
     config = FAIRNESS_ARTIFACTS[key]
-    if config["kind"] == "classic":
-        model_path = os.path.join(MODEL_DIR, config["model"])
-        scaler_path = os.path.join(MODEL_DIR, config["scaler"])
-        feature_path = os.path.join(MODEL_DIR, config["features"])
-        if not (os.path.exists(model_path) and os.path.exists(scaler_path) and os.path.exists(feature_path)):
-            raise FileNotFoundError(f"Missing baseline artifact(s) for {key}")
-        with open(model_path, "rb") as model_file:
-            model = pickle.load(model_file)
-        with open(scaler_path, "rb") as scaler_file:
-            scaler = pickle.load(scaler_file)
-        with open(feature_path, "r", encoding="utf-8") as feature_file:
-            feature_cols = json.load(feature_file)
+    if config["kind"] == "registry_classifier":
+        artifact = load_classifier_artifact()
         return {
-            "model": model,
-            "scaler": scaler,
-            "feature_cols": feature_cols,
+            "model": artifact["model"],
+            "scaler": artifact["scaler"],
+            "feature_cols": artifact["feature_cols"],
             "label": config["label"],
-            "artifact_path": config["model"],
+            "artifact_path": artifact["artifact_path"],
+            "auto_selected": False,
+        }
+
+    if config["kind"] == "registry_fair_champion":
+        artifact = load_fair_champion_artifact()
+        return {
+            "model": artifact["model"],
+            "scaler": artifact["scaler"],
+            "feature_cols": artifact["feature_cols"],
+            "label": config["label"],
+            "artifact_path": artifact["artifact_path"],
             "auto_selected": False,
         }
 
@@ -771,10 +769,26 @@ def load_variant_artifact(key: str) -> Dict[str, Any]:
         raise FileNotFoundError(f"Missing fairness artifact '{resolved['bundle']}'")
     with open(bundle_path, "rb") as bundle_file:
         bundle = pickle.load(bundle_file)
-    bundle["label"] = resolved["label"]
-    bundle["artifact_path"] = resolved["bundle"]
-    bundle["auto_selected"] = resolved["auto_selected"]
-    return bundle
+    if isinstance(bundle, dict):
+        artifact = dict(bundle)
+    else:
+        scaler_path = os.path.join(MODEL_DIR, "scaler.pkl")
+        feature_path = os.path.join(MODEL_DIR, "feature_columns.json")
+        if not (os.path.exists(scaler_path) and os.path.exists(feature_path)):
+            raise FileNotFoundError("Missing shared scaler/feature metadata for fairness artifact.")
+        with open(scaler_path, "rb") as scaler_file:
+            scaler = pickle.load(scaler_file)
+        with open(feature_path, "r", encoding="utf-8") as feature_file:
+            feature_cols = json.load(feature_file)
+        artifact = {
+            "model": bundle,
+            "scaler": scaler,
+            "feature_cols": feature_cols,
+        }
+    artifact["label"] = resolved["label"]
+    artifact["artifact_path"] = resolved["bundle"]
+    artifact["auto_selected"] = resolved["auto_selected"]
+    return artifact
 
 
 def ranker_shortlist_for_company(
@@ -879,6 +893,179 @@ def fairness_comparison(
         "company_id": company_id,
         "reference_shortlist": reference_shortlist,
         "variants": response_variants,
+    })
+
+
+def load_model_json(filename: str) -> Dict[str, Any]:
+    path = os.path.join(MODEL_DIR, filename)
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def build_variant_ranking_frame(
+    company_id: str,
+    variant_key: str,
+    students_df: pd.DataFrame,
+    companies_df: pd.DataFrame,
+    student_features_df: pd.DataFrame,
+) -> tuple[pd.DataFrame, Dict[str, Any]]:
+    artifact = load_variant_artifact(variant_key)
+    feature_df = build_company_feature_matrix(company_id, students_df, companies_df, student_features_df)
+    audit = feature_df.merge(
+        students_df[["student_id", "full_name", "department", "gender", "cgpa"]],
+        on="student_id",
+        how="left",
+    )
+    X = audit[artifact["feature_cols"]].fillna(0)
+    X_scaled = artifact["scaler"].transform(X)
+    probabilities = score_variant_probabilities(artifact["model"], X_scaled)
+    ranked = audit.assign(score=probabilities).sort_values(["score", "student_id"], ascending=[False, True]).reset_index(drop=True)
+    ranked["rank"] = np.arange(1, len(ranked) + 1)
+    ranked["is_non_cse"] = ranked["department"].fillna("") != "CSE"
+    return ranked, artifact
+
+
+def top_twenty_snapshot(frame: pd.DataFrame) -> Dict[str, Any]:
+    top = frame.head(20).copy()
+    female_count = int(top["gender"].fillna("").isin(["F", "Female"]).sum())
+    non_cse_count = int(top["is_non_cse"].sum())
+    return {
+        "female_count": female_count,
+        "non_cse_count": non_cse_count,
+        "departments": sorted({dept for dept in top["department"].fillna("").tolist() if dept}),
+        "students": top[["rank", "student_id", "full_name", "department", "gender", "cgpa", "score"]]
+        .assign(score=lambda df: df["score"].round(4), cgpa=lambda df: df["cgpa"].round(2))
+        .to_dict(orient="records"),
+    }
+
+
+def average_rank_change(frame: pd.DataFrame, mask: pd.Series, label: str) -> Optional[Dict[str, Any]]:
+    group = frame.loc[mask].copy()
+    if group.empty:
+        return None
+    return {
+        "label": label,
+        "count": int(len(group)),
+        "baseline_avg_rank": round(float(group["baseline_rank"].mean()), 2),
+        "champion_avg_rank": round(float(group["champion_rank"].mean()), 2),
+        "avg_rank_improvement": round(float(group["rank_improvement"].mean()), 2),
+        "median_rank_improvement": round(float(group["rank_improvement"].median()), 2),
+    }
+
+
+def department_rate_extremes(report: Dict[str, Any]) -> Dict[str, Any]:
+    rates = (((report.get("department_parity") or {}).get("group_rates")) or {})
+    if not rates:
+        return {}
+    highest = max(rates.items(), key=lambda item: item[1])
+    lowest = min(rates.items(), key=lambda item: item[1])
+    return {
+        "highest_department": highest[0],
+        "highest_rate": round(float(highest[1]), 4),
+        "lowest_department": lowest[0],
+        "lowest_rate": round(float(lowest[1]), 4),
+    }
+
+
+def representative_female_shift(frame: pd.DataFrame) -> Optional[Dict[str, Any]]:
+    female_rows = frame[frame["gender"].fillna("").isin(["F", "Female"])].copy()
+    if female_rows.empty:
+        return None
+    female_rows["distance_to_target"] = (female_rows["baseline_rank"] - 47).abs()
+    chosen = female_rows.sort_values(
+        ["distance_to_target", "rank_improvement", "champion_rank"],
+        ascending=[True, False, True],
+    ).iloc[0]
+    return {
+        "student_id": chosen["student_id"],
+        "full_name": chosen["full_name"],
+        "department": chosen["department"],
+        "baseline_rank": int(chosen["baseline_rank"]),
+        "champion_rank": int(chosen["champion_rank"]),
+        "rank_improvement": int(chosen["rank_improvement"]),
+    }
+
+
+def jobswipe_feed_replay(
+    company_id: str,
+    students_df: pd.DataFrame,
+    companies_df: pd.DataFrame,
+    student_features_df: pd.DataFrame,
+) -> Dict[str, Any]:
+    company = get_company_record(companies_df, company_id)
+    baseline_frame, baseline_artifact = build_variant_ranking_frame(
+        company_id, "baseline", students_df, companies_df, student_features_df
+    )
+    champion_frame, champion_artifact = build_variant_ranking_frame(
+        company_id, "champion", students_df, companies_df, student_features_df
+    )
+
+    merged = baseline_frame[["student_id", "full_name", "department", "gender", "cgpa", "score", "rank"]].rename(
+        columns={"score": "baseline_score", "rank": "baseline_rank"}
+    ).merge(
+        champion_frame[["student_id", "score", "rank"]],
+        on="student_id",
+        how="inner",
+    ).rename(columns={"score": "champion_score", "rank": "champion_rank"})
+    merged["rank_improvement"] = merged["baseline_rank"] - merged["champion_rank"]
+    merged["is_non_cse"] = merged["department"].fillna("") != "CSE"
+
+    fairness_report = load_model_json("fairness_report.json")
+    ranking_evaluation = load_model_json("ranking_evaluation.json")
+    department_parity = fairness_report.get("department_parity") or {}
+    gender_parity = fairness_report.get("gender_parity") or {}
+
+    rank_change_summary = list(filter(None, [
+        average_rank_change(merged, merged["gender"].fillna("").isin(["F", "Female"]), "Female students"),
+        average_rank_change(merged, merged["gender"].fillna("").isin(["M", "Male"]), "Male students"),
+        average_rank_change(merged, merged["is_non_cse"], "Non-CSE departments"),
+        average_rank_change(merged, ~merged["is_non_cse"], "CSE"),
+    ]))
+
+    department_movers = []
+    for department, group in merged.groupby("department"):
+        department_movers.append({
+            "department": department,
+            "count": int(len(group)),
+            "avg_rank_improvement": round(float(group["rank_improvement"].mean()), 2),
+        })
+    department_movers.sort(key=lambda item: item["avg_rank_improvement"], reverse=True)
+
+    top_movers = merged.sort_values("rank_improvement", ascending=False).head(12)
+    top_drops = merged.sort_values("rank_improvement", ascending=True).head(12)
+
+    return clean_nan({
+        "company_id": company_id,
+        "company_name": company.get("company_name"),
+        "role_offered": company.get("role_offered"),
+        "student_pool_size": int(len(merged)),
+        "artifacts": {
+            "baseline": baseline_artifact.get("artifact_path"),
+            "champion": champion_artifact.get("artifact_path"),
+        },
+        "headline_metrics": {
+            "ndcg_fairness_gap": ranking_evaluation.get("fairness_by_gender", {}).get("ndcg@10_fairness_gap"),
+            "gender_parity_disparity": gender_parity.get("disparity"),
+            "department_parity_disparity": department_parity.get("disparity"),
+            "gender_parity_fair": gender_parity.get("fair"),
+            "department_parity_fair": department_parity.get("fair"),
+            **department_rate_extremes(fairness_report),
+        },
+        "top20": {
+            "baseline": top_twenty_snapshot(baseline_frame),
+            "champion": top_twenty_snapshot(champion_frame),
+        },
+        "rank_change_summary": rank_change_summary,
+        "department_rank_change": department_movers,
+        "representative_female_shift": representative_female_shift(merged),
+        "top_upward_movers": top_movers[[
+            "student_id", "full_name", "department", "gender", "baseline_rank", "champion_rank", "rank_improvement"
+        ]].to_dict(orient="records"),
+        "top_downward_movers": top_drops[[
+            "student_id", "full_name", "department", "gender", "baseline_rank", "champion_rank", "rank_improvement"
+        ]].to_dict(orient="records"),
     })
 
 

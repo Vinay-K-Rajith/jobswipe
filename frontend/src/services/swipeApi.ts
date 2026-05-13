@@ -65,6 +65,60 @@ export interface MatchItem {
   matched_at: string;
 }
 
+export interface RejectionInsightWeakness {
+  label: string;
+  severity: 'high' | 'medium' | 'low' | string;
+  detail: string;
+}
+
+export interface RejectionInsightSkill {
+  skill: string;
+  source: 'required' | 'preferred' | string;
+  reason: string;
+}
+
+export interface RejectionImprovementAction {
+  priority: number;
+  category: string;
+  type: string;
+  title: string;
+  description: string;
+  actions: string[];
+  timeline: string;
+  difficulty: string;
+}
+
+export interface StudentRejectionInsight {
+  id: string;
+  student_id: string;
+  recruiter_id?: string;
+  job_id: string;
+  created_at: string;
+  company_name: string;
+  role_title: string;
+  reason_code: string;
+  reason_label: string;
+  reason_note?: string;
+  headline: string;
+  match_snapshot: {
+    overall_score?: number;
+    breakdown?: Record<string, number>;
+    rank_position?: number;
+    pool_size?: number;
+  };
+  competitive_weaknesses: RejectionInsightWeakness[];
+  peer_comparison: Record<string, number>;
+  criteria_snapshot: {
+    required_skill_match_ratio?: number;
+    preferred_skill_match_ratio?: number;
+    missing_required_skills?: string[];
+    hard_failures?: string[];
+    soft_weaknesses?: string[];
+  };
+  skill_gap_focus: RejectionInsightSkill[];
+  improvement_plan: RejectionImprovementAction[];
+}
+
 export interface RecruiterJobInput {
   role_title: string;
   industry: string;
@@ -93,6 +147,9 @@ export const getStudentInterested = () =>
 export const getStudentMatches = () =>
   api.get<{ matches: MatchItem[] }>('/student/matches');
 
+export const getStudentRejectionInsights = () =>
+  api.get<{ insights: StudentRejectionInsight[] }>('/student/rejection-insights');
+
 export const studentSwipeRight = (jobId: string) =>
   api.post<{ matched: boolean }>('/student/swipe/right', { job_id: jobId });
 
@@ -111,8 +168,13 @@ export const getRecruiterMatches = () =>
 export const recruiterSwipeRight = (studentId: string, jobId: string) =>
   api.post<{ matched: boolean }>('/recruiter/swipe/right', { student_id: studentId, job_id: jobId });
 
-export const recruiterSwipeLeft = (studentId: string) =>
-  api.post<{ passed: boolean }>('/recruiter/swipe/left', { student_id: studentId });
+export const recruiterSwipeLeft = (studentId: string, jobId: string, reasonCode = 'selected_stronger_match', reasonNote?: string) =>
+  api.post<{ passed: boolean }>('/recruiter/swipe/left', {
+    student_id: studentId,
+    job_id: jobId,
+    reason_code: reasonCode,
+    reason_note: reasonNote,
+  });
 
 export const createRecruiterJob = (payload: RecruiterJobInput) =>
   api.post<JobCardData>('/recruiter/jobs', payload);

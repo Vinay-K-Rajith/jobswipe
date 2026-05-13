@@ -515,6 +515,70 @@ export interface FairnessHistoryResponse {
   history: FairnessHistoryPoint[];
 }
 
+export interface FeedReplayStudent {
+  rank?: number;
+  student_id: string;
+  full_name: string;
+  department: string;
+  gender?: string;
+  cgpa?: number;
+  score?: number;
+  baseline_rank?: number;
+  champion_rank?: number;
+  rank_improvement?: number;
+}
+
+export interface FeedReplayTop20 {
+  female_count: number;
+  non_cse_count: number;
+  departments: string[];
+  students: FeedReplayStudent[];
+}
+
+export interface FeedReplayRankSummary {
+  label: string;
+  count: number;
+  baseline_avg_rank: number;
+  champion_avg_rank: number;
+  avg_rank_improvement: number;
+  median_rank_improvement: number;
+}
+
+export interface JobSwipeFeedReplay {
+  company_id: string;
+  company_name: string;
+  role_offered?: string;
+  student_pool_size: number;
+  artifacts: {
+    baseline: string;
+    champion: string;
+  };
+  headline_metrics: {
+    ndcg_fairness_gap?: number;
+    gender_parity_disparity?: number;
+    department_parity_disparity?: number;
+    gender_parity_fair?: boolean;
+    department_parity_fair?: boolean;
+    highest_department?: string;
+    highest_rate?: number;
+    lowest_department?: string;
+    lowest_rate?: number;
+  };
+  top20: {
+    baseline: FeedReplayTop20;
+    champion: FeedReplayTop20;
+  };
+  rank_change_summary: FeedReplayRankSummary[];
+  department_rank_change: Array<{
+    department: string;
+    count: number;
+    avg_rank_improvement: number;
+  }>;
+  representative_female_shift?: FeedReplayStudent;
+  top_upward_movers: FeedReplayStudent[];
+  top_downward_movers: FeedReplayStudent[];
+}
+
 export interface SkillDeficit {
   skill: string;
   students_with_skill: number;
@@ -611,6 +675,9 @@ export const previewSubstitution = (companyId: string, spec: CounterfactualCandi
 
 export const getMLFairnessComparison = (companyId: string) =>
   api.get<MLFairnessComparison>('/api/bias/ml-fairness-comparison', { params: { company_id: companyId } });
+
+export const getJobSwipeFeedReplay = (companyId: string) =>
+  api.get<JobSwipeFeedReplay>('/api/bias/jobswipe-feed-replay', { params: { company_id: companyId } });
 
 export const retrainConstrainedModel = (companyId: string, epsilon: number, triggeredBy = 'admin-dashboard') =>
   api.post<RetrainConstrainedResponse>('/api/bias/retrain-constrained', {

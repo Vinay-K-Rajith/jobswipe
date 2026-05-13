@@ -279,8 +279,12 @@ create table if not exists public.recruiter_pass (
     id uuid primary key default gen_random_uuid(),
     recruiter_id uuid references public.recruiters(id) on delete cascade,
     student_id text not null references public.students(student_id) on delete cascade,
+    job_id uuid references public.jobs(id) on delete cascade,
+    reason_code text not null default 'selected_stronger_match',
+    reason_note text,
+    insight_payload jsonb not null default '{}'::jsonb,
     created_at timestamptz default now(),
-    unique (recruiter_id, student_id)
+    unique (recruiter_id, student_id, job_id)
 );
 
 create index if not exists idx_students_student_id on public.students(student_id);
@@ -304,6 +308,7 @@ create index if not exists idx_student_interest_student on public.student_intere
 create index if not exists idx_recruiter_interest_recruiter on public.recruiter_interest(recruiter_id);
 create index if not exists idx_matches_student on public.matches(student_id);
 create index if not exists idx_matches_recruiter on public.matches(recruiter_id);
+create index if not exists idx_recruiter_pass_student_job on public.recruiter_pass(student_id, job_id, created_at desc);
 
 alter table public.students enable row level security;
 alter table public.recruiters enable row level security;
@@ -376,3 +381,5 @@ drop policy if exists "Allow all reads on student_pass" on public.student_pass;
 create policy "Allow all reads on student_pass" on public.student_pass for select using (true);
 drop policy if exists "Allow all reads on recruiter_pass" on public.recruiter_pass;
 create policy "Allow all reads on recruiter_pass" on public.recruiter_pass for select using (true);
+drop policy if exists "Allow write recruiter pass" on public.recruiter_pass;
+create policy "Allow write recruiter pass" on public.recruiter_pass for all using (true) with check (true);

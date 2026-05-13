@@ -76,7 +76,7 @@ export default function RecruiterBrowse() {
   async function removeStudent(student: StudentCardData, liked: boolean) {
     if (!jobId) return;
     if (liked) await recruiterSwipeRight(student.student_id, jobId);
-    else await recruiterSwipeLeft(student.student_id);
+    else await recruiterSwipeLeft(student.student_id, jobId);
     const remaining = students.filter((item) => item.student_id !== student.student_id);
     setStudents(remaining);
     if (!remaining.length) {

@@ -37,18 +37,25 @@ from app.services.bias_reduction import (
     counterfactual_rules,
     fairness_comparison,
     get_fairness_history,
+    jobswipe_feed_replay,
     load_bias_recommendations,
     preview_substitution,
     retrain_constrained_model,
     save_bias_recommendation,
     simulate_fix,
 )
+from app.services.artifact_registry import load_classifier_artifact, load_ranker_artifact
 from app.routers import auth, resume, swipe
 
 # Try to load classifier model (may not be trained yet)
 try:
-    from src.model.inference import load_model, run_inference, build_inference_features
-    model, scaler, feature_cols = load_model()
+    from src.model.inference import run_inference, build_inference_features
+    classifier_artifact = load_classifier_artifact()
+    model, scaler, feature_cols = (
+        classifier_artifact["model"],
+        classifier_artifact["scaler"],
+        classifier_artifact["feature_cols"],
+    )
     MODEL_LOADED = True
 except Exception as e:
     print(f"Warning: Classifier model not loaded: {e}")
@@ -59,9 +66,10 @@ except Exception as e:
 try:
     import pickle, json as _json
     _mdir = os.path.join(os.path.dirname(__file__), '..', 'models')
-    with open(os.path.join(_mdir, 'ranker.pkl'), 'rb') as f:           ranker = pickle.load(f)
-    with open(os.path.join(_mdir, 'ranker_scaler.pkl'), 'rb') as f:   ranker_scaler = pickle.load(f)
-    with open(os.path.join(_mdir, 'ranker_feature_columns.json')) as f: ranker_feat_cols = _json.load(f)
+    ranker_artifact = load_ranker_artifact()
+    ranker = ranker_artifact["model"]
+    ranker_scaler = ranker_artifact["scaler"]
+    ranker_feat_cols = ranker_artifact["feature_cols"]
     RANKER_LOADED = True
     print("Option 1 ranker loaded")
 except Exception as e:
@@ -791,15 +799,36 @@ async def get_bias_report(flagged_only: bool = False):
     with open(_bias_report_path) as f:
         report = json.load(f)
 
+    available_company_ids = None
+    if companies_df is not None and not companies_df.empty and "company_id" in companies_df.columns:
+        available_company_ids = set(companies_df["company_id"].astype(str))
+
+    flagged_companies = report.get("flagged_companies", [])
+    all_companies = report.get("all_companies", [])
+    if available_company_ids is not None:
+        flagged_companies = [
+            company for company in flagged_companies
+            if str(company.get("company_id", "")) in available_company_ids
+        ]
+        all_companies = [
+            company for company in all_companies
+            if str(company.get("company_id", "")) in available_company_ids
+        ]
+
+    summary = dict(report["summary"])
+    summary["n_companies"] = len(all_companies)
+    summary["n_flagged"] = len(flagged_companies)
+    summary["flag_rate"] = round(len(flagged_companies) / len(all_companies), 4) if all_companies else 0.0
+
     if flagged_only:
         return clean_nan({
-            "summary": report["summary"],
-            "flagged_companies": report["flagged_companies"],
+            "summary": summary,
+            "flagged_companies": flagged_companies,
         })
 
     # Return summary + flat company list (without full nested analysis for API speed)
     companies_flat = []
-    for c in report.get("all_companies", []):
+    for c in all_companies:
         ga = c.get("gender_analysis", {})
         da = c.get("dept_analysis", {})
         cd = c.get("criteria_diagnosis", {})
@@ -819,8 +848,8 @@ async def get_bias_report(flagged_only: bool = False):
         })
 
     return clean_nan({
-        "summary": report["summary"],
-        "flagged_companies": report["flagged_companies"],
+        "summary": summary,
+        "flagged_companies": flagged_companies,
         "all_companies": companies_flat,
     })
 
@@ -919,6 +948,25 @@ async def get_ml_fairness_comparison(company_id: str):
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"ML fairness comparison failed: {exc}")
+
+
+@app.get("/api/bias/jobswipe-feed-replay")
+async def get_jobswipe_feed_replay(company_id: str):
+    if students_df is None or companies_df is None or student_features_df is None:
+        raise HTTPException(status_code=500, detail="Data not loaded")
+    try:
+        return jobswipe_feed_replay(
+            company_id,
+            students_df,
+            companies_df,
+            student_features_df,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"JobSwipe feed replay failed: {exc}")
 
 
 @app.post("/api/bias/retrain-constrained")

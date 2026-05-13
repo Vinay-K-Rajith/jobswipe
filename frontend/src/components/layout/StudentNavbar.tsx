@@ -21,6 +21,7 @@ export default function StudentNavbar({ interestedCount = 0 }: StudentNavbarProp
             Interested {interestedCount > 0 && <span className="nav-badge">{interestedCount}</span>}
           </Link>
           <Link to="/student/matches" className={active('/student/matches')}>Matches</Link>
+          <Link to="/student/rejections" className={active('/student/rejections')}>Rejection Insights</Link>
           <Link to="/student/profile" className={active('/student/profile')}>Profile</Link>
         </div>
         <div className="navbar-actions">

@@ -24,6 +24,7 @@ export default function Navbar() {
                <Link to="/eligibility" className={isActive('/eligibility')}>Eligibility Engine</Link>
                <Link to="/ranking" className={isActive('/ranking')}>ML Ranked Shortlist</Link>
                <Link to="/bias" className={isActive('/bias')}>Bias Report</Link>
+               <Link to="/feed-replay" className={isActive('/feed-replay')}>Feed Replay</Link>
              </>
           ) : (
             <>

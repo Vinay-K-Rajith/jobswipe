@@ -12,12 +12,14 @@ import CompaniesPage from './pages/CompaniesPage'
 import EligibilityEngine from './pages/EligibilityEngine'
 import MLRankedShortlist from './pages/MLRankedShortlist'
 import BiasDetection from './pages/BiasDetection'
+import JobSwipeFeedReplayPage from './pages/JobSwipeFeedReplay'
 
 import LoginPage from './pages/LoginPage'
 import StudentBrowse from './pages/student/StudentBrowse'
 import StudentInterested from './pages/student/StudentInterested'
 import StudentMatches from './pages/student/StudentMatches'
 import StudentProfile from './pages/student/StudentProfile'
+import StudentRejectionInsights from './pages/student/StudentRejectionInsights'
 import RecruiterBrowse from './pages/recruiter/RecruiterBrowse'
 import RecruiterInterested from './pages/recruiter/RecruiterInterested'
 import RecruiterMatches from './pages/recruiter/RecruiterMatches'
@@ -82,11 +84,13 @@ function App() {
         <Route path="/eligibility" element={<AdminRoute><EligibilityEngine /></AdminRoute>} />
         <Route path="/ranking" element={<AdminRoute><MLRankedShortlist /></AdminRoute>} />
         <Route path="/bias" element={<AdminRoute><BiasDetection /></AdminRoute>} />
+        <Route path="/feed-replay" element={<AdminRoute><JobSwipeFeedReplayPage /></AdminRoute>} />
 
         {/* Student Routes */}
         <Route path="/student/browse" element={<StudentRoute><StudentBrowse /></StudentRoute>} />
         <Route path="/student/interested" element={<StudentRoute><StudentInterested /></StudentRoute>} />
         <Route path="/student/matches" element={<StudentRoute><StudentMatches /></StudentRoute>} />
+        <Route path="/student/rejections" element={<StudentRoute><StudentRejectionInsights /></StudentRoute>} />
         <Route path="/student/profile" element={<StudentRoute><StudentProfile /></StudentRoute>} />
 
         {/* Recruiter Routes */}
