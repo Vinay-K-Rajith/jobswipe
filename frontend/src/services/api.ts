@@ -2,6 +2,29 @@ import axios from 'axios';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+function buildApiCandidates(base: string) {
+  const candidates = [base];
+
+  try {
+    const url = new URL(base);
+    const alternateHost = url.hostname === 'localhost'
+      ? '127.0.0.1'
+      : url.hostname === '127.0.0.1'
+        ? 'localhost'
+        : '';
+
+    if (alternateHost) {
+      candidates.push(`${url.protocol}//${alternateHost}${url.port ? `:${url.port}` : ''}`);
+    }
+  } catch {
+    // Keep the configured base URL if parsing fails.
+  }
+
+  return Array.from(new Set(candidates));
+}
+
+const API_BASE_CANDIDATES = buildApiCandidates(API_BASE);
+
 const api = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
@@ -14,6 +37,29 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const config = error.config as any;
+    const currentBase = config?.baseURL || API_BASE;
+    const currentIndex = API_BASE_CANDIDATES.indexOf(currentBase);
+    const hasNetworkError = !!error && !error.response;
+
+    if (!config || !hasNetworkError) {
+      return Promise.reject(error);
+    }
+
+    const nextBase = API_BASE_CANDIDATES[currentIndex + 1];
+    if (!nextBase || config.__jobswipeRetried) {
+      return Promise.reject(error);
+    }
+
+    config.__jobswipeRetried = true;
+    config.baseURL = nextBase;
+    return api.request(config);
+  },
+);
 
 // --- Types ---
 export interface Student {

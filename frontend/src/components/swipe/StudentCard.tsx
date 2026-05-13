@@ -21,10 +21,6 @@ function chips(values: string[], limit = 6) {
   return values.filter(Boolean).slice(0, limit).map((skill) => <span className="swipe-chip" key={skill}>{skill}</span>);
 }
 
-function percent(value: number | undefined) {
-  return `${Math.round((value || 0) * 100)}%`;
-}
-
 interface StudentCardProps {
   student: StudentCardData;
   expanded: boolean;
@@ -38,7 +34,6 @@ export default function StudentCard({ student, expanded, onToggle }: StudentCard
         <>
           <div className="student-card-art" style={{ background: deptColour(student.department) }}>
             <span className="card-tag">{student.department}</span>
-            <span className="phi-badge">Phi {student.phi_score.toFixed(2)}</span>
             <div className="card-art-mark">
               <IconSchool size={38} />
               <strong>{student.full_name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()}</strong>
@@ -54,10 +49,6 @@ export default function StudentCard({ student, expanded, onToggle }: StudentCard
             <p>{student.degree} / {student.university} / {student.graduation_year}</p>
             <em>{student.highlight_line || 'Best project: Built a production-minded analytics project with clean documentation.'}</em>
             {student.preference_summary && <div className="detail-line strong-line">{student.preference_summary}</div>}
-            <div className="match-score-strip">
-              <span>Match</span>
-              <strong>{percent(student.phi_score)}</strong>
-            </div>
             <div className="student-strip">
               <span className="gpa-chip">GPA {student.cgpa.toFixed(2)}</span>
               {chips(student.skills, 3)}
@@ -77,17 +68,6 @@ export default function StudentCard({ student, expanded, onToggle }: StudentCard
             <div className="detail-section">
               <strong>Preferences</strong>
               <span>{student.preference_summary}</span>
-            </div>
-          )}
-          {!!student.match_breakdown && (
-            <div className="detail-section">
-              <strong>TalentForge match</strong>
-              <div className="match-breakdown-grid">
-                <span>Skills <b>{percent(student.match_breakdown.skills)}</b></span>
-                <span>Role <b>{percent(student.match_breakdown.role)}</b></span>
-                <span>Category <b>{percent(student.match_breakdown.category)}</b></span>
-                <span>Overall <b>{percent(student.match_breakdown.overall)}</b></span>
-              </div>
             </div>
           )}
           <div className="detail-section">

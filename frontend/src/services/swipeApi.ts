@@ -19,7 +19,14 @@ export interface JobCardData {
   candidate_level?: string;
   job_type?: string;
   phi_score: number;
+  min_cgpa?: number;
+  allowed_departments?: string[];
+  grad_years_eligible?: number[];
+  is_active?: boolean;
+  created_at?: string;
 }
+
+export type BrowseTrack = 'internship' | 'full-time';
 
 export interface StudentCardData {
   student_id: string;
@@ -73,8 +80,12 @@ export interface RecruiterJobInput {
   grad_years_eligible: number[];
 }
 
-export const getStudentFeed = (limit = 20, offset = 0) =>
-  api.get<{ jobs: JobCardData[] }>('/student/feed', { params: { limit, offset } });
+export interface RecruiterJobUpdateInput extends RecruiterJobInput {
+  is_active: boolean;
+}
+
+export const getStudentFeed = (jobType?: BrowseTrack, limit = 20, offset = 0) =>
+  api.get<{ jobs: JobCardData[] }>('/student/feed', { params: { job_type: jobType, limit, offset } });
 
 export const getStudentInterested = () =>
   api.get<{ jobs: JobCardData[] }>('/student/interested');
@@ -88,8 +99,8 @@ export const studentSwipeRight = (jobId: string) =>
 export const studentSwipeLeft = (jobId: string) =>
   api.post<{ passed: boolean }>('/student/swipe/left', { job_id: jobId });
 
-export const getRecruiterFeed = (jobId?: string, limit = 20, offset = 0) =>
-  api.get<{ students: StudentCardData[] }>('/recruiter/feed', { params: { job_id: jobId, limit, offset } });
+export const getRecruiterFeed = (jobId?: string, preferenceType?: BrowseTrack, limit = 20, offset = 0) =>
+  api.get<{ students: StudentCardData[] }>('/recruiter/feed', { params: { job_id: jobId, preference_type: preferenceType, limit, offset } });
 
 export const getRecruiterInterested = () =>
   api.get<{ students: StudentCardData[] }>('/recruiter/interested');
@@ -108,3 +119,12 @@ export const createRecruiterJob = (payload: RecruiterJobInput) =>
 
 export const getRecruiterJobs = () =>
   api.get<{ jobs: JobCardData[] }>('/recruiter/jobs');
+
+export const updateRecruiterJob = (jobId: string, payload: RecruiterJobUpdateInput) =>
+  api.put<JobCardData>(`/recruiter/jobs/${jobId}`, payload);
+
+export const setRecruiterJobStatus = (jobId: string, isActive: boolean) =>
+  api.post<JobCardData>(`/recruiter/jobs/${jobId}/status`, { is_active: isActive });
+
+export const deleteRecruiterJob = (jobId: string) =>
+  api.post<{ deleted: boolean; job_id: string }>(`/recruiter/jobs/${jobId}/delete`);

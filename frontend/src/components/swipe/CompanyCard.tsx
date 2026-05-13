@@ -49,7 +49,6 @@ export default function CompanyCard({ job, expanded, onToggle }: CompanyCardProp
         <>
           <div className="company-card-art" style={{ background: colourForIndustry(job.industry) }}>
             <span className="card-tag">{job.industry || 'Role'}</span>
-            <span className="phi-badge">Phi {job.phi_score.toFixed(2)}</span>
             <div className="card-art-mark">
               <IconBuildingSkyscraper size={38} />
               <strong>{job.company_name.slice(0, 2).toUpperCase()}</strong>

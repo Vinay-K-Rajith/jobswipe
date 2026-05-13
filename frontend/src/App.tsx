@@ -93,7 +93,8 @@ function App() {
         <Route path="/recruiter/browse" element={<RecruiterRoute><RecruiterBrowse /></RecruiterRoute>} />
         <Route path="/recruiter/interested" element={<RecruiterRoute><RecruiterInterested /></RecruiterRoute>} />
         <Route path="/recruiter/matches" element={<RecruiterRoute><RecruiterMatches /></RecruiterRoute>} />
-        <Route path="/recruiter/post" element={<RecruiterRoute><RecruiterPostJob /></RecruiterRoute>} />
+        <Route path="/recruiter/roles" element={<RecruiterRoute><RecruiterPostJob /></RecruiterRoute>} />
+        <Route path="/recruiter/post" element={<Navigate to="/recruiter/roles" replace />} />
         <Route path="/recruiter/profile" element={<RecruiterRoute><RecruiterProfile /></RecruiterRoute>} />
         
         {/* Catch all */}

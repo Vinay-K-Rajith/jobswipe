@@ -1,0 +1,4 @@
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 800 students, 50 companies
+INFO:     127.0.0.1:59230 - "GET / HTTP/1.1" 200 OK

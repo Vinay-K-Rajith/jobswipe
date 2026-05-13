@@ -3,28 +3,42 @@ import { IconFileCheck, IconUpload } from '@tabler/icons-react';
 import CardCarousel from '../../components/swipe/CardCarousel';
 import CompanyCard from '../../components/swipe/CompanyCard';
 import { uploadStudentResume } from '../../services/api';
-import { JobCardData, getStudentFeed, studentSwipeLeft, studentSwipeRight } from '../../services/swipeApi';
+import { BrowseTrack, JobCardData, getStudentFeed, studentSwipeLeft, studentSwipeRight } from '../../services/swipeApi';
 import { useAuthStore } from '../../store/authStore';
 
 export default function StudentBrowse() {
   const studentId = useAuthStore((state) => state.userId);
   const [jobs, setJobs] = useState<JobCardData[]>([]);
+  const [track, setTrack] = useState<BrowseTrack>('internship');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  async function loadFeed() {
+    const response = await getStudentFeed(track);
+    setJobs(response.data.jobs);
+  }
+
   useEffect(() => {
-    getStudentFeed()
-      .then((response) => setJobs(response.data.jobs))
+    setLoading(true);
+    loadFeed()
       .catch((err) => setError(err?.response?.data?.detail || 'Could not load your company feed.'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [track]);
 
   async function removeJob(job: JobCardData, liked: boolean) {
     if (liked) await studentSwipeRight(job.id);
     else await studentSwipeLeft(job.id);
-    setJobs((current) => current.filter((item) => item.id !== job.id));
+    const remaining = jobs.filter((item) => item.id !== job.id);
+    setJobs(remaining);
+    if (!remaining.length) {
+      try {
+        await loadFeed();
+      } catch {
+        // Keep the empty state if the refresh fails.
+      }
+    }
   }
 
   async function handleResumeUpload(file?: File) {
@@ -46,9 +60,7 @@ export default function StudentBrowse() {
         type: 'success',
         text: `Resume parsed and profile updated. CGPA, skills, projects, certifications, internships, and research details were synced where found.`,
       });
-      getStudentFeed()
-        .then((response) => setJobs(response.data.jobs))
-        .catch(() => undefined);
+      loadFeed().catch(() => undefined);
     } catch (err: any) {
       setUploadMessage({
         type: 'error',
@@ -68,7 +80,11 @@ export default function StudentBrowse() {
         <h1>Browse roles</h1>
         <p>Swipe through roles selected for your profile and criteria fit.</p>
       </header>
-      <section className="resume-upload-panel">
+      <div className="tier-tabs browse-track-tabs">
+        <button type="button" className={track === 'internship' ? 'active' : ''} onClick={() => setTrack('internship')}>Internships</button>
+        <button type="button" className={track === 'full-time' ? 'active' : ''} onClick={() => setTrack('full-time')}>Full-time</button>
+      </div>
+      <section className="resume-upload-panel student-browse-resume-panel">
         <div>
           <span className="bento-eyebrow"><IconFileCheck size={15} /> Resume profile</span>
           <p>Upload your latest PDF resume to refresh your skills, projects, certifications, internships, and research profile.</p>
@@ -88,7 +104,7 @@ export default function StudentBrowse() {
         </label>
       </section>
       {uploadMessage && (
-        <section className={`resume-upload-status ${uploadMessage.type}`}>
+        <section className={`resume-upload-status student-browse-resume-status ${uploadMessage.type}`}>
           <IconFileCheck size={17} />
           <span>{uploadMessage.text}</span>
         </section>
@@ -100,8 +116,8 @@ export default function StudentBrowse() {
         renderCard={(job, expanded, toggle) => <CompanyCard job={job} expanded={expanded} onToggle={toggle} />}
         onPass={(job) => removeJob(job, false)}
         onLike={(job) => removeJob(job, true)}
-        emptyTitle="No more roles right now"
-        emptyText="You have reached the end of your current feed."
+        emptyTitle={`No more ${track === 'internship' ? 'internships' : 'full-time roles'} right now`}
+        emptyText={`You have reached the end of your current ${track === 'internship' ? 'internship' : 'full-time'} feed.`}
       />
     </main>
   );
