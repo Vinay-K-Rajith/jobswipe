@@ -63,7 +63,21 @@ def as_list(value: Any) -> List[str]:
     if not value:
         return []
     if isinstance(value, list):
-        return [clean_text(item) for item in value if clean_text(item)]
+        normalized = []
+        for item in value:
+            if isinstance(item, dict):
+                item = (
+                    item.get("skill_name")
+                    or item.get("cert_name")
+                    or item.get("project_title")
+                    or item.get("title")
+                    or item.get("name")
+                    or ""
+                )
+            text = clean_text(item)
+            if text:
+                normalized.append(text)
+        return normalized
     return [item.strip() for item in re.split(r"[,;|]", str(value)) if item.strip()]
 
 
@@ -76,6 +90,10 @@ def normalize_department(value: Any) -> str:
     if token in {"CSE", "IT", "AIML", "AIDS", "ECE", "EEE", "MECH", "CIVIL"}:
         return token
     return RNG.choice(["CSE", "IT", "AIML", "AIDS", "ECE"])
+
+
+def normalize_name(value: Any) -> str:
+    return re.sub(r"[^a-z]+", " ", clean_text(value).lower()).strip()
 
 
 def extract_zip(zip_path: Path) -> None:
@@ -267,13 +285,50 @@ def parser_metrics(rows: List[Dict[str, Any]], parsed_records: List[Dict[str, An
     backed = [row for row in rows if not row["synthetic_ground_truth"]]
     by_format: Dict[str, Dict[str, Any]] = {}
     parsed_by_id = {item["student_id"]: item for item in parsed_records}
+    cgpa_mismatches: List[Dict[str, Any]] = []
+    identity_mismatches: List[Dict[str, Any]] = []
     for row in backed:
         parsed = parsed_by_id.get(row["student_id"], {}).get("parsed", {})
         fmt = row["resume_format"]
-        stats = by_format.setdefault(fmt, {"count": 0, "cgpa_exact": 0, "department_exact": 0, "skills_overlap": []})
+        stats = by_format.setdefault(fmt, {
+            "count": 0,
+            "evaluated_count": 0,
+            "identity_mismatch": 0,
+            "cgpa_exact": 0,
+            "cgpa_zero": 0,
+            "department_exact": 0,
+            "skills_overlap": [],
+        })
         stats["count"] += 1
-        if round(float(parsed.get("cgpa") or 0), 2) == round(float(row["cgpa"] or 0), 2):
+        parsed_name = parsed.get("name", "")
+        truth_name = row.get("full_name", "")
+        if normalize_name(parsed_name) != normalize_name(truth_name):
+            stats["identity_mismatch"] += 1
+            if len(identity_mismatches) < 20:
+                identity_mismatches.append({
+                    "student_id": row["student_id"],
+                    "format": fmt,
+                    "parsed_name": parsed_name,
+                    "truth_name": truth_name,
+                })
+            continue
+
+        stats["evaluated_count"] += 1
+        parsed_cgpa = round(float(parsed.get("cgpa") or 0), 2)
+        truth_cgpa = round(float(row["cgpa"] or 0), 2)
+        if parsed_cgpa == 0.0:
+            stats["cgpa_zero"] += 1
+        if parsed_cgpa == truth_cgpa:
             stats["cgpa_exact"] += 1
+        elif len(cgpa_mismatches) < 20:
+            cgpa_mismatches.append({
+                "student_id": row["student_id"],
+                "format": fmt,
+                "parsed_cgpa": parsed_cgpa,
+                "truth_cgpa": truth_cgpa,
+                "parsed_name": parsed.get("name", ""),
+                "truth_name": row.get("full_name", ""),
+            })
         if normalize_department(parsed.get("department")) == row["department"]:
             stats["department_exact"] += 1
         parsed_skills = {s.lower() for s in as_list(parsed.get("skills"))}
@@ -281,12 +336,21 @@ def parser_metrics(rows: List[Dict[str, Any]], parsed_records: List[Dict[str, An
         if truth_skills:
             stats["skills_overlap"].append(len(parsed_skills & truth_skills) / len(truth_skills))
     for stats in by_format.values():
-        count = max(stats["count"], 1)
-        stats["cgpa_accuracy"] = round(stats.pop("cgpa_exact") / count, 4)
-        stats["department_accuracy"] = round(stats.pop("department_exact") / count, 4)
+        evaluated_count = max(stats["evaluated_count"], 1)
+        stats["identity_mismatch_rate"] = round(stats["identity_mismatch"] / max(stats["count"], 1), 4)
+        stats["cgpa_accuracy"] = round(stats.pop("cgpa_exact") / evaluated_count, 4)
+        stats["cgpa_zero_rate"] = round(stats.pop("cgpa_zero") / evaluated_count, 4)
+        stats["department_accuracy"] = round(stats.pop("department_exact") / evaluated_count, 4)
         overlaps = stats.pop("skills_overlap")
         stats["avg_skill_recall"] = round(sum(overlaps) / len(overlaps), 4) if overlaps else 0.0
-    return {"ground_truth_backed_resumes": len(backed), "by_format": by_format}
+    return {
+        "ground_truth_backed_resumes": len(backed),
+        "by_format": by_format,
+        "debug": {
+            "identity_mismatch_samples": identity_mismatches,
+            "cgpa_mismatch_samples": cgpa_mismatches,
+        },
+    }
 
 
 def save_csvs(students: List[Dict[str, Any]], child_rows: Tuple[List[Dict[str, Any]], ...]) -> None:

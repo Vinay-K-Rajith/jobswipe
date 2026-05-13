@@ -3,33 +3,178 @@
   "by_format": {
     "standard": {
       "count": 80,
-      "cgpa_accuracy": 0.5,
-      "department_accuracy": 0.1625,
-      "avg_skill_recall": 0.0
+      "evaluated_count": 40,
+      "identity_mismatch": 40,
+      "identity_mismatch_rate": 0.5,
+      "cgpa_accuracy": 1.0,
+      "cgpa_zero_rate": 0.0,
+      "department_accuracy": 0.2,
+      "avg_skill_recall": 0.988
     },
     "two_column": {
       "count": 80,
-      "cgpa_accuracy": 0.5,
+      "evaluated_count": 40,
+      "identity_mismatch": 40,
+      "identity_mismatch_rate": 0.5,
+      "cgpa_accuracy": 1.0,
+      "cgpa_zero_rate": 0.0,
       "department_accuracy": 0.2,
-      "avg_skill_recall": 0.0
+      "avg_skill_recall": 0.9637
     },
     "table_heavy": {
       "count": 80,
-      "cgpa_accuracy": 0.5,
-      "department_accuracy": 0.225,
-      "avg_skill_recall": 0.0
+      "evaluated_count": 40,
+      "identity_mismatch": 40,
+      "identity_mismatch_rate": 0.5,
+      "cgpa_accuracy": 1.0,
+      "cgpa_zero_rate": 0.0,
+      "department_accuracy": 0.15,
+      "avg_skill_recall": 0.977
     },
     "dense_text": {
       "count": 80,
-      "cgpa_accuracy": 0.5,
-      "department_accuracy": 0.1875,
-      "avg_skill_recall": 0.0
+      "evaluated_count": 40,
+      "identity_mismatch": 40,
+      "identity_mismatch_rate": 0.5,
+      "cgpa_accuracy": 1.0,
+      "cgpa_zero_rate": 0.0,
+      "department_accuracy": 0.2,
+      "avg_skill_recall": 0.9165
     },
     "latex_style": {
       "count": 80,
-      "cgpa_accuracy": 0.5,
-      "department_accuracy": 0.125,
-      "avg_skill_recall": 0.0
+      "evaluated_count": 40,
+      "identity_mismatch": 40,
+      "identity_mismatch_rate": 0.5,
+      "cgpa_accuracy": 1.0,
+      "cgpa_zero_rate": 0.0,
+      "department_accuracy": 0.15,
+      "avg_skill_recall": 0.973
     }
+  },
+  "debug": {
+    "identity_mismatch_samples": [
+      {
+        "student_id": "SRM_STA_001_V2",
+        "format": "standard",
+        "parsed_name": "Mithun Ramachandran",
+        "truth_name": "Sneha Bhat"
+      },
+      {
+        "student_id": "SRM_STA_002_V2",
+        "format": "standard",
+        "parsed_name": "Morgan Murugan",
+        "truth_name": "Dharini Ramachandran"
+      },
+      {
+        "student_id": "SRM_STA_003_V2",
+        "format": "standard",
+        "parsed_name": "Venkat Sharma",
+        "truth_name": "Dhruv Krishnamurthy"
+      },
+      {
+        "student_id": "SRM_STA_004",
+        "format": "standard",
+        "parsed_name": "Dharini Agarwal",
+        "truth_name": "Akash Roy"
+      },
+      {
+        "student_id": "SRM_STA_005",
+        "format": "standard",
+        "parsed_name": "Dinesh Bhat",
+        "truth_name": "Kavya Joshi"
+      },
+      {
+        "student_id": "SRM_STA_006",
+        "format": "standard",
+        "parsed_name": "Tarun Krishnamurthy",
+        "truth_name": "Kritika Patil"
+      },
+      {
+        "student_id": "SRM_STA_007",
+        "format": "standard",
+        "parsed_name": "Rowan Mishra",
+        "truth_name": "Pavithra Ramachandran"
+      },
+      {
+        "student_id": "SRM_STA_008",
+        "format": "standard",
+        "parsed_name": "Aman Kumar",
+        "truth_name": "Harish Verma"
+      },
+      {
+        "student_id": "SRM_STA_009",
+        "format": "standard",
+        "parsed_name": "Logesh Pandey",
+        "truth_name": "Keerthana Verma"
+      },
+      {
+        "student_id": "SRM_STA_010_V2",
+        "format": "standard",
+        "parsed_name": "Pranav Roy",
+        "truth_name": "Logesh Balakrishnan"
+      },
+      {
+        "student_id": "SRM_STA_011",
+        "format": "standard",
+        "parsed_name": "Manoj Venkataraman",
+        "truth_name": "Mohit Mehta"
+      },
+      {
+        "student_id": "SRM_STA_012_V2",
+        "format": "standard",
+        "parsed_name": "Jordan Joshi",
+        "truth_name": "Pari Thakur"
+      },
+      {
+        "student_id": "SRM_STA_013_V2",
+        "format": "standard",
+        "parsed_name": "Vihaan Tiwari",
+        "truth_name": "Morgan Saxena"
+      },
+      {
+        "student_id": "SRM_STA_014",
+        "format": "standard",
+        "parsed_name": "Keerthana Rao",
+        "truth_name": "Harsh Agarwal"
+      },
+      {
+        "student_id": "SRM_STA_015",
+        "format": "standard",
+        "parsed_name": "Reyansh Singh",
+        "truth_name": "Dharini Thakur"
+      },
+      {
+        "student_id": "SRM_STA_016",
+        "format": "standard",
+        "parsed_name": "Ankit Iyer",
+        "truth_name": "Vaishnavi Saxena"
+      },
+      {
+        "student_id": "SRM_STA_017",
+        "format": "standard",
+        "parsed_name": "Yash Singh",
+        "truth_name": "Sakshi Joshi"
+      },
+      {
+        "student_id": "SRM_STA_018_V2",
+        "format": "standard",
+        "parsed_name": "Ravi Sharma",
+        "truth_name": "Nisha Jain"
+      },
+      {
+        "student_id": "SRM_STA_019",
+        "format": "standard",
+        "parsed_name": "Pavan Mukherjee",
+        "truth_name": "Gokul Sundaram"
+      },
+      {
+        "student_id": "SRM_STA_020_V2",
+        "format": "standard",
+        "parsed_name": "Vivek Kulkarni",
+        "truth_name": "Sruthi Patil"
+      }
+    ],
+    "cgpa_mismatch_samples": []
   }
 }

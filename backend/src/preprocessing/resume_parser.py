@@ -21,11 +21,11 @@ except ImportError:
     HAS_PDFPLUMBER = False
 
 
-KNOWN_SKILLS = {
+DEFAULT_KNOWN_SKILLS = {
     "python", "java", "c", "c++", "c#", "javascript", "typescript", "go", "rust",
     "r", "matlab", "scala", "kotlin", "swift", "php", "ruby", "bash", "shell",
-    "html", "css", "react", "angular", "vue", "nextjs", "nodejs", "express",
-    "django", "flask", "fastapi", "spring", "springboot", "sql", "mysql",
+    "html", "css", "react", "angular", "vue", "next.js", "nextjs", "node.js",
+    "nodejs", "express", "express.js", "django", "flask", "fastapi", "spring", "springboot", "sql", "mysql",
     "postgresql", "mongodb", "redis", "sqlite", "pandas", "numpy",
     "scikit-learn", "sklearn", "tensorflow", "pytorch", "keras", "xgboost",
     "lightgbm", "opencv", "nltk", "spacy", "huggingface", "transformers",
@@ -33,8 +33,69 @@ KNOWN_SKILLS = {
     "data science", "aws", "azure", "gcp", "docker", "kubernetes", "jenkins",
     "git", "github", "gitlab", "linux", "terraform", "ansible", "tableau",
     "powerbi", "excel", "hadoop", "spark", "kafka", "android", "ios", "flutter",
-    "restapi", "graphql", "microservices", "agile", "scrum",
+    "rest api", "restapi", "graphql", "microservices", "agile", "scrum",
+    "scada", "powerworld", "power world", "pscad", "etap", "simulink", "ltspice",
+    "pspice", "proteus", "multisim", "vivado", "vhdl", "verilog", "fpga",
+    "cadence", "xilinx", "arduino", "raspberry pi", "embedded c", "iot",
+    "signal processing", "power systems", "plc", "hmi", "autocad", "solidworks",
+    "catia", "ansys", "creo", "fusion 360", "blender", "maya", "unity",
+    "unreal engine", "godot", "opengl", "glsl", "photoshop", "illustrator",
+    "figma", "firebase", "websockets", "real-time systems", "kali linux",
+    "nmap", "wireshark", "network security", "cybersecurity", "power bi",
+    "d3.js", "dash", "plotly", "seaborn", "matplotlib", "prophet",
 }
+
+
+def _skill_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9+#]+", " ", value.lower()).strip()
+
+
+def _load_dynamic_skills() -> set[str]:
+    skills = set(DEFAULT_KNOWN_SKILLS)
+    candidate_paths = []
+    env_path = os.getenv("JOBSWIPE_SKILL_VOCAB_PATH")
+    if env_path:
+        candidate_paths.append(env_path)
+
+    backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    candidate_paths.extend([
+        os.path.join(backend_dir, "data", "resume_realworld_normalized", "skills.csv"),
+        os.path.join(backend_dir, "data", "resume_realworld_raw", "combined_resumes", "ground_truth"),
+    ])
+
+    for candidate in candidate_paths:
+        if not os.path.exists(candidate):
+            continue
+        try:
+            if os.path.isdir(candidate):
+                for path in os.listdir(candidate):
+                    if not path.endswith(".json"):
+                        continue
+                    payload_path = os.path.join(candidate, path)
+                    with open(payload_path, "r", encoding="utf-8") as handle:
+                        payload = json.load(handle)
+                    for skill in (payload.get("ground_truth", {}) or {}).get("all_skills_flat", []) or []:
+                        if isinstance(skill, str) and skill.strip():
+                            skills.add(skill.strip())
+            elif candidate.endswith(".csv"):
+                import csv
+
+                with open(candidate, newline="", encoding="utf-8") as handle:
+                    for row in csv.DictReader(handle):
+                        skill = row.get("skill_name")
+                        if skill and skill.strip():
+                            skills.add(skill.strip())
+            elif candidate.endswith(".json"):
+                payload = json.loads(open(candidate, "r", encoding="utf-8").read())
+                for skill in payload if isinstance(payload, list) else payload.get("skills", []):
+                    if isinstance(skill, str) and skill.strip():
+                        skills.add(skill.strip())
+        except Exception:
+            continue
+    return {_skill_key(skill) for skill in skills if _skill_key(skill)}
+
+
+KNOWN_SKILLS = _load_dynamic_skills()
 KNOWN_DEPARTMENTS = {"CSE", "ECE", "EEE", "MECH", "CIVIL", "IT", "AIDS", "AIML", "MBA", "BCA"}
 CERT_TIERS = {"Global Premium", "Global Standard", "National", "Local", "NPTEL", "SWAYAM"}
 
@@ -72,6 +133,14 @@ def _default_result() -> Dict[str, Any]:
 
 
 def _extract_text_fallback(pdf_bytes: bytes) -> str:
+    try:
+        import fitz
+
+        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+        return "\n".join(page.get_text() or "" for page in doc).strip()
+    except Exception:
+        pass
+
     try:
         from PyPDF2 import PdfReader
 
@@ -203,8 +272,11 @@ def _extract_header(header_lines: List[str], log: List[str]) -> Dict[str, Any]:
 
 
 def _find_cgpa(text: str) -> float:
+    text = re.sub(r"[\u2010-\u2015]", "-", text)
     for pattern in [
-        r"(?:CGPA|GPA|CPI)\s*(?:[:=\-]|is|of)?\s*(\d+(?:\.\d+)?)",
+        r"(?:C\s*\.?\s*G\s*\.?\s*P\s*\.?\s*A|CGPA|GPA|CPI|Grade Point Average)\s*(?:[:=\-]|is|of|score)?\s*(\d+(?:\.\d+)?)",
+        r"(?:C\s*\.?\s*G\s*\.?\s*P\s*\.?\s*A|CGPA|GPA|CPI|Grade Point Average).*?(\d+(?:\.\d+)?)\s*(?:/|out\s+of)\s*10",
+        r"(?:Current|Overall|Aggregate|Academic)\s+(?:CGPA|GPA|CPI|score)\s*(?:[:=\-]|is)?\s*(\d+(?:\.\d+)?)",
         r"(\d+(?:\.\d{1,2})?)\s*/\s*10",
         r"Cumulative.*?(\d+(?:\.\d+)?)",
     ]:
@@ -327,7 +399,12 @@ def _extract_skills(skill_lines: List[str], full_text: str, tables: List[Any], l
 
     def add(name: str, proficiency: str, source: str) -> None:
         clean = re.sub(r"\s*\(\d+\s+verified\)", "", name).strip(" -;|")
-        key = clean.lower()
+        clean = re.sub(r"^[\u2022*\-•]+\s*", "", clean)
+        clean = re.sub(r"^(Languages|Programming|Backend\s*&\s*Systems|ML\s*&\s*Data|Databases\s*&\s*Cloud|Tools|Frameworks|Platforms)\s*:\s*", "", clean, flags=re.IGNORECASE)
+        clean = clean.strip(" -;|")
+        key = _skill_key(clean)
+        if key in {"beginner", "intermediate", "advanced", "expert", "proficient"}:
+            return
         if key and key not in seen and len(key) >= 2:
             seen.add(key)
             skills.append({"skill_name": clean, "proficiency": proficiency})
@@ -340,31 +417,29 @@ def _extract_skills(skill_lines: List[str], full_text: str, tables: List[Any], l
             proficiency = match.group(1).capitalize()
             if proficiency in {"Expert", "Proficient"}:
                 proficiency = "Advanced"
-            for skill in re.split(r"[,;|/]", match.group(2)):
+            for skill in re.split(r"[,;|/•\u2022]", match.group(2)):
                 add(skill, proficiency, "proficiency prefix [high]")
 
     if not skills:
         for line in skill_lines:
             clean = re.sub(r"^[*\-]+\s*", "", line.strip())
             if clean and len(clean) < 90:
-                for skill in re.split(r"[,;|/]", clean):
+                for skill in re.split(r"[,;|/•\u2022]", clean):
                     add(skill, "Intermediate", "section fallback [medium]")
 
-    if not skills:
-        text_lower = full_text.lower()
-        for skill in sorted(KNOWN_SKILLS, key=len, reverse=True):
-            if re.search(r"\b" + re.escape(skill) + r"\b", text_lower):
-                add(skill.title(), "Intermediate", "vocabulary scan [low]")
+    text_keyed = _skill_key(full_text)
+    for skill in sorted(KNOWN_SKILLS, key=len, reverse=True):
+        if re.search(r"(?<![a-z0-9+#])" + re.escape(skill) + r"(?![a-z0-9+#])", text_keyed):
+            add(skill.title(), "Intermediate", "vocabulary scan [low]")
 
-    if not skills:
-        for table in tables:
-            for row in table:
-                for cell in row:
-                    cell_text = str(cell or "").strip()
-                    if 2 <= len(cell_text) <= 50:
-                        cell_lower = cell_text.lower()
-                        if any(skill in cell_lower for skill in KNOWN_SKILLS):
-                            add(cell_text, "Intermediate", "table cell [medium]")
+    for table in tables:
+        for row in table:
+            for cell in row:
+                cell_text = str(cell or "").strip()
+                if 2 <= len(cell_text) <= 50:
+                    cell_key = _skill_key(cell_text)
+                    if any(re.search(r"(?<![a-z0-9+#])" + re.escape(skill) + r"(?![a-z0-9+#])", cell_key) for skill in KNOWN_SKILLS):
+                        add(cell_text, "Intermediate", "table cell [medium]")
     return skills
 
 
