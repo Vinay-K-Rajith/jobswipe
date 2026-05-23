@@ -86,7 +86,7 @@ export default function LoginPage() {
           )}
           <div className="role-preview">
             <strong>{inferredRole}</strong>
-            <span>Student: @{ROLE_DOMAINS.student} · Admin: @{ROLE_DOMAINS.admin} · all others recruiter</span>
+            <span>Student: studentname@{ROLE_DOMAINS.student} · Company: companyname@companyname.com · Admin: admin@{ROLE_DOMAINS.admin} · Password: Test123</span>
           </div>
           {error && <div className="bias-inline-error">{error}</div>}
           <button className="btn btn-primary btn-lg" type="submit" disabled={loading}>

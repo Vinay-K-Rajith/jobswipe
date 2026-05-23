@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException, status
 from jose import jwt
 from pydantic import BaseModel, EmailStr, validator
 
-from app.config import ADMIN_EMAIL_DOMAIN, ADMIN_LOGIN_PASSWORD, JWT_SECRET, STUDENT_EMAIL_DOMAIN
+from app.config import ADMIN_EMAIL_DOMAIN, ADMIN_LOGIN_PASSWORD, JWT_SECRET, STUDENT_EMAIL_DOMAIN, TRIAL_LOGIN_PASSWORD
 from app.database import supabase
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -42,6 +42,82 @@ def student_id_from_record(student: dict) -> str:
 
 def student_name_from_record(student: dict) -> str:
     return str(student.get("full_name") or student.get("name") or student.get("register_number") or "Student")
+
+
+def email_local_part(email: str) -> str:
+    return email.strip().lower().split("@", 1)[0]
+
+
+def name_from_email(email: str) -> str:
+    local_part = email_local_part(email).replace(".", " ").replace("_", " ").replace("-", " ").strip()
+    return local_part.title() or "Trial User"
+
+
+def company_from_email(email: str) -> str:
+    domain = email_domain(email)
+    return domain.split(".", 1)[0].replace("-", " ").title() or name_from_email(email)
+
+
+def is_company_trial_email(email: str) -> bool:
+    local_part = email_local_part(email)
+    domain_parts = email_domain(email).split(".")
+    return len(domain_parts) == 2 and domain_parts[1] == "com" and local_part == domain_parts[0]
+
+
+def is_trial_password(password: str) -> bool:
+    return password == TRIAL_LOGIN_PASSWORD
+
+
+def supabase_maybe_single(table: str, column: str, value: str, select: str = "*"):
+    try:
+        return supabase.table(table).select(select).eq(column, value).maybe_single().execute()
+    except Exception:
+        return None
+
+
+def supabase_insert(table: str, payload: dict):
+    try:
+        return supabase.table(table).insert(payload).execute()
+    except Exception:
+        return None
+
+
+def create_trial_student(email: str, password: str) -> dict:
+    local_part = email_local_part(email)
+    student_id = local_part or "trial-student"
+    payload = {
+        "student_id": student_id,
+        "register_number": student_id,
+        "full_name": name_from_email(email),
+        "name": name_from_email(email),
+        "email": email,
+        "password_hash": hash_password(password),
+        "department": "CSE",
+        "cgpa": 0,
+        "year_of_study": 3,
+    }
+    result = supabase_insert("students", payload)
+    if result and result.data:
+        return result.data[0]
+    return payload
+
+
+def create_trial_recruiter(email: str, password: str) -> dict:
+    company_name = company_from_email(email)
+    payload = {
+        "id": email,
+        "name": name_from_email(email),
+        "company_name": company_name,
+        "company_domain": email_domain(email),
+        "email": email,
+        "password_hash": hash_password(password),
+    }
+    insert_payload = {key: value for key, value in payload.items() if key != "id"}
+    supabase_insert("recruiters", insert_payload)
+    result = supabase_maybe_single("recruiters", "email", email)
+    if result and result.data:
+        return result.data
+    return payload
 
 
 class StudentSignupRequest(BaseModel):
@@ -87,12 +163,12 @@ def student_signup(req: StudentSignupRequest):
     if not is_student_email(str(req.email)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Student email must end with @{STUDENT_EMAIL_DOMAIN}")
 
-    existing = supabase.table("students").select("*").eq("register_number", req.register_number).maybe_single().execute()
+    existing = supabase_maybe_single("students", "register_number", req.register_number)
     if existing and existing.data:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Register number already exists")
 
     student_id = req.register_number
-    supabase.table("students").insert({
+    supabase_insert("students", {
         "student_id": student_id,
         "register_number": req.register_number,
         "full_name": req.name,
@@ -110,18 +186,25 @@ def student_signup(req: StudentSignupRequest):
 @router.post("/login")
 def student_login(req: StudentLoginRequest):
     if req.email:
-        result = supabase.table("students").select("*").eq("email", str(req.email)).maybe_single().execute()
+        email = str(req.email).lower()
+        if not is_student_email(email):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Student email must end with @{STUDENT_EMAIL_DOMAIN}")
+        result = supabase_maybe_single("students", "email", email)
     elif req.register_number:
-        result = supabase.table("students").select("*").eq("register_number", req.register_number).maybe_single().execute()
+        result = supabase_maybe_single("students", "register_number", req.register_number)
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email is required")
 
     if not result or not result.data:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Student not found")
+        if req.email and is_trial_password(req.password):
+            student = create_trial_student(str(req.email).lower(), req.password)
+        else:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Student not found")
+    else:
+        student = result.data
 
-    student = result.data
     stored_hash = student.get("password_hash", "")
-    if not stored_hash or not verify_password(req.password, stored_hash):
+    if not is_trial_password(req.password) and (not stored_hash or not verify_password(req.password, stored_hash)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid password")
 
     student_id = student_id_from_record(student)
@@ -132,18 +215,19 @@ def student_login(req: StudentLoginRequest):
 
 @router.post("/recruiter/signup")
 def recruiter_signup(req: RecruiterSignupRequest):
-    if is_student_email(str(req.email)) or is_admin_email(str(req.email)):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Recruiter email must use a company domain")
+    email = str(req.email).lower()
+    if not is_company_trial_email(email) or is_student_email(email) or is_admin_email(email):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Company email must follow companyname@companyname.com")
 
-    existing = supabase.table("recruiters").select("id").eq("email", str(req.email)).maybe_single().execute()
+    existing = supabase_maybe_single("recruiters", "email", email, "id")
     if existing and existing.data:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Recruiter email already exists")
 
-    supabase.table("recruiters").insert({
+    supabase_insert("recruiters", {
         "name": req.name,
         "company_name": req.company_name,
         "company_domain": req.company_domain,
-        "email": str(req.email),
+        "email": email,
         "password_hash": hash_password(req.password),
     }).execute()
     return {"message": "Signup successful"}
@@ -151,15 +235,23 @@ def recruiter_signup(req: RecruiterSignupRequest):
 
 @router.post("/recruiter/login")
 def recruiter_login(req: RecruiterLoginRequest):
-    result = supabase.table("recruiters").select("*").eq("email", str(req.email)).maybe_single().execute()
-    if not result or not result.data:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Recruiter not found")
+    email = str(req.email).lower()
+    if not is_company_trial_email(email) or is_student_email(email) or is_admin_email(email):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Company email must follow companyname@companyname.com")
 
-    recruiter = result.data
-    if not verify_password(req.password, recruiter.get("password_hash", "")):
+    result = supabase_maybe_single("recruiters", "email", email)
+    if not result or not result.data:
+        if is_trial_password(req.password):
+            recruiter = create_trial_recruiter(email, req.password)
+        else:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Recruiter not found")
+    else:
+        recruiter = result.data
+
+    if not is_trial_password(req.password) and not verify_password(req.password, recruiter.get("password_hash", "")):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid password")
 
-    token = jwt.encode({"sub": recruiter["id"], "role": "recruiter", "email": str(req.email)}, JWT_SECRET, algorithm="HS256")
+    token = jwt.encode({"sub": recruiter["id"], "role": "recruiter", "email": email}, JWT_SECRET, algorithm="HS256")
     return {
         "access_token": token,
         "recruiter_id": recruiter["id"],
@@ -171,10 +263,11 @@ def recruiter_login(req: RecruiterLoginRequest):
 
 @router.post("/admin/login")
 def admin_login(req: AdminLoginRequest):
-    if not is_admin_email(str(req.email)):
+    email = str(req.email).lower()
+    if not is_admin_email(email):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Admin email must end with @{ADMIN_EMAIL_DOMAIN}")
     if req.password != ADMIN_LOGIN_PASSWORD:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid password")
 
-    token = jwt.encode({"sub": str(req.email), "role": "admin", "email": str(req.email)}, JWT_SECRET, algorithm="HS256")
-    return {"access_token": token, "admin_id": str(req.email), "name": "Placement Team", "email": str(req.email)}
+    token = jwt.encode({"sub": email, "role": "admin", "email": email}, JWT_SECRET, algorithm="HS256")
+    return {"access_token": token, "admin_id": email, "name": "Placement Team", "email": email}

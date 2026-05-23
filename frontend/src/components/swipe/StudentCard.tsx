@@ -29,7 +29,7 @@ interface StudentCardProps {
 
 export default function StudentCard({ student, expanded, onToggle }: StudentCardProps) {
   return (
-    <article className={`swipe-card student ${expanded ? 'expanded' : ''}`} onClick={onToggle}>
+    <article className={`swipe-card student ${expanded ? 'expanded' : ''}`}>
       {!expanded ? (
         <>
           <div className="student-card-art" style={{ background: deptColour(student.department) }}>
@@ -56,7 +56,7 @@ export default function StudentCard({ student, expanded, onToggle }: StudentCard
           </div>
         </>
       ) : (
-        <div className="swipe-detail" onClick={(event) => event.stopPropagation()}>
+        <div className="swipe-detail">
           <button type="button" className="detail-close" onClick={onToggle} aria-label="Close details">
             <IconX size={18} />
           </button>
@@ -76,18 +76,24 @@ export default function StudentCard({ student, expanded, onToggle }: StudentCard
               <span key={project.title}><b>{project.title}</b>: {project.description}</span>
             ))}
           </div>
-          <div className="detail-grid">
-            <div>
-              <strong>Coursework</strong>
-              <div className="chip-row">{chips(student.coursework, 4)}</div>
+          {(!!student.coursework?.length || !!student.certifications?.length) && (
+            <div className="detail-grid">
+              {!!student.coursework?.length && (
+                <div>
+                  <strong>Coursework</strong>
+                  <div className="chip-row">{chips(student.coursework, 4)}</div>
+                </div>
+              )}
+              {!!student.certifications?.length && (
+                <div>
+                  <strong>Certifications</strong>
+                  {student.certifications.slice(0, 3).map((cert) => (
+                    <span className="detail-line" key={cert.name}>{cert.name} / {cert.issuer}</span>
+                  ))}
+                </div>
+              )}
             </div>
-            <div>
-              <strong>Certifications</strong>
-              {student.certifications.slice(0, 3).map((cert) => (
-                <span className="detail-line" key={cert.name}>{cert.name} / {cert.issuer}</span>
-              ))}
-            </div>
-          </div>
+          )}
           <div className="detail-grid">
             <div><strong>GPA</strong><span>{student.cgpa.toFixed(2)}</span></div>
             <div><strong>Availability</strong><span>{student.availability}</span></div>

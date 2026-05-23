@@ -78,10 +78,22 @@ export default function CompanyCard({ job, expanded, onToggle }: CompanyCardProp
           <button type="button" className="detail-close" onClick={onToggle} aria-label="Close details">
             <IconX size={18} />
           </button>
-          <span className="card-tag">{job.industry || 'Role'}</span>
-          <h2>{job.company_name}</h2>
-          <h3>{job.role_title}</h3>
-          <p>{job.location || 'Location TBA'} / {job.remote_policy || 'hybrid'}</p>
+          <div className="expanded-card-hero company" style={{ background: colourForIndustry(job.industry) }}>
+            <span className="card-tag">{job.industry || 'Role'}</span>
+            <div className="card-art-mark">
+              <IconBuildingSkyscraper size={34} />
+              <strong>{job.company_name.slice(0, 2).toUpperCase()}</strong>
+            </div>
+            <div className="card-art-meta">
+              <span><IconMapPin size={14} /> {job.location || 'Location TBA'}</span>
+              <span><IconRocket size={14} /> {job.remote_policy || 'Hybrid'}</span>
+            </div>
+          </div>
+          <div className="expanded-detail-heading">
+            <h2>{job.company_name}</h2>
+            <h3>{job.role_title}</h3>
+            <p>{job.location || 'Location TBA'} / {job.remote_policy || 'hybrid'}</p>
+          </div>
           <div className="detail-grid">
             <div><strong>Compensation</strong><span>{job.salary || 'Not specified'}</span></div>
             <div><strong>Type</strong><span>{job.job_type || 'Role'}</span></div>

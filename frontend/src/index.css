@@ -57,16 +57,22 @@
   box-sizing: border-box;
 }
 
+html {
+  overscroll-behavior-x: none;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: #000;
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-x: none;
 }
 
 #root {
   min-height: 100vh;
+  overscroll-behavior-x: none;
 }
 
 /* ---- Scrollbar ---- */
@@ -2603,6 +2609,7 @@ tr:hover td {
   width: 100%;
   min-height: 560px;
   overflow: hidden;
+  overscroll-behavior-x: contain;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2803,10 +2810,15 @@ tr:hover td {
 }
 .carousel-nav {
   position: absolute;
-  right: 0;
-  bottom: 18px;
+  left: 24px;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
+  justify-content: space-between;
   gap: 8px;
+  pointer-events: none;
+  z-index: 3;
 }
 .carousel-nav button {
   width: 42px;
@@ -2816,6 +2828,7 @@ tr:hover td {
   background: #111;
   color: #fff;
   cursor: pointer;
+  pointer-events: auto;
 }
 .carousel-nav button:disabled,
 .swipe-action:disabled {
@@ -3460,6 +3473,62 @@ tr:hover td {
 .swipe-detail .card-tag {
   max-width: calc(100% - 50px);
 }
+.swipe-card.company .expanded-card-hero {
+  position: relative;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+.swipe-card.company .expanded-card-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 36%),
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.28), transparent 24%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 18px);
+}
+.swipe-card.company .expanded-card-hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 58%;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.46));
+}
+.swipe-card.company .expanded-card-hero .card-art-mark {
+  transform: translateY(-18px);
+}
+.swipe-card.company .expanded-card-hero .card-art-mark strong {
+  font-size: 54px;
+}
+.swipe-card.company .expanded-detail-heading,
+.swipe-card.company .swipe-detail > .detail-section,
+.swipe-card.company .swipe-detail > .detail-grid,
+.swipe-card.company .swipe-detail > .detail-link {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.swipe-card.company .expanded-detail-heading {
+  display: grid;
+  gap: 4px;
+  margin-top: 4px;
+}
+.swipe-card.company .expanded-detail-heading h2 {
+  margin: 0;
+}
+.swipe-card.company .expanded-detail-heading h3,
+.swipe-card.company .expanded-detail-heading p {
+  margin: 0;
+}
+.swipe-card.company .swipe-detail > .detail-section:last-child,
+.swipe-card.company .swipe-detail > .detail-grid:last-child,
+.swipe-card.company .swipe-detail > .detail-link:last-child {
+  margin-bottom: 24px;
+}
 .detail-grid > div,
 .detail-section {
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -3501,8 +3570,11 @@ tr:hover td {
   font-weight: 700;
 }
 .carousel-nav {
-  right: 24px;
-  bottom: 22px;
+  left: max(48px, calc((100vw - 1510px) / 2));
+  right: max(48px, calc((100vw - 1510px) / 2));
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
 }
 .carousel-nav button {
   border-radius: 8px;
@@ -3599,7 +3671,9 @@ tr:hover td {
     padding-right: max(16px, calc((100vw - 316px) / 2));
   }
   .carousel-nav {
-    margin-top: 16px;
+    left: 10px;
+    right: 10px;
+    position: absolute;
   }
   .portal-row {
     align-items: flex-start;

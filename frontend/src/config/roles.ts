@@ -2,7 +2,7 @@ export type UserRole = 'admin' | 'student' | 'recruiter';
 
 export const ROLE_DOMAINS = {
   student: (import.meta.env.VITE_STUDENT_EMAIL_DOMAIN || 'srmist.edu.in').toLowerCase(),
-  admin: (import.meta.env.VITE_ADMIN_EMAIL_DOMAIN || 'placement.srmist.edu.in').toLowerCase(),
+  admin: (import.meta.env.VITE_ADMIN_EMAIL_DOMAIN || 'admin.com').toLowerCase(),
 };
 
 export function emailDomain(email: string) {

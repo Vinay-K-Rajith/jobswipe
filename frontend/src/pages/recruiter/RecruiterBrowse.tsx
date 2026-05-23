@@ -115,6 +115,7 @@ export default function RecruiterBrowse() {
           renderCard={(student, expanded, toggle) => <StudentCard student={student} expanded={expanded} onToggle={toggle} />}
           onPass={(student) => removeStudent(student, false)}
           onLike={(student) => removeStudent(student, true)}
+          enforceSequentialDecisions
           emptyTitle={jobId ? `No more ${track === 'internship' ? 'internship-seeking' : 'full-time-seeking'} students right now` : 'Post a role first'}
           emptyText={jobId ? `You have reached the end of this ${track === 'internship' ? 'internship' : 'full-time'} student feed.` : 'Create a job posting before browsing candidates.'}
         />
