@@ -1,14 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useDynamicNavbarClass } from './useDynamicNavbar';
 
 export default function Navbar() {
   const location = useLocation();
   const { userRole, logout } = useAuthStore();
+  const navbarClass = useDynamicNavbarClass();
 
   const isActive = (path: string) => location.pathname === path ? 'active' : '';
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${navbarClass}`}>
       <div className="navbar-inner">
         <div className="navbar-brand-container">
           <Link to="/" className="navbar-brand">

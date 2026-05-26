@@ -93,7 +93,6 @@ export default function RecruiterBrowse() {
       <header className="portal-header">
         <span>Recruiter Portal</span>
         <h1>Browse students</h1>
-        <p>Review candidates for one active role at a time.</p>
       </header>
       <div className="tier-tabs browse-track-tabs">
         <button type="button" className={track === 'internship' ? 'active' : ''} onClick={() => setTrack('internship')}>Internship seekers</button>

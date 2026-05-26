@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { useDynamicNavbarClass } from '../useDynamicNavbar';
 
 interface StudentNavbarProps {
   interestedCount?: number;
@@ -9,10 +10,11 @@ export default function StudentNavbar({ interestedCount = 0 }: StudentNavbarProp
   const location = useLocation();
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
+  const navbarClass = useDynamicNavbarClass();
   const active = (path: string) => location.pathname === path ? 'active' : '';
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${navbarClass}`}>
       <div className="navbar-inner">
         <Link to="/student/browse" className="navbar-brand">JobSwipe Student</Link>
         <div className="navbar-links">

@@ -1,15 +1,17 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { useDynamicNavbarClass } from '../useDynamicNavbar';
 
 export default function RecruiterNavbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
+  const navbarClass = useDynamicNavbarClass();
   const active = (path: string) => location.pathname === path ? 'active' : '';
   const rolesActive = location.pathname === '/recruiter/roles' || location.pathname === '/recruiter/post' ? 'active' : '';
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${navbarClass}`}>
       <div className="navbar-inner">
         <Link to="/recruiter/browse" className="navbar-brand">JobSwipe Recruiter</Link>
         <div className="navbar-links">
