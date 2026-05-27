@@ -531,3 +531,282 @@ INFO:     127.0.0.1:63255 - "OPTIONS /student/profile HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54357 - "OPTIONS /student/profile HTTP/1.1" 200 OK
 INFO:     127.0.0.1:63255 - "GET /student/profile HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54357 - "GET /student/profile HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\routers\profile.py'. Reloading...
+ INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     127.0.0.1:52572 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [17008]
+WARNING:  WatchFiles detected changes in 'app\routers\swipe.py', 'app\routers\profile.py', 'app\main.py'. Reloading...
+ C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [33112]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [33112]
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [38028]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+INFO:     127.0.0.1:49181 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53736 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53736 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64692 - "GET /student/profile HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\routers\profile.py'. Reloading...
+ INFO:     127.0.0.1:56311 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56311 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [38028]
+WARNING:  WatchFiles detected changes in 'app\routers\swipe.py', 'app\routers\profile.py'. Reloading...
+ Process SpawnProcess-5:
+Traceback (most recent call last):
+  File "C:\Users\Asus\anaconda3\Lib\multiprocessing\process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\Asus\anaconda3\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\uvicorn\_subprocess.py", line 76, in subprocess_started
+    config.configure_logging()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\uvicorn\config.py", line 377, in configure_logging
+    logging.config.dictConfig(self.log_config)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Asus\anaconda3\Lib\logging\config.py", line 935, in dictConfig
+    dictConfigClass(config).configure()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Asus\anaconda3\Lib\logging\config.py", line 577, in configure
+    _clearExistingHandlers()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Asus\anaconda3\Lib\logging\config.py", line 289, in _clearExistingHandlers
+    logging._handlers.clear()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<frozen _collections_abc>", line 971, in clear
+KeyboardInterrupt
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [1280]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+INFO:     127.0.0.1:53617 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58124 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62311 - "GET /student/profile HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\routers\resume.py'. Reloading...
+ INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1280]
+WARNING:  WatchFiles detected changes in 'app\routers\profile.py'. Reloading...
+ Process SpawnProcess-7:
+Traceback (most recent call last):
+  File "C:\Users\Asus\anaconda3\Lib\multiprocessing\process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\Asus\anaconda3\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\uvicorn\_subprocess.py", line 73, in subprocess_started
+    sys.stdin = os.fdopen(stdin_fileno)  # pragma: full coverage
+                ~~~~~~~~~^^^^^^^^^^^^^^
+  File "<frozen os>", line 1069, in fdopen
+  File "<frozen codecs>", line 312, in __init__
+KeyboardInterrupt
+WARNING:  WatchFiles detected changes in 'app\routers\swipe.py'. Reloading...
+ C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [26644]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26644]
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [34648]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+INFO:     127.0.0.1:49750 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56789 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51193 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50692 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49243 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54763 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54803 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59003 - "GET /student/profile HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\routers\profile.py'. Reloading...
+ INFO:     127.0.0.1:62682 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59652 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [34648]
+WARNING:  WatchFiles detected changes in 'app\routers\swipe.py', 'app\routers\profile.py'. Reloading...
+ C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [31808]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [31808]
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DummyRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator GradientBoostingRegressor from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Asus\Desktop\jobswipe-main\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+INFO:     Started server process [9352]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Option 1 ranker loaded
+Option 2 skill recommender loaded
+Loaded 818 students, 80 companies
+INFO:     127.0.0.1:52194 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60244 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63514 - "OPTIONS /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55942 - "OPTIONS /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55942 - "GET /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63514 - "GET /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63514 - "OPTIONS /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59528 - "OPTIONS /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59528 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63514 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55248 - "OPTIONS /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58362 - "OPTIONS /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58362 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62120 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61804 - "OPTIONS /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "OPTIONS /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "GET /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61804 - "GET /student/rejection-insights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54884 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57432 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53077 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53077 - "GET /student/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59040 - "OPTIONS /student/interested HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60536 - "OPTIONS /student/interested HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60536 - "GET /student/interested HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59040 - "GET /student/interested HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59040 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60536 - "GET /student/feed?job_type=internship&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60536 - "OPTIONS /student/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59040 - "OPTIONS /student/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59040 - "GET /student/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60536 - "GET /student/matches HTTP/1.1" 200 OK

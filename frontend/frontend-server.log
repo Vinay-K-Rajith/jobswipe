@@ -1,21 +1,19 @@
 
 > job-swipe-frontend@0.0.1 dev
-> vite --host 0.0.0.0
+> vite --host 0.0.0.0 --port 3000
 
 
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m255[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m257[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3000[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.29.231:[1m3000[22m/[39m
-[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
-[2m6:37:15 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentProfile.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx[22m
-[2m6:37:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
-[2m6:39:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
-[2m6:39:39 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css[22m
-[2m6:39:53 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
-[2m6:40:00 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
-[2m6:41:27 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
-[2m6:58:47 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
-[2m6:58:59 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
-[2m7:06:42 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
-[2m7:06:48 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m8:27:25 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m8:27:27 pm[22m [36m[1m[vite][22m[39m [32m✨ new dependencies optimized: [33mclsx, tailwind-merge[32m[39m
+[2m8:27:27 pm[22m [36m[1m[vite][22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[2m8:28:01 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/webcam-pixel-grid-demo.tsx[22m
+[2m8:30:37 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m8:30:37 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/webcam-pixel-grid-demo.tsx[22m
+[2m8:30:37 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ui/webcam-pixel-grid.tsx[22m
+[2m8:36:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
+[2m8:40:02 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterProfile.tsx[22m
+[2m8:40:13 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css[22m

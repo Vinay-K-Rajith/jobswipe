@@ -3013,6 +3013,13 @@ tr:hover td {
   display: block;
   min-width: 0;
 }
+.profile-edit-field-wide {
+  grid-column: 1 / -1;
+}
+.profile-textarea {
+  min-height: 92px;
+  resize: vertical;
+}
 .profile-edit-field span {
   display: block;
   color: #94a3b8;

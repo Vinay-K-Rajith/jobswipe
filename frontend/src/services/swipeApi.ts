@@ -228,6 +228,68 @@ export interface RecruiterJobUpdateInput extends RecruiterJobInput {
   is_active: boolean;
 }
 
+export interface RecruiterProfileSummary {
+  recruiter_id: string;
+  identity: {
+    name: string;
+    email: string;
+    company_name: string;
+    company_domain: string;
+    designation?: string | null;
+    phone_number?: string | null;
+  };
+  company: {
+    industry?: string | null;
+    company_size?: string | null;
+    headquarters?: string | null;
+    about_company?: string | null;
+    hiring_pitch?: string | null;
+  };
+  hiring_preferences: {
+    hiring_type?: string | null;
+    preferred_departments: string[];
+    preferred_graduation_years: number[];
+    min_cgpa?: number | null;
+    max_active_backlogs?: number | null;
+    work_mode?: string | null;
+  };
+  links: {
+    website_url?: string | null;
+    careers_url?: string | null;
+    linkedin_url?: string | null;
+  };
+  activity: {
+    posted_roles: number;
+    active_roles: number;
+    students_interested: number;
+    liked_students: number;
+    matches: number;
+    passed_students: number;
+  };
+}
+
+export interface RecruiterProfileUpdatePayload {
+  name?: string | null;
+  company_name?: string | null;
+  company_domain?: string | null;
+  designation?: string | null;
+  phone_number?: string | null;
+  industry?: string | null;
+  company_size?: string | null;
+  headquarters?: string | null;
+  hiring_type?: string | null;
+  preferred_departments?: string[];
+  preferred_graduation_years?: number[];
+  min_cgpa?: number | null;
+  max_active_backlogs?: number | null;
+  work_mode?: string | null;
+  about_company?: string | null;
+  hiring_pitch?: string | null;
+  website_url?: string | null;
+  careers_url?: string | null;
+  linkedin_url?: string | null;
+}
+
 export const getStudentFeed = (jobType?: BrowseTrack, limit = 20, offset = 0) =>
   api.get<{ jobs: JobCardData[] }>('/student/feed', { params: { job_type: jobType, limit, offset } });
 
@@ -263,6 +325,12 @@ export const getRecruiterInterested = () =>
 
 export const getRecruiterMatches = () =>
   api.get<{ matches: MatchItem[] }>('/recruiter/matches');
+
+export const getRecruiterProfile = () =>
+  api.get<RecruiterProfileSummary>('/profile/recruiter/me');
+
+export const updateRecruiterProfile = (payload: RecruiterProfileUpdatePayload) =>
+  api.patch<{ message: string }>('/profile/recruiter/me', payload);
 
 export const recruiterSwipeRight = (studentId: string, jobId: string) =>
   api.post<{ matched: boolean }>('/recruiter/swipe/right', { student_id: studentId, job_id: jobId });
