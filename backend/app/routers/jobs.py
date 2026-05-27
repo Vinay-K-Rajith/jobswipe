@@ -4,6 +4,7 @@ from app.services.eligibility import get_eligible_jobs
 from app.services.recommender import get_recommended_jobs
 from app.services.bias_score import compute_bias_adjusted_score
 from app.routers.deps import get_current_user
+from app.routers.swipe import blended_pair_score
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
@@ -85,7 +86,7 @@ def get_recommendations(student_id: str, user=Depends(get_current_user)):
     print(f"   Eligible jobs: {len(eligible)}")
     print(f"   Cross-domain candidates: {len(all_jobs) - len(eligible)}")
     
-    recommendations = get_recommended_jobs(student, all_jobs, eligible_ids)
+    recommendations = get_recommended_jobs(student, all_jobs, eligible_ids, score_pair=blended_pair_score)
     
     print(f"   Recommendations found: {len(recommendations)}")
     if recommendations:

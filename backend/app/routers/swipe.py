@@ -1,8 +1,10 @@
+import logging
+import os
 import threading
 import time
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import pandas as pd
 
@@ -13,16 +15,21 @@ from app.database import supabase
 from app.routers.deps import get_current_recruiter, get_current_user
 from app.services.data_paths import data_dir, dataset_variant
 from app.services.bias_reduction import load_variant_artifact, score_variant_probabilities
+from app.services.cache_control import clear_profile_dependent_caches
 from app.services.talentforge_matcher import all_student_rows, enrich_student_row, is_canonical_job, score_student_for_job
 from src.explainability.criteria_checker import check_criteria
 from src.explainability.improvement_planner import generate_improvement_plan
 from src.model.inference import build_inference_features
 
 router = APIRouter(tags=["swipe"])
+logger = logging.getLogger(__name__)
 _SUPABASE_LOCK = threading.Lock()
 DATA_DIR = data_dir()
 FAIRNESS_BLEND_TALENTFORGE_WEIGHT = 0.6
 FAIRNESS_BLEND_MODEL_WEIGHT = 0.4
+REQUIRE_FAIRNESS_SCORING = os.getenv("JOBSWIPE_REQUIRE_FAIRNESS", "").lower() in {"1", "true", "yes"}
+_FAIRLEARN_ARTIFACT: Optional[Dict[str, Any]] = None
+_FAIRLEARN_LAST_ERROR: Optional[str] = None
 PROJECT_COMPLEXITY_MAP = {"Basic": 1, "Intermediate": 2, "Advanced": 3}
 CERT_TIER_MAP = {"Local": 1, "National": 2, "Global_Standard": 3, "Global_Premium": 4}
 INTERNSHIP_TIER_MAP = {"NGO": 1, "Startup": 2, "Tier3": 3, "Tier2": 4, "Tier1": 5}
@@ -234,12 +241,40 @@ def load_student_feature_rows() -> Dict[str, Dict[str, Any]]:
     return {str(row["student_id"]): row for row in frame.to_dict("records") if row.get("student_id")}
 
 
-@lru_cache(maxsize=1)
 def load_fairlearn_artifact() -> Optional[Dict[str, Any]]:
+    global _FAIRLEARN_ARTIFACT, _FAIRLEARN_LAST_ERROR
+    if _FAIRLEARN_ARTIFACT is not None:
+        return _FAIRLEARN_ARTIFACT
     try:
-        return load_variant_artifact("champion")
-    except Exception:
+        artifact = load_variant_artifact("champion")
+        _FAIRLEARN_ARTIFACT = artifact
+        _FAIRLEARN_LAST_ERROR = None
+        logger.info(
+            "Fairlearn champion artifact loaded for swipe scoring with %s feature columns",
+            len(artifact.get("feature_cols", [])) if isinstance(artifact, dict) else "unknown",
+        )
+        return artifact
+    except Exception as exc:
+        _FAIRLEARN_LAST_ERROR = str(exc)
+        logger.exception("Fairlearn champion artifact unavailable; falling back to TalentForge-only scoring")
         return None
+
+
+def clear_fairlearn_artifact_cache() -> None:
+    global _FAIRLEARN_ARTIFACT, _FAIRLEARN_LAST_ERROR
+    _FAIRLEARN_ARTIFACT = None
+    _FAIRLEARN_LAST_ERROR = None
+
+
+def fairness_artifact_status() -> Dict[str, Any]:
+    artifact = _FAIRLEARN_ARTIFACT
+    return {
+        "loaded": artifact is not None,
+        "variant": "champion" if artifact is not None else None,
+        "feature_count": len(artifact.get("feature_cols", [])) if isinstance(artifact, dict) else 0,
+        "last_error": _FAIRLEARN_LAST_ERROR,
+        "required": REQUIRE_FAIRNESS_SCORING,
+    }
 
 
 def normalize_job_for_rules_and_model(job: Dict[str, Any]) -> Dict[str, Any]:
@@ -345,26 +380,49 @@ def passes_hard_criteria(student: Dict[str, Any], job: Dict[str, Any]) -> bool:
     return bool(scorecard.get("_summary", {}).get("hard_pass"))
 
 
-def fairlearn_score_for_pair(student: Dict[str, Any], job: Dict[str, Any]) -> Optional[float]:
+def fairlearn_score_for_pair(student: Dict[str, Any], job: Dict[str, Any]) -> Dict[str, Any]:
     artifact = load_fairlearn_artifact()
     if not artifact:
-        return None
+        return {
+            "score": None,
+            "source": "unavailable",
+            "fallback_reason": "artifact_load_failed",
+            "error": _FAIRLEARN_LAST_ERROR,
+        }
 
-    student_input = build_student_model_input(student)
-    pair_features = build_inference_features(student_input, normalize_job_for_rules_and_model(job))
-    feature_frame = pd.DataFrame([pair_features]).reindex(columns=artifact["feature_cols"], fill_value=0)
-    probabilities = score_variant_probabilities(
-        artifact["model"],
-        artifact["scaler"].transform(feature_frame.fillna(0)),
-    )
-    if len(probabilities) == 0:
-        return None
-    return float(probabilities[0])
+    try:
+        student_input = build_student_model_input(student)
+        pair_features = build_inference_features(student_input, normalize_job_for_rules_and_model(job))
+        feature_frame = pd.DataFrame([pair_features]).reindex(columns=artifact["feature_cols"], fill_value=0)
+        probabilities = score_variant_probabilities(
+            artifact["model"],
+            artifact["scaler"].transform(feature_frame.fillna(0)),
+        )
+        if len(probabilities) == 0:
+            return {
+                "score": None,
+                "source": "unavailable",
+                "fallback_reason": "empty_probability_output",
+            }
+        return {
+            "score": float(probabilities[0]),
+            "source": "fairlearn_champion",
+            "fallback_reason": None,
+        }
+    except Exception as exc:
+        logger.exception("Fairlearn scoring failed for student-job pair; falling back to TalentForge-only scoring")
+        return {
+            "score": None,
+            "source": "unavailable",
+            "fallback_reason": "pair_scoring_failed",
+            "error": str(exc),
+        }
 
 
-def blended_pair_score(student: Dict[str, Any], job: Dict[str, Any], interested_rank: Optional[Dict[str, int]] = None) -> tuple[float, Dict[str, float]]:
+def blended_pair_score(student: Dict[str, Any], job: Dict[str, Any], interested_rank: Optional[Dict[str, int]] = None) -> Tuple[float, Dict[str, Any]]:
     talentforge_score, breakdown = score_student_for_job(student, job, interested_rank or {})
-    fairlearn_score = fairlearn_score_for_pair(student, job)
+    fairlearn_result = fairlearn_score_for_pair(student, job)
+    fairlearn_score = fairlearn_result.get("score")
     final_score = talentforge_score
     if fairlearn_score is not None:
         final_score = (
@@ -374,6 +432,20 @@ def blended_pair_score(student: Dict[str, Any], job: Dict[str, Any], interested_
         breakdown["fairlearn"] = round(fairlearn_score, 3)
         breakdown["talentforge"] = round(talentforge_score, 3)
         breakdown["overall"] = round(final_score, 3)
+        breakdown["fairlearn_status"] = "active"
+        breakdown["fairlearn_source"] = fairlearn_result.get("source")
+    else:
+        breakdown["talentforge"] = round(talentforge_score, 3)
+        breakdown["overall"] = round(final_score, 3)
+        breakdown["fairlearn_status"] = "unavailable"
+        breakdown["fairlearn_fallback_reason"] = fairlearn_result.get("fallback_reason")
+        if fairlearn_result.get("error"):
+            breakdown["fairlearn_error"] = fairlearn_result["error"]
+        if REQUIRE_FAIRNESS_SCORING:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Fairness scoring is required but the Fairlearn artifact is unavailable.",
+            )
     return final_score, breakdown
 
 
@@ -421,6 +493,8 @@ def job_to_card(job: Dict[str, Any], recruiter: Optional[Dict[str, Any]] = None)
     role_title = job.get("role_title") or job.get("role") or "Intern"
     rounds = as_list(job.get("selection_rounds"))
     has_talentforge_meta = bool(rounds and rounds[0] in {"Full-time", "Internship"})
+    raw_phi_score = job.get("phi_score")
+    phi_score = float(raw_phi_score) if raw_phi_score is not None else None
     return {
         "id": job["id"],
         "recruiter_id": job.get("recruiter_id"),
@@ -439,7 +513,9 @@ def job_to_card(job: Dict[str, Any], recruiter: Optional[Dict[str, Any]] = None)
         "company_size": rounds[1] if has_talentforge_meta and len(rounds) > 1 else "",
         "candidate_level": rounds[2] if has_talentforge_meta and len(rounds) > 2 else "",
         "job_type": rounds[0] if has_talentforge_meta else (job.get("job_type") or ""),
-        "phi_score": float(job.get("phi_score") or 0.75),  # TODO: replace with recommender per-pair score.
+        "phi_score": phi_score,
+        "score_status": "computed" if phi_score is not None else "missing",
+        "match_breakdown": job.get("_match_breakdown") or {},
     }
 
 
@@ -737,6 +813,8 @@ def student_to_card(student: Dict[str, Any], job_id: Optional[str] = None, hydra
         projects = profile.get("projects") or projects
         certs = profile.get("certifications") or certs
     grad_year = int(student.get("batch_year") or (2024 + int(student.get("year_of_study") or 3)))
+    raw_match_score = student.get("_match_score")
+    match_score = float(raw_match_score) if raw_match_score is not None else None
     return {
         "student_id": sid,
         "email": student.get("email") or "",
@@ -759,7 +837,8 @@ def student_to_card(student: Dict[str, Any], job_id: Optional[str] = None, hydra
         "preference_summary": student.get("preference_summary") or student.get("email") or student.get("college_name") or "",
         "profile_tags": as_list(student.get("certifications")) + as_list(student.get("projects")),
         "highlight_line": f"Best project: {projects[0]['title']} with practical implementation details.",
-        "phi_score": float(student.get("_match_score") or 0.75),
+        "phi_score": match_score,
+        "score_status": "computed" if match_score is not None else "missing",
         "match_breakdown": student.get("_match_breakdown") or {},
         "job_id": job_id,
     }
@@ -790,6 +869,12 @@ def student_feed(
     ranked_jobs = sort_jobs_for_student(student, eligible_jobs)
     cards = [job_to_card(job, get_recruiter(job.get("recruiter_id"))) for job in ranked_jobs]
     return {"jobs": cards[offset:offset + limit]}
+
+
+@router.get("/fairness/status")
+def swipe_fairness_status(user=Depends(get_current_user)):
+    load_fairlearn_artifact()
+    return fairness_artifact_status()
 
 
 @router.get("/student/interested")
@@ -901,6 +986,7 @@ def recruiter_create_job(req: RecruiterJobCreate, user=Depends(get_current_recru
     payload["recruiter_id"] = user["id"]
     result = execute_supabase(lambda: supabase.table("jobs").insert(payload))
     created = result.data[0] if result and result.data else payload
+    clear_profile_dependent_caches()
     return job_to_card(created, user)
 
 
@@ -914,6 +1000,7 @@ def recruiter_update_job(job_id: str, req: RecruiterJobUpdate, user=Depends(get_
     payload = req.model_dump()
     result = execute_supabase(lambda: supabase.table("jobs").update(payload).eq("id", job_id).eq("recruiter_id", user["id"]).select("*"))
     updated = result.data[0] if result and result.data else {**row, **payload, "id": job_id}
+    clear_profile_dependent_caches()
     return job_to_card(updated, user)
 
 
@@ -928,6 +1015,7 @@ def recruiter_update_job_status(job_id: str, is_active: bool, user=Depends(get_c
         lambda: supabase.table("jobs").update({"is_active": is_active}).eq("id", job_id).eq("recruiter_id", user["id"]).select("*")
     )
     updated = result.data[0] if result and result.data else {**row, "is_active": is_active}
+    clear_profile_dependent_caches()
     return job_to_card(updated, user)
 
 
@@ -944,6 +1032,7 @@ def recruiter_delete_job(job_id: str, user=Depends(get_current_recruiter)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found.")
 
     execute_supabase(lambda: supabase.table("jobs").delete().eq("id", job_id).eq("recruiter_id", user["id"]))
+    clear_profile_dependent_caches()
     return {"deleted": True, "job_id": job_id}
 
 

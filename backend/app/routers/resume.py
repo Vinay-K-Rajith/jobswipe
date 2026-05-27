@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from app.database import supabase
 from app.routers.deps import decode_token
+from app.services.cache_control import clear_profile_dependent_caches
 from src.preprocessing.resume_parser import parse_resume
 
 router = APIRouter(prefix="/resume", tags=["resume"])
@@ -156,6 +157,7 @@ async def upload_resume(student_id: str, file: UploadFile = File(...), payload=D
     if update_result is not None and not update_result.data:
         _safe_execute(supabase.table("students").update(update_payload).eq("id", student_id))
     _sync_parsed_children(student_id, parsed)
+    clear_profile_dependent_caches()
 
     return {
         "student_id": student_id,
