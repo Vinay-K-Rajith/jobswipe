@@ -13,6 +13,7 @@ scipy>=1.13.0
 tqdm>=4.66.0
 lightgbm>=4.3.0
 fairlearn>=0.10.0
+groq>=0.9.0
 
 # PDF Generation & Parsing
 reportlab>=4.0.8

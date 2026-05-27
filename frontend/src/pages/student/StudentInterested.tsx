@@ -43,7 +43,7 @@ export default function StudentInterested() {
               <strong>{job.company_name}</strong>
               <span>{job.role_title}</span>
             </div>
-            <button className="btn btn-primary" type="button" onClick={() => setSelected(job)}>Decide</button>
+            <button className="btn-signup portal-row-action" type="button" onClick={() => setSelected(job)}>Decide</button>
           </article>
         ))}
       </section>

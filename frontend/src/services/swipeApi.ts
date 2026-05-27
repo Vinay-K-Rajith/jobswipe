@@ -119,6 +119,96 @@ export interface StudentRejectionInsight {
   improvement_plan: RejectionImprovementAction[];
 }
 
+export interface StudentProfileSummary {
+  basic_info: {
+    name: string;
+    personal_email?: string | null;
+    college_email?: string | null;
+    phone_number?: string | null;
+    college_roll_number?: string | null;
+    student_id: string;
+    department?: string | null;
+    current_year?: number | null;
+    graduation_year?: number | null;
+  };
+  education: {
+    class_10_marks?: number | null;
+    class_10_board?: string | null;
+    class_12_marks?: number | null;
+    class_12_board?: string | null;
+    college_name?: string | null;
+    degree?: string | null;
+    cgpa?: number | null;
+    active_backlogs?: number | null;
+    backlog_history?: number | null;
+  };
+  skills: Array<{
+    name: string;
+    proficiency: string;
+    verified: boolean;
+    category: string;
+  }>;
+  preferences: {
+    looking_for?: string | null;
+    preferred_roles: string[];
+    preferred_locations: string[];
+    remote_preference?: string | null;
+    open_to_relocation: boolean;
+  };
+  resume_links: {
+    resume_url?: string | null;
+    linkedin_url?: string | null;
+    github_url?: string | null;
+    portfolio_url?: string | null;
+    coding_profile_url?: string | null;
+  };
+  activity: {
+    liked_companies: number;
+    passed_roles: number;
+    companies_interested: number;
+    pending_decisions: number;
+    matches: number;
+    growth_insights: number;
+  };
+}
+
+export interface StudentProfileUpdatePayload {
+  full_name?: string | null;
+  personal_email?: string | null;
+  college_email?: string | null;
+  phone_number?: string | null;
+  register_number?: string | null;
+  department?: string | null;
+  branch?: string | null;
+  college_name?: string | null;
+  degree?: string | null;
+  class_10_marks?: number | null;
+  class_10_board?: string | null;
+  class_12_marks?: number | null;
+  class_12_board?: string | null;
+  cgpa?: number | null;
+  active_backlogs?: number | null;
+  backlog_history?: number | null;
+  year_of_study?: number | null;
+  batch_year?: number | null;
+  looking_for?: string | null;
+  preferred_roles?: string[];
+  preferred_locations?: string[];
+  remote_preference?: string | null;
+  open_to_relocation?: boolean;
+  portfolio_url?: string | null;
+  linkedin_url?: string | null;
+  github_url?: string | null;
+  coding_profile_url?: string | null;
+}
+
+export interface StudentProfileSkillsPayload {
+  skills: Array<{
+    name: string;
+    proficiency: string;
+  }>;
+}
+
 export interface RecruiterJobInput {
   role_title: string;
   industry: string;
@@ -149,6 +239,15 @@ export const getStudentMatches = () =>
 
 export const getStudentRejectionInsights = () =>
   api.get<{ insights: StudentRejectionInsight[] }>('/student/rejection-insights');
+
+export const getStudentProfile = () =>
+  api.get<StudentProfileSummary>('/student/profile');
+
+export const updateStudentProfile = (studentId: string, payload: StudentProfileUpdatePayload) =>
+  api.patch<{ message: string }>(`/profile/${studentId}`, payload);
+
+export const updateStudentProfileSkills = (studentId: string, payload: StudentProfileSkillsPayload) =>
+  api.put<{ message: string; count: number }>(`/profile/${studentId}/skills`, payload);
 
 export const studentSwipeRight = (jobId: string) =>
   api.post<{ matched: boolean }>('/student/swipe/right', { job_id: jobId });

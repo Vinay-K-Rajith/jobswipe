@@ -20,6 +20,7 @@ import StudentInterested from './pages/student/StudentInterested'
 import StudentMatches from './pages/student/StudentMatches'
 import StudentProfile from './pages/student/StudentProfile'
 import StudentRejectionInsights from './pages/student/StudentRejectionInsights'
+import ResumeBuilder from './pages/student/ResumeBuilder'
 import RecruiterBrowse from './pages/recruiter/RecruiterBrowse'
 import RecruiterInterested from './pages/recruiter/RecruiterInterested'
 import RecruiterMatches from './pages/recruiter/RecruiterMatches'
@@ -90,6 +91,7 @@ function App() {
         <Route path="/student/browse" element={<StudentRoute><StudentBrowse /></StudentRoute>} />
         <Route path="/student/interested" element={<StudentRoute><StudentInterested /></StudentRoute>} />
         <Route path="/student/matches" element={<StudentRoute><StudentMatches /></StudentRoute>} />
+        <Route path="/student/resume-builder" element={<StudentRoute><ResumeBuilder /></StudentRoute>} />
         <Route path="/student/rejections" element={<StudentRoute><StudentRejectionInsights /></StudentRoute>} />
         <Route path="/student/profile" element={<StudentRoute><StudentProfile /></StudentRoute>} />
 

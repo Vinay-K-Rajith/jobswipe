@@ -28,25 +28,24 @@ export default function StudentRejectionInsights() {
   useEffect(() => {
     getStudentRejectionInsights()
       .then((response) => setInsights(response.data.insights))
-      .catch((err) => setError(err?.response?.data?.detail || 'Could not load rejection insights.'))
+      .catch((err) => setError(err?.response?.data?.detail || 'Could not load growth insights.'))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="loading"><div className="spinner" /> Loading rejection insights...</div>;
+  if (loading) return <div className="loading"><div className="spinner" /> Loading growth insights...</div>;
 
   return (
     <main className="portal-page">
       <header className="portal-header">
         <span>Student Portal</span>
-        <h1>Rejection insights</h1>
-        <p>See why recommended roles still passed on your profile and what to improve next.</p>
+        <h1>Growth insights</h1>
       </header>
       {error && <div className="bias-inline-error">{error}</div>}
       <section className="portal-list rejection-insight-list">
         {insights.length === 0 ? (
           <div className="portal-empty">
-            <h2>No rejection insights yet</h2>
-            <p>When a recruiter passes on a recommended profile, the explanation will appear here.</p>
+            <h2>No growth insights yet</h2>
+            <p>When a recruiter shares feedback on a recommended profile, it will appear here.</p>
           </div>
         ) : insights.map((insight) => (
           <article className="bento-card rejection-insight-card" key={insight.id}>
@@ -68,7 +67,7 @@ export default function StudentRejectionInsights() {
                 </span>
               </div>
               <div className={`criteria-cell ${severityTone(insight.competitive_weaknesses[0]?.severity || 'neutral')}`}>
-                <b><IconAlertCircle size={15} /> Recruiter reason</b>
+                <b><IconAlertCircle size={15} /> Recruiter feedback</b>
                 <span>{insight.reason_label}{insight.reason_note ? `: ${insight.reason_note}` : ''}</span>
               </div>
             </div>

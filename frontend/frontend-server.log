@@ -1,10 +1,21 @@
 
 > job-swipe-frontend@0.0.1 dev
-> vite --host 127.0.0.1
+> vite --host 0.0.0.0
 
 
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m1351[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m255[22m[2m[0m ms[22m
 
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m3000[22m/[39m
-[2m3:36:09 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/LoginPage.tsx, /src/pages/CompaniesPage.tsx, /src/pages/JobSwipeFeedReplay.tsx, /src/pages/EligibilityEngine.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/StudentsPage.tsx, /src/pages/MLRankedShortlist.tsx, /src/pages/AdminDashboard.tsx, /src/pages/BiasDetection.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/recruiter/RecruiterPostJob.tsx[22m
-[2m3:36:16 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/AdminDashboard.tsx[22m
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3000[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.29.231:[1m3000[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m6:37:15 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentProfile.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx[22m
+[2m6:37:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
+[2m6:39:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
+[2m6:39:39 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:39:53 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
+[2m6:40:00 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
+[2m6:41:27 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
+[2m6:58:47 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/recruiter/RecruiterBrowse.tsx, /src/pages/recruiter/RecruiterMatches.tsx, /src/pages/student/StudentMatches.tsx, /src/pages/recruiter/RecruiterInterested.tsx, /src/pages/student/StudentBrowse.tsx, /src/pages/student/StudentInterested.tsx, /src/pages/student/StudentRejectionInsights.tsx, /src/pages/recruiter/RecruiterPostJob.tsx, /src/pages/student/StudentProfile.tsx[22m
+[2m6:58:59 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
+[2m7:06:42 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/student/StudentProfile.tsx[22m
+[2m7:06:48 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css[22m

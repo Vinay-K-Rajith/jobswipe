@@ -30,31 +30,17 @@ def _replace_child_rows(student_id: str, table: str, rows: list[dict]):
         _safe_execute(supabase.table(table).insert(rows))
 
 
-def _student_update_payload(parsed: dict, public_url: str | None, confidence: dict) -> dict:
-    payload = {
-        "skills": [item["skill_name"] for item in parsed.get("skills", []) if item.get("skill_name")],
-        "certifications": [item["cert_name"] for item in parsed.get("certifications", []) if item.get("cert_name")],
-        "projects": [item["project_title"] for item in parsed.get("projects", []) if item.get("project_title")],
-    }
-    for key in [
-        "department",
-        "year_of_study",
-        "cgpa",
-        "10th_marks",
-        "10th_board",
-        "12th_marks",
-        "12th_board",
-        "active_backlogs",
-    ]:
-        value = parsed.get(key)
-        if value not in ("", None, [], 0, 0.0):
-            payload[key] = value
-    if parsed.get("name"):
-        payload["full_name"] = parsed["name"]
-        payload["name"] = parsed["name"]
+def _student_update_payload(public_url: str | None, confidence: dict, existing_meta: dict | None = None) -> dict:
+    payload = {}
     if public_url:
         payload["resume_url"] = public_url
-    payload["resume_parse_confidence"] = confidence
+    if existing_meta:
+        payload["resume_parse_confidence"] = {
+            **confidence,
+            "profile_meta": existing_meta,
+        }
+    else:
+        payload["resume_parse_confidence"] = confidence
     return payload
 
 
@@ -150,13 +136,15 @@ async def upload_resume(student_id: str, file: UploadFile = File(...), payload=D
     except Exception:
         print("Resume storage upload skipped or failed; continuing with database parse")
 
-    update_payload = _student_update_payload(parsed, public_url, confidence)
+    existing_result = _safe_execute(supabase.table("students").select("resume_parse_confidence").eq("student_id", student_id).maybe_single())
+    existing_confidence = existing_result.data.get("resume_parse_confidence") if existing_result and existing_result.data else {}
+    existing_meta = (existing_confidence or {}).get("profile_meta") or {}
+    update_payload = _student_update_payload(public_url, confidence, existing_meta)
     update_result = _safe_execute(
         supabase.table("students").update(update_payload).eq("student_id", student_id)
     )
     if update_result is not None and not update_result.data:
         _safe_execute(supabase.table("students").update(update_payload).eq("id", student_id))
-    _sync_parsed_children(student_id, parsed)
     clear_profile_dependent_caches()
 
     return {
@@ -164,5 +152,5 @@ async def upload_resume(student_id: str, file: UploadFile = File(...), payload=D
         "parsed": parsed,
         "confidence": confidence,
         "resume_url": public_url or "",
-        "message": "Resume parsed and student profile synced",
+        "message": "Resume uploaded. Profile details can be completed manually.",
     }

@@ -2882,6 +2882,15 @@ tr:hover td {
   display: block;
   color: #fff;
 }
+.portal-row > div:not(.avatar-circle) {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.portal-row .btn,
+.portal-row-action {
+  flex: 0 0 auto;
+}
 .portal-row span,
 .portal-note {
   color: #a1a1aa;
@@ -2941,10 +2950,197 @@ tr:hover td {
   color: #fff;
 }
 
+.student-profile-bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+}
+.profile-identity-card {
+  grid-column: span 5;
+  grid-row: span 2;
+}
+.profile-education-card {
+  grid-column: span 7;
+}
+.profile-skills-card {
+  grid-column: span 5;
+}
+.profile-preferences-card {
+  grid-column: span 7;
+}
+.profile-links-card {
+  grid-column: span 4;
+}
+.profile-activity-card {
+  grid-column: span 7;
+}
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #14b8a6, #38bdf8);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+.profile-identity-card h2 {
+  font-size: 30px;
+  margin-bottom: 18px;
+}
+.profile-info-grid,
+.profile-link-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.profile-link-list {
+  grid-template-columns: 1fr;
+}
+.profile-info-item {
+  min-width: 0;
+}
+.profile-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.profile-edit-field {
+  display: block;
+  min-width: 0;
+}
+.profile-edit-field span {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.profile-info-item span {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.profile-info-item strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 13px;
+  line-height: 1.35;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.profile-skill-list {
+  display: grid;
+  gap: 10px;
+}
+.profile-skill-edit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+.profile-skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 8px;
+  background: #111;
+  padding: 12px;
+}
+.profile-skill-row strong {
+  display: block;
+  color: #fff;
+  font-size: 13px;
+}
+.profile-skill-row span {
+  display: block;
+  color: #a1a1aa;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.profile-skill-remove,
+.profile-add-skill {
+  white-space: nowrap;
+}
+.profile-criteria-list {
+  margin-top: 0;
+}
+.profile-criteria-list b {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.profile-toggle-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 8px;
+  background: #111;
+  padding: 14px;
+}
+.profile-toggle-field span {
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+}
+.profile-toggle-field input {
+  width: 18px;
+  height: 18px;
+}
+.profile-activity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.profile-activity-stat {
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 8px;
+  background: #111;
+  padding: 14px;
+}
+.profile-activity-stat span {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.profile-activity-stat strong {
+  display: block;
+  color: #fff;
+  font-size: 28px;
+  margin-top: 8px;
+}
+
 @media (max-width: 820px) {
   .rejection-meta-grid,
   .rejection-detail-grid {
     grid-template-columns: 1fr;
+  }
+  .student-profile-bento,
+  .profile-info-grid,
+  .profile-activity-grid,
+  .profile-skill-edit-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-identity-card,
+  .profile-education-card,
+  .profile-skills-card,
+  .profile-preferences-card,
+  .profile-links-card,
+  .profile-activity-card {
+    grid-column: span 1;
   }
 }
 .portal-empty p {

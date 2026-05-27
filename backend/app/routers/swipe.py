@@ -1,5 +1,7 @@
 import logging
 import os
+import hashlib
+import re
 import threading
 import time
 from functools import lru_cache
@@ -11,6 +13,7 @@ import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
+from app.config import STUDENT_EMAIL_DOMAIN
 from app.database import supabase
 from app.routers.deps import get_current_recruiter, get_current_user
 from app.services.data_paths import data_dir, dataset_variant
@@ -33,6 +36,11 @@ _FAIRLEARN_LAST_ERROR: Optional[str] = None
 PROJECT_COMPLEXITY_MAP = {"Basic": 1, "Intermediate": 2, "Advanced": 3}
 CERT_TIER_MAP = {"Local": 1, "National": 2, "Global_Standard": 3, "Global_Premium": 4}
 INTERNSHIP_TIER_MAP = {"NGO": 1, "Startup": 2, "Tier3": 3, "Tier2": 4, "Tier1": 5}
+DEPARTMENT_ALIASES = {
+    "ADVANCED": "CSE",
+    "INTERMEDIATE": "CSE",
+    "ROOKIE": "CSE",
+}
 
 
 class JobSwipeRequest(BaseModel):
@@ -80,6 +88,14 @@ def as_list(value: Any) -> List[str]:
     if isinstance(value, list):
         return [str(item) for item in value if str(item).strip()]
     return [item.strip() for item in str(value).replace("{", "").replace("}", "").split(",") if item.strip()]
+
+
+def normalize_text_list(value: Any) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return [item.strip() for item in str(value).split(",") if item.strip()]
 
 
 def normalize_track(value: Any) -> str:
@@ -184,6 +200,11 @@ def safe_int(value: Any, default: int = 0) -> int:
         return default
 
 
+def normalize_department(value: Any) -> str:
+    text = str(value or "").strip().upper()
+    return DEPARTMENT_ALIASES.get(text, text)
+
+
 def first_present(record: Dict[str, Any], *keys: str, default: Any = None) -> Any:
     for key in keys:
         value = record.get(key)
@@ -205,6 +226,61 @@ def merge_unique_texts(*sources: Any, limit: int = 8) -> List[str]:
             if len(merged) >= limit:
                 return merged
     return merged
+
+
+def name_tokens(value: Any) -> List[str]:
+    return [token for token in re.split(r"[^a-z0-9]+", str(value or "").lower()) if token]
+
+
+def is_placeholder_student_record(student: Dict[str, Any]) -> bool:
+    if not student:
+        return True
+    cgpa = safe_float(student.get("cgpa"))
+    year_of_study = safe_int(student.get("year_of_study"))
+    skills = as_list(student.get("skills")) or as_list(student.get("skill_list"))
+    projects = student.get("projects") or []
+    certifications = student.get("certifications") or []
+    internships = student.get("internships") or []
+    return (
+        cgpa <= 0
+        and year_of_study in {0, 3}
+        and not skills
+        and not projects
+        and not certifications
+        and not internships
+    )
+
+
+def select_seed_student_profile(user: Dict[str, Any], sid: str) -> Dict[str, Any]:
+    rows = all_student_rows()
+    if not rows:
+        return {}
+
+    search_terms = {
+        *name_tokens(sid),
+        *name_tokens(user.get("full_name") or user.get("name") or ""),
+        *name_tokens(user.get("email") or ""),
+    }
+
+    best_row: Dict[str, Any] = {}
+    best_score = 0
+    for row in rows:
+        row_terms = {
+            *name_tokens(row.get("student_id")),
+            *name_tokens(row.get("full_name")),
+        }
+        score = len(search_terms & row_terms)
+        if score > best_score:
+            best_score = score
+            best_row = row
+
+    if best_score > 0:
+        return best_row
+
+    ordered_rows = sorted(rows, key=lambda item: str(item.get("student_id") or ""))
+    seed_key = str(user.get("email") or sid or "trial-student").lower().encode()
+    seed_index = int(hashlib.sha256(seed_key).hexdigest(), 16) % len(ordered_rows)
+    return ordered_rows[seed_index]
 
 
 def canonicalize_job_record(job: Dict[str, Any]) -> Dict[str, Any]:
@@ -297,7 +373,7 @@ def build_student_model_input(student: Dict[str, Any]) -> Dict[str, Any]:
     merged = {**base_row, **feature_row, **profile, **student}
     merged["student_id"] = sid
     merged["full_name"] = first_present(merged, "full_name", "name", default=sid)
-    merged["department"] = first_present(merged, "department", "branch", default="")
+    merged["department"] = normalize_department(first_present(merged, "department", "branch", default=""))
     merged["cgpa"] = safe_float(merged.get("cgpa"))
     merged["10th_marks"] = safe_float(first_present(merged, "10th_marks", "tenth_marks"))
     merged["12th_marks"] = safe_float(first_present(merged, "12th_marks", "twelfth_marks"))
@@ -484,6 +560,14 @@ def load_current_student(sid: str, user: Dict[str, Any]) -> Dict[str, Any]:
         fallback = execute_supabase(lambda: supabase.table("students").select("*").eq("id", user["id"]).maybe_single())
         if fallback and fallback.data:
             merged = {**merged, **fallback.data}
+    if not merged or is_placeholder_student_record(merged):
+        seed_profile = select_seed_student_profile({**merged, **user}, sid)
+        if seed_profile:
+            merged = {
+                **seed_profile,
+                **merged,
+                "_talentforge_profile": seed_profile.get("_talentforge_profile") or {},
+            }
     return {**merged, **user, "student_id": sid}
 
 
@@ -568,6 +652,50 @@ def create_match_if_ready(student: str, recruiter_id: str, job_id: str) -> bool:
     )
     # TODO: persist notifications once a notifications table exists.
     return True
+
+
+def count_rows(table: str, filters: Dict[str, Any]) -> int:
+    query = supabase.table(table).select("id")
+    for key, value in filters.items():
+        query = query.eq(key, value)
+    result = execute_supabase(lambda: query)
+    return len(result.data or []) if result else 0
+
+
+def student_skill_details(sid: str, profile_meta: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+    if not (profile_meta or {}).get("manual_skills_saved"):
+        return []
+    rows = execute_supabase(lambda: supabase.table("skills").select("skill_name, proficiency, verified").eq("student_id", sid)).data or []
+    return [
+        {
+            "name": row.get("skill_name") or "Skill",
+            "proficiency": row.get("proficiency") or "Not set",
+            "verified": bool(row.get("verified")),
+            "category": "Technical",
+        }
+        for row in rows
+        if str(row.get("skill_name") or "").strip()
+    ]
+
+
+def student_pending_interest_count(sid: str) -> int:
+    responded = {row["job_id"] for row in (execute_supabase(lambda: supabase.table("student_interest").select("job_id").eq("student_id", sid)).data or [])}
+    passed = {row["job_id"] for row in (execute_supabase(lambda: supabase.table("student_pass").select("job_id").eq("student_id", sid)).data or [])}
+    matches = {row["job_id"] for row in (execute_supabase(lambda: supabase.table("matches").select("job_id").eq("student_id", sid)).data or [])}
+    rows = execute_supabase(lambda: supabase.table("recruiter_interest").select("job_id").eq("student_id", sid)).data or []
+    return sum(1 for row in rows if row.get("job_id") not in responded and row.get("job_id") not in passed and row.get("job_id") not in matches)
+
+
+def split_student_emails(student: Dict[str, Any], user: Dict[str, Any]) -> Tuple[Optional[str], Optional[str]]:
+    meta = ((student.get("resume_parse_confidence") or {}).get("profile_meta") or {})
+    stored_email = str(student.get("email") or "").strip().lower()
+    login_email = str(user.get("email") or "").strip().lower()
+    meta_college_email = str(meta.get("college_email") or "").strip().lower()
+    meta_personal_email = str(meta.get("personal_email") or "").strip().lower()
+    candidates = [email for email in [meta_college_email, stored_email, login_email] if email]
+    college_email = next((email for email in candidates if email.endswith(f"@{STUDENT_EMAIL_DOMAIN}")), None)
+    personal_email = meta_personal_email or next((email for email in candidates if email != college_email), None)
+    return personal_email, college_email
 
 
 REJECTION_REASON_LABELS = {
@@ -755,9 +883,9 @@ def build_rejection_insight(student: Dict[str, Any], job: Dict[str, Any], recrui
 
     role_title = job.get("role_title") or job.get("role") or "Role"
     company_name = job.get("company_name") or (get_recruiter(recruiter_id) or {}).get("company_name") or "Company"
-    headline = f"You were shown for {company_name} - {role_title}, but the recruiter chose stronger comparative fit elsewhere."
+    headline = f"You were considered for {company_name} - {role_title}; the recruiter moved ahead with stronger comparative fit this time."
     if reason_code != "selected_stronger_match":
-        headline = f"You were shown for {company_name} - {role_title}, but the recruiter passed with reason: {recruiter_reason_label(reason_code).lower()}."
+        headline = f"You were considered for {company_name} - {role_title}; recruiter feedback noted: {recruiter_reason_label(reason_code).lower()}."
 
     return {
         "headline": headline,
@@ -877,6 +1005,63 @@ def swipe_fairness_status(user=Depends(get_current_user)):
     return fairness_artifact_status()
 
 
+@router.get("/student/profile")
+def student_profile(user=Depends(get_current_user)):
+    sid = student_id(user)
+    raw_student = load_current_student(sid, user)
+    profile_meta = ((raw_student.get("resume_parse_confidence") or {}).get("profile_meta") or {})
+    personal_email, college_email = split_student_emails(raw_student, user)
+    skills = student_skill_details(sid, profile_meta)
+
+    return {
+        "basic_info": {
+            "name": profile_meta.get("full_name") or user.get("full_name") or user.get("name") or sid,
+            "personal_email": personal_email,
+            "college_email": college_email,
+            "phone_number": profile_meta.get("phone_number"),
+            "college_roll_number": profile_meta.get("register_number") or sid,
+            "student_id": sid,
+            "department": profile_meta.get("department") or profile_meta.get("branch"),
+            "current_year": safe_int(profile_meta.get("year_of_study")) or None,
+            "graduation_year": safe_int(profile_meta.get("batch_year")) or None,
+        },
+        "education": {
+            "class_10_marks": safe_float(profile_meta.get("class_10_marks")) or None,
+            "class_10_board": profile_meta.get("class_10_board"),
+            "class_12_marks": safe_float(profile_meta.get("class_12_marks")) or None,
+            "class_12_board": profile_meta.get("class_12_board"),
+            "college_name": profile_meta.get("college_name"),
+            "degree": profile_meta.get("degree"),
+            "cgpa": safe_float(profile_meta.get("cgpa")) or None,
+            "active_backlogs": safe_int(profile_meta.get("active_backlogs")) if "active_backlogs" in profile_meta else None,
+            "backlog_history": safe_int(profile_meta.get("backlog_history")) if "backlog_history" in profile_meta else None,
+        },
+        "skills": skills,
+        "preferences": {
+            "looking_for": profile_meta.get("looking_for"),
+            "preferred_roles": normalize_text_list(profile_meta.get("preferred_roles")),
+            "preferred_locations": normalize_text_list(profile_meta.get("preferred_locations")),
+            "remote_preference": profile_meta.get("remote_preference"),
+            "open_to_relocation": profile_meta.get("open_to_relocation") if profile_meta.get("open_to_relocation") is not None else False,
+        },
+        "resume_links": {
+            "resume_url": raw_student.get("resume_url"),
+            "linkedin_url": profile_meta.get("linkedin_url"),
+            "github_url": profile_meta.get("github_url"),
+            "portfolio_url": profile_meta.get("portfolio_url"),
+            "coding_profile_url": profile_meta.get("coding_profile_url"),
+        },
+        "activity": {
+            "liked_companies": count_rows("student_interest", {"student_id": sid}),
+            "passed_roles": count_rows("student_pass", {"student_id": sid}),
+            "companies_interested": count_rows("recruiter_interest", {"student_id": sid}),
+            "pending_decisions": student_pending_interest_count(sid),
+            "matches": count_rows("matches", {"student_id": sid}),
+            "growth_insights": count_rows("recruiter_pass", {"student_id": sid}),
+        },
+    }
+
+
 @router.get("/student/interested")
 def student_interested(user=Depends(get_current_user)):
     sid = student_id(user)
@@ -941,7 +1126,7 @@ def student_rejection_insights(user=Depends(get_current_user)):
             "reason_code": row.get("reason_code") or payload.get("recruiter_reason_code") or "selected_stronger_match",
             "reason_label": payload.get("recruiter_reason_label") or recruiter_reason_label(row.get("reason_code") or "selected_stronger_match"),
             "reason_note": row.get("reason_note") or payload.get("recruiter_reason_note") or "",
-            "headline": payload.get("headline") or "A recruiter passed on your profile after you were recommended for this role.",
+            "headline": payload.get("headline") or "A recruiter moved ahead with other candidates after your profile was recommended for this role.",
             "match_snapshot": payload.get("match_snapshot") or {},
             "competitive_weaknesses": payload.get("competitive_weaknesses") or [],
             "peer_comparison": payload.get("peer_comparison") or {},
