@@ -1,19 +1,15 @@
 import os
 import pandas as pd
 from dotenv import load_dotenv
-from supabase import create_client
 from passlib.context import CryptContext
 from pathlib import Path
 
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(ENV_PATH)
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
-if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
-    raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in .env")
+from app.db.postgres_client import get_postgres_client  # noqa: E402
 
-supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+supabase = get_postgres_client()
 pwd = CryptContext(schemes=["bcrypt"])
 
 _BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,38 +23,56 @@ def seed_students():
     df = pd.read_csv(path)
 
     for _, row in df.iterrows():
-        register_number = str(row.get("register_number") or "").strip()
-        if not register_number:
+        # Support both canonical (student_id) and legacy (register_number) CSV formats
+        student_id = str(row.get("student_id") or row.get("register_number") or "").strip()
+        if not student_id:
             continue
 
-        # if exists skip
+        # if exists, skip
         try:
-            exists = supabase.table("students").select("id").eq("register_number", register_number).maybe_single().execute()
+            exists = supabase.table("students").select("student_id").eq("student_id", student_id).maybe_single().execute()
             if exists and exists.data:
                 continue
-        except Exception as e:
+        except Exception:
             pass
 
         try:
-            supabase.table("students").insert({
-                "register_number": register_number,
-                "name": str(row.get("name", "") or "").strip(),
-                "email": str(row.get("email", "") or "").strip(),
-                "password_hash": str(row.get("password_hash", "hashed_password") or "hashed_password"),
-                "college_name": str(row.get("college_name", "") or "").strip(),
-                "branch": str(row.get("branch", "") or "").strip(),
-                "cgpa": float(row.get("cgpa", 0.0) or 0.0),
-                "active_backlogs": int(row.get("active_backlogs", 0) or 0),
-                "batch_year": int(row.get("batch_year", 0) or 0),
-                "skills": [s.strip() for s in str(row.get("skills", "") or "").replace("{", "").replace("}", "").split(",") if s.strip()],
-                "certifications": [s.strip() for s in str(row.get("certifications", "") or "").replace("{", "").replace("}", "").split(",") if s.strip()],
-                "projects": [s.strip() for s in str(row.get("projects", "") or "").replace("{", "").replace("}", "").split(",") if s.strip()],
-            }).execute()
-            print(f"  ✓ {register_number} - {row.get('name', '')}")
-        except Exception as e:
-            print(f"  ❌ Insert error for {register_number}: {e}")
+            # Build insert payload using only columns that exist in the DB schema
+            full_name = str(row.get("full_name") or row.get("name") or "").strip()
+            payload = {
+                "student_id": student_id,
+                "full_name": full_name,
+                "name": full_name,
+                "department": str(row.get("department") or row.get("branch") or "").strip(),
+                "cgpa": float(row.get("cgpa") or 0.0),
+                "active_backlogs": int(row.get("active_backlogs") or 0),
+                "year_of_study": int(row.get("year_of_study") or 0),
+                "register_number": str(row.get("register_number") or student_id),
+            }
+            # Optional columns
+            if row.get("gender"):
+                payload["gender"] = str(row.get("gender")).strip()
+            if row.get("batch_year"):
+                payload["batch_year"] = int(row.get("batch_year") or 0)
+            if row.get("10th_marks"):
+                payload["10th_marks"] = float(row.get("10th_marks") or 0)
+            if row.get("10th_board"):
+                payload["10th_board"] = str(row.get("10th_board")).strip()
+            if row.get("12th_marks"):
+                payload["12th_marks"] = float(row.get("12th_marks") or 0)
+            if row.get("12th_board"):
+                payload["12th_board"] = str(row.get("12th_board")).strip()
+            if row.get("backlogs_history"):
+                payload["backlogs_history"] = int(row.get("backlogs_history") or 0)
+            if row.get("email"):
+                payload["email"] = str(row.get("email")).strip()
 
-    print("✓ Students seeded")
+            supabase.table("students").insert(payload).execute()
+            print(f"  \u2713 {student_id} - {full_name}")
+        except Exception as e:
+            print(f"  \u274c Insert error for {student_id}: {e}")
+
+    print("\u2713 Students seeded")
 
 
 def seed_jobs():
@@ -98,10 +112,11 @@ def seed_jobs():
                 supabase.table("jobs").insert({
                     "company_name": company_name,
                     "role": role,
+                    "role_title": role,
                     "allowed_branches": allowed_branches,
+                    "allowed_departments": allowed_branches,
                     "min_cgpa": float(row.get("min_cgpa", 0.0) or 0.0),
-                    "max_backlogs": int(row.get("max_backlogs", 0) or 0),
-                    "batch_year": int(row.get("batch_year", 0) or 0),
+                    "max_active_backlogs": int(row.get("max_backlogs", row.get("max_active_backlogs", 999)) or 999),
                     "required_skills": required_skills,
                     "preferred_skills": preferred_skills,
                     "ctc": str(row.get("ctc", "") or "").strip(),
@@ -110,9 +125,9 @@ def seed_jobs():
                     "selection_rounds": selection_rounds,
                     "job_description": str(row.get("job_description", "") or "").strip(),
                 }).execute()
-                print(f"  ✓ {company_name} - {role}")
+                print(f"  \u2713 {company_name} - {role}")
             except Exception as e:
-                print(f"  ❌ Insert error for {company_name} - {role}: {e}")
+                print(f"  \u274c Insert error for {company_name} - {role}: {e}")
 
         print("✓ Jobs seeded")
     except Exception as e:
@@ -122,6 +137,7 @@ def seed_jobs():
 def seed_skills_resources():
     try:
         # Seed skills_graph from CSV
+        # DB schema: (id, skill_name, avg_learning_weeks, difficulty_level, prerequisites)
         path = DATA_DIR / "skills_graph.csv"
         if path.exists():
             df = pd.read_csv(path)
@@ -136,41 +152,39 @@ def seed_skills_resources():
                 except:
                     pass
                 try:
-                    # Parse related_skills - format is "{Skill1,Skill2}"
-                    related_skills_str = str(row.get("related_skills", "") or "").strip()
-                    related_skills = [s.strip() for s in related_skills_str.replace("{", "").replace("}", "").split(",") if s.strip()]
-                    
                     supabase.table("skills_graph").insert({
                         "skill_name": key,
-                        "category": str(row.get("category", "") or "").strip(),
-                        "related_skills": related_skills,
-                        "difficulty_level": str(row.get("difficulty_level", "") or "").strip(),
-                        "avg_learning_weeks": int(row.get("avg_learning_weeks", 0) or 0),
-                        "industry_demand_score": float(row.get("industry_demand_score", 0.0) or 0.0),
+                        "difficulty_level": str(row.get("difficulty_level", "Intermediate") or "Intermediate").strip(),
+                        "avg_learning_weeks": int(row.get("avg_learning_weeks", 3) or 3),
                     }).execute()
                 except Exception as e:
                     pass
             print("✓ skills_graph seeded")
+        else:
+            print("  skills_graph.csv not found, skipping")
 
         # Seed learning_resources from CSV
+        # DB schema: (id, skill_name, title, url, resource_type, estimated_hours)
         path = DATA_DIR / "learning_resources.csv"
         if path.exists():
             df = pd.read_csv(path)
             for _, row in df.iterrows():
                 try:
+                    # Map CSV fields to actual DB columns
+                    url = str(row.get("link", "") or row.get("url", "") or "").strip()
+                    estimated_hours = int(row.get("duration_hours", 0) or row.get("estimated_hours", 0) or 0)
                     supabase.table("learning_resources").insert({
                         "skill_name": str(row.get("skill_name", "") or "").strip(),
                         "resource_type": str(row.get("resource_type", "") or "").strip(),
                         "title": str(row.get("title", "") or "").strip(),
-                        "platform": str(row.get("platform", "") or "").strip(),
-                        "link": str(row.get("link", "") or "").strip(),
-                        "difficulty": str(row.get("difficulty", "") or "").strip(),
-                        "duration_hours": int(row.get("duration_hours", 0) or 0),
-                        "is_free": bool(row.get("is_free", True)),
+                        "url": url,
+                        "estimated_hours": estimated_hours,
                     }).execute()
                 except Exception as e:
                     pass
             print("✓ learning_resources seeded")
+        else:
+            print("  learning_resources.csv not found, skipping")
     except Exception as e:
         print(f"❌ Skills/Resources seeding failed: {e}")
 

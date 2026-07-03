@@ -1,9 +1,7 @@
-import os
 from pathlib import Path
 
 import pandas as pd
 from dotenv import load_dotenv
-from supabase import create_client
 
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "companies.csv"
@@ -18,12 +16,8 @@ def split_csv(value):
 
 
 def main():
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_SERVICE_KEY")
-    if not url or not key:
-        raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in backend/.env")
-
-    client = create_client(url, key)
+    from app.db.postgres_client import get_postgres_client
+    client = get_postgres_client()
     df = pd.read_csv(DATA_PATH)
 
     jobs = []

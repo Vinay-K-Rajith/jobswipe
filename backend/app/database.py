@@ -1,4 +1,3 @@
-from supabase import create_client
-from app.config import SUPABASE_URL, SUPABASE_SERVICE_KEY
+from app.db.postgres_client import get_postgres_client
 
-supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+supabase = get_postgres_client()

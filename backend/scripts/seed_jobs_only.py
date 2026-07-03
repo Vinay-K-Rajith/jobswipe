@@ -1,18 +1,14 @@
 import os
 import pandas as pd
 from dotenv import load_dotenv
-from supabase import create_client
 from pathlib import Path
 
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(ENV_PATH)
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
-if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
-    raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in .env")
+from app.db.postgres_client import get_postgres_client  # noqa: E402
 
-supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+supabase = get_postgres_client()
 DATA_DIR = Path(__file__).resolve().parent.parent / "datasets"
 
 

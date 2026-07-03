@@ -20,7 +20,7 @@ reportlab>=4.0.8
 pdfplumber>=0.11.0
 
 # Database
-supabase>=2.3.0
+psycopg2-binary>=2.9.0
 passlib[bcrypt]>=1.7.4
 python-jose[cryptography]>=3.3.0
 bcrypt>=4.1.0

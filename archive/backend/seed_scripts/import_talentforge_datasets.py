@@ -1,9 +1,7 @@
 from pathlib import Path
-import re
 
 import pandas as pd
 from dotenv import load_dotenv
-from supabase import create_client
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,12 +139,8 @@ def build_skill_records(path):
 
 
 def main():
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_SERVICE_KEY")
-    if not url or not key:
-        raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in backend/.env")
-
-    client = create_client(url, key)
+    from app.db.postgres_client import get_postgres_client
+    client = get_postgres_client()
 
     fulltime_jobs = build_job_records(SOURCE_DIR / "companydataset.xlsx", "fulltime")
     internship_jobs = build_job_records(SOURCE_DIR / "internshipdataset.xlsx", "internship")

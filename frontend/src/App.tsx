@@ -72,7 +72,7 @@ function RecruiterRoute({ children }: { children: JSX.Element }) {
 function App() {
   const role = useAuthStore((s) => s.userRole)
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/" element={<Navigate to={homeForRole(role)} replace />} />
         {/* Public Route */}

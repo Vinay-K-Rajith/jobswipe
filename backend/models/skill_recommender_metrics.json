@@ -1,6 +1,6 @@
 {
-  "test_mae": 0.005509,
-  "test_rmse": 0.008253,
-  "test_r2": 0.6742,
-  "test_spearman_rho": 0.779
+  "test_mae": 0.005506,
+  "test_rmse": 0.008282,
+  "test_r2": 0.6719,
+  "test_spearman_rho": 0.78
 }

@@ -108,20 +108,10 @@ def clean_nan(obj: Any) -> Any:
 
 def get_persistence_client() -> PersistenceStatus:
     try:
-        from supabase import create_client  # type: ignore
-    except Exception:
-        return PersistenceStatus(False, "Supabase Python package is not installed.")
-
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_SERVICE_KEY")
-    if not url or not key:
-        return PersistenceStatus(False, "Supabase environment variables are not configured.")
-
-    try:
-        client = create_client(url, key)
+        from app.db.postgres_client import get_postgres_client
+        client = get_postgres_client()
     except Exception as exc:
-        return PersistenceStatus(False, f"Failed to initialize Supabase client: {exc}")
-
+        return PersistenceStatus(False, f"Failed to initialize database client: {exc}")
     return PersistenceStatus(True, client=client)
 
 
