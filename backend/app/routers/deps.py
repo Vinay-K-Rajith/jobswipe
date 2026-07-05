@@ -39,6 +39,13 @@ def decode_token(credentials: HTTPAuthorizationCredentials = Depends(bearer_sche
     return payload
 
 
+def require_admin(payload=Depends(decode_token)):
+    """Gate for admin/placement-team-only endpoints (student PII, ML, bias tools)."""
+    if payload.get("role") != "admin":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
+    return payload
+
+
 def get_current_user(payload=Depends(decode_token)):
     if payload.get("role") != "student":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Student token required")

@@ -4,15 +4,23 @@ uvicorn[standard]>=0.24.0
 python-dotenv>=1.0.0
 pydantic>=2.5.2
 
-# Data & ML
-pandas>=2.3.0
-numpy>=2.0.0
-scikit-learn>=1.5.0
+# Pinned exactly to the stable SERVING stack (pandas 2.x). The live serving
+# artifacts in backend/models/ (incl. canonical_fair_champion.pkl) are stored in
+# a form that loads under these versions. Do not float these — a mismatch breaks
+# artifact unpickling (see the gender StringDtype incompatibility below).
+#
+# NOTE: the reproducible paper artifacts under backend/models/paper_frozen/ and
+# backend/data/paper_frozen/ were BUILT under pandas 3.0.x / scikit-learn 1.8.x
+# and require THAT stack to reproduce the published numbers. Reproducing the paper
+# must be done in a separate pandas-3.0 environment; the pins here are for serving.
+pandas==2.3.3
+numpy==2.1.3
+scikit-learn==1.6.1
+lightgbm==4.6.0
+fairlearn==0.13.0
+scipy==1.15.3
 xgboost>=2.1.0
-scipy>=1.13.0
 tqdm>=4.66.0
-lightgbm>=4.3.0
-fairlearn>=0.10.0
 groq>=0.9.0
 
 # PDF Generation & Parsing

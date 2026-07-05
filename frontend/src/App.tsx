@@ -21,6 +21,10 @@ import StudentMatches from './pages/student/StudentMatches'
 import StudentProfile from './pages/student/StudentProfile'
 import StudentRejectionInsights from './pages/student/StudentRejectionInsights'
 import ResumeBuilder from './pages/student/ResumeBuilder'
+import InterviewPrep from './pages/student/InterviewPrep'
+import InterviewRoom from './pages/student/InterviewRoom'
+import InterviewFeedback from './pages/student/InterviewFeedback'
+import InterviewTranscript from './pages/student/InterviewTranscript'
 import RecruiterBrowse from './pages/recruiter/RecruiterBrowse'
 import RecruiterInterested from './pages/recruiter/RecruiterInterested'
 import RecruiterMatches from './pages/recruiter/RecruiterMatches'
@@ -92,6 +96,10 @@ function App() {
         <Route path="/student/interested" element={<StudentRoute><StudentInterested /></StudentRoute>} />
         <Route path="/student/matches" element={<StudentRoute><StudentMatches /></StudentRoute>} />
         <Route path="/student/resume-builder" element={<StudentRoute><ResumeBuilder /></StudentRoute>} />
+        <Route path="/student/interview" element={<StudentRoute><InterviewPrep /></StudentRoute>} />
+        <Route path="/student/interview/:sessionId" element={<StudentRoute><InterviewRoom /></StudentRoute>} />
+        <Route path="/student/interview/:sessionId/feedback" element={<StudentRoute><InterviewFeedback /></StudentRoute>} />
+        <Route path="/student/interview/:sessionId/transcript" element={<StudentRoute><InterviewTranscript /></StudentRoute>} />
         <Route path="/student/rejections" element={<StudentRoute><StudentRejectionInsights /></StudentRoute>} />
         <Route path="/student/profile" element={<StudentRoute><StudentProfile /></StudentRoute>} />
 

@@ -18,6 +18,7 @@ from app.database import supabase
 from app.routers.deps import get_current_recruiter, get_current_user
 from app.services.data_paths import data_dir, dataset_variant
 from app.services.bias_reduction import load_variant_artifact, score_variant_probabilities
+from app.services.artifact_registry import champion_bundle_name
 from app.services.cache_control import clear_profile_dependent_caches
 from app.services.talentforge_matcher import all_student_rows, enrich_student_row, is_canonical_job, score_student_for_job
 from src.explainability.criteria_checker import check_criteria
@@ -28,11 +29,25 @@ router = APIRouter(tags=["swipe"])
 logger = logging.getLogger(__name__)
 _SUPABASE_LOCK = threading.Lock()
 DATA_DIR = data_dir()
-FAIRNESS_BLEND_TALENTFORGE_WEIGHT = 0.6
-FAIRNESS_BLEND_MODEL_WEIGHT = 0.4
+# Width of the match-score "tie band" used by the two-stage rank-then-fairness
+# reorder (Algorithm 1, fairness adjustment stage). Two candidates whose match
+# scores fall in the same band of this width are treated as a near-tie, and the
+# Fairlearn probability decides their order. Fairness never reorders across bands,
+# so it can nudge balance without overriding match quality.
+FAIRNESS_TIE_EPSILON = 0.05
 REQUIRE_FAIRNESS_SCORING = os.getenv("JOBSWIPE_REQUIRE_FAIRNESS", "").lower() in {"1", "true", "yes"}
 _FAIRLEARN_ARTIFACT: Optional[Dict[str, Any]] = None
 _FAIRLEARN_LAST_ERROR: Optional[str] = None
+# Per-feed-call latch: once the champion artifact fails to load during a feed
+# request, later pairs in the same call skip the (broken) retry and reuse the
+# cached "unavailable" status. Reset at the start of each feed via
+# reset_fairness_cycle(). Does not affect load_fairlearn_artifact's success cache.
+_FAIRLEARN_LOAD_FAILED_THIS_CYCLE: bool = False
+# Which artifact actually loaded as the champion, and whether it is the real
+# champion or a silent fallback substitution. Set in load_fairlearn_artifact(),
+# reset in clear_fairlearn_artifact_cache(). Drives the "degraded" fairness state.
+_FAIRLEARN_LOADED_NAME: Optional[str] = None
+_FAIRLEARN_IS_CHAMPION: bool = False
 PROJECT_COMPLEXITY_MAP = {"Basic": 1, "Intermediate": 2, "Advanced": 3}
 CERT_TIER_MAP = {"Local": 1, "National": 2, "Global_Standard": 3, "Global_Premium": 4}
 INTERNSHIP_TIER_MAP = {"NGO": 1, "Startup": 2, "Tier3": 3, "Tier2": 4, "Tier1": 5}
@@ -318,28 +333,56 @@ def load_student_feature_rows() -> Dict[str, Dict[str, Any]]:
 
 
 def load_fairlearn_artifact() -> Optional[Dict[str, Any]]:
-    global _FAIRLEARN_ARTIFACT, _FAIRLEARN_LAST_ERROR
+    global _FAIRLEARN_ARTIFACT, _FAIRLEARN_LAST_ERROR, _FAIRLEARN_LOADED_NAME, _FAIRLEARN_IS_CHAMPION
     if _FAIRLEARN_ARTIFACT is not None:
         return _FAIRLEARN_ARTIFACT
     try:
         artifact = load_variant_artifact("champion")
         _FAIRLEARN_ARTIFACT = artifact
         _FAIRLEARN_LAST_ERROR = None
-        logger.info(
-            "Fairlearn champion artifact loaded for swipe scoring with %s feature columns",
-            len(artifact.get("feature_cols", [])) if isinstance(artifact, dict) else "unknown",
-        )
+        # Detect a silent fallback: load_fair_champion_artifact substitutes the
+        # legacy bundle when the named champion is missing. bias_reduction passes
+        # the loaded artifact_path through, so compare it to the expected name.
+        loaded_name = artifact.get("artifact_path") if isinstance(artifact, dict) else None
+        expected = champion_bundle_name()
+        _FAIRLEARN_LOADED_NAME = loaded_name
+        _FAIRLEARN_IS_CHAMPION = bool(loaded_name) and loaded_name == expected
+        if _FAIRLEARN_IS_CHAMPION:
+            logger.info(
+                "Fairlearn champion artifact loaded for swipe scoring with %s feature columns",
+                len(artifact.get("feature_cols", [])) if isinstance(artifact, dict) else "unknown",
+            )
+        else:
+            logger.warning(
+                "Fairlearn champion '%s' unavailable; substituted '%s' — fairness serving is DEGRADED",
+                expected, loaded_name,
+            )
         return artifact
     except Exception as exc:
         _FAIRLEARN_LAST_ERROR = str(exc)
+        _FAIRLEARN_LOADED_NAME = None
+        _FAIRLEARN_IS_CHAMPION = False
         logger.exception("Fairlearn champion artifact unavailable; falling back to TalentForge-only scoring")
         return None
 
 
 def clear_fairlearn_artifact_cache() -> None:
-    global _FAIRLEARN_ARTIFACT, _FAIRLEARN_LAST_ERROR
+    global _FAIRLEARN_ARTIFACT, _FAIRLEARN_LAST_ERROR, _FAIRLEARN_LOADED_NAME, _FAIRLEARN_IS_CHAMPION
     _FAIRLEARN_ARTIFACT = None
     _FAIRLEARN_LAST_ERROR = None
+    _FAIRLEARN_LOADED_NAME = None
+    _FAIRLEARN_IS_CHAMPION = False
+
+
+def reset_fairness_cycle() -> None:
+    """Clear the per-feed-call fairness-load latch.
+
+    Called at the start of each feed request so a champion artifact that was
+    fixed/reloaded between requests is retried, while repeated retries of a
+    broken load are avoided within a single feed call.
+    """
+    global _FAIRLEARN_LOAD_FAILED_THIS_CYCLE
+    _FAIRLEARN_LOAD_FAILED_THIS_CYCLE = False
 
 
 def fairness_artifact_status() -> Dict[str, Any]:
@@ -350,6 +393,8 @@ def fairness_artifact_status() -> Dict[str, Any]:
         "feature_count": len(artifact.get("feature_cols", [])) if isinstance(artifact, dict) else 0,
         "last_error": _FAIRLEARN_LAST_ERROR,
         "required": REQUIRE_FAIRNESS_SCORING,
+        "loaded_artifact": _FAIRLEARN_LOADED_NAME,
+        "is_champion": _FAIRLEARN_IS_CHAMPION,
     }
 
 
@@ -457,8 +502,21 @@ def passes_hard_criteria(student: Dict[str, Any], job: Dict[str, Any]) -> bool:
 
 
 def fairlearn_score_for_pair(student: Dict[str, Any], job: Dict[str, Any]) -> Dict[str, Any]:
+    global _FAIRLEARN_LOAD_FAILED_THIS_CYCLE
+
+    # If the champion artifact already failed to load earlier in this feed call,
+    # don't retry the broken load for every remaining pair — reuse the status.
+    if _FAIRLEARN_LOAD_FAILED_THIS_CYCLE:
+        return {
+            "score": None,
+            "source": "unavailable",
+            "fallback_reason": "artifact_load_failed",
+            "error": _FAIRLEARN_LAST_ERROR,
+        }
+
     artifact = load_fairlearn_artifact()
     if not artifact:
+        _FAIRLEARN_LOAD_FAILED_THIS_CYCLE = True
         return {
             "score": None,
             "source": "unavailable",
@@ -482,8 +540,10 @@ def fairlearn_score_for_pair(student: Dict[str, Any], job: Dict[str, Any]) -> Di
             }
         return {
             "score": float(probabilities[0]),
-            "source": "fairlearn_champion",
+            "source": "fairlearn_champion" if _FAIRLEARN_IS_CHAMPION else "fairlearn_fallback",
             "fallback_reason": None,
+            "is_champion": _FAIRLEARN_IS_CHAMPION,
+            "loaded_artifact": _FAIRLEARN_LOADED_NAME,
         }
     except Exception as exc:
         logger.exception("Fairlearn scoring failed for student-job pair; falling back to TalentForge-only scoring")
@@ -496,24 +556,51 @@ def fairlearn_score_for_pair(student: Dict[str, Any], job: Dict[str, Any]) -> Di
 
 
 def blended_pair_score(student: Dict[str, Any], job: Dict[str, Any], interested_rank: Optional[Dict[str, int]] = None) -> Tuple[float, Dict[str, Any]]:
-    talentforge_score, breakdown = score_student_for_job(student, job, interested_rank or {})
+    """Stage 1 of Algorithm 1: return the TalentForge *match* score as the primary
+    ranking score. The Fairlearn probability is kept strictly separate (carried in
+    the breakdown, never averaged into the match score) for the pool-level fairness
+    reorder in rerank_with_fairness.
+
+    Returns ``(match_score, breakdown)``. The 2-tuple shape is preserved because
+    blended_pair_score is consumed outside this module (recommender.score_pair),
+    so the fairness data is exposed as separate *fields inside breakdown*:
+      - ``fairlearn``        : float probability, or None when unavailable
+      - ``fairness_status``  : "active" | "degraded" | "unavailable" | "required_but_missing"
+      - ``fairness_note``    : human-readable note, present only when not fully active
+    """
+    match_score, breakdown = score_student_for_job(student, job, interested_rank or {})
     fairlearn_result = fairlearn_score_for_pair(student, job)
     fairlearn_score = fairlearn_result.get("score")
-    final_score = talentforge_score
+
+    # Match score is the primary ranking score in every case — no blending.
+    breakdown["talentforge"] = round(match_score, 3)
+    breakdown["overall"] = round(match_score, 3)
+
     if fairlearn_score is not None:
-        final_score = (
-            (FAIRNESS_BLEND_TALENTFORGE_WEIGHT * talentforge_score) +
-            (FAIRNESS_BLEND_MODEL_WEIGHT * fairlearn_score)
-        )
         breakdown["fairlearn"] = round(fairlearn_score, 3)
-        breakdown["talentforge"] = round(talentforge_score, 3)
-        breakdown["overall"] = round(final_score, 3)
-        breakdown["fairlearn_status"] = "active"
         breakdown["fairlearn_source"] = fairlearn_result.get("source")
+        breakdown["fairlearn_artifact"] = fairlearn_result.get("loaded_artifact")
+        if fairlearn_result.get("is_champion"):
+            # Real champion loaded — fairness serving is fully active.
+            breakdown["fairness_status"] = "active"
+            breakdown["fairlearn_status"] = "active"
+        else:
+            # A score was produced, but from a substituted artifact, not the named
+            # champion. Surface this as a distinct DEGRADED state, not "active".
+            breakdown["fairness_status"] = "degraded"
+            breakdown["fairlearn_status"] = "degraded"
+            breakdown["fairness_note"] = (
+                f"Fairness champion unavailable — substituted "
+                f"'{fairlearn_result.get('loaded_artifact')}'; scores are approximate"
+            )
     else:
-        breakdown["talentforge"] = round(talentforge_score, 3)
-        breakdown["overall"] = round(final_score, 3)
-        breakdown["fairlearn_status"] = "unavailable"
+        breakdown["fairlearn"] = None
+        status_value = "required_but_missing" if REQUIRE_FAIRNESS_SCORING else "unavailable"
+        breakdown["fairness_status"] = status_value
+        breakdown["fairlearn_status"] = status_value
+        breakdown["fairness_note"] = (
+            "Fairness re-ranking unavailable — showing match-quality ranking only"
+        )
         breakdown["fairlearn_fallback_reason"] = fairlearn_result.get("fallback_reason")
         if fairlearn_result.get("error"):
             breakdown["fairlearn_error"] = fairlearn_result["error"]
@@ -522,16 +609,73 @@ def blended_pair_score(student: Dict[str, Any], job: Dict[str, Any], interested_
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Fairness scoring is required but the Fairlearn artifact is unavailable.",
             )
-    return final_score, breakdown
+    return match_score, breakdown
+
+
+def rerank_with_fairness(scored_rows: List[Dict[str, Any]], score_key: str, fairness_key: str) -> List[Dict[str, Any]]:
+    """Stage 2 of Algorithm 1: rank by match score, then apply a *bounded* fairness
+    reorder.
+
+    Primary order is always the match score (descending). The Fairlearn probability
+    is only used to break near-ties: rows whose match scores fall in the same band of
+    width FAIRNESS_TIE_EPSILON are reordered by fairness probability (descending).
+    Fairness never reorders across bands, so it cannot override match quality.
+
+    The pool is treated as fairness-active only if *every* row carries a non-None
+    fairness score. If not active, the reorder is skipped entirely and the rows are
+    returned in match-only (descending) order.
+
+    Replicates the bias_reduction.fairness_comparison idiom (assign(...).sort_values
+    (...)) locally on a lightweight index frame — it does not import from or modify
+    that module, and avoids DataFrame-ifying the heavy row dicts.
+    """
+    if not scored_rows:
+        return list(scored_rows)
+
+    active = all(row.get(fairness_key) is not None for row in scored_rows)
+
+    if not active:
+        # Match-only ranking; stable sort preserves incoming order within ties.
+        order = sorted(
+            range(len(scored_rows)),
+            key=lambda i: -float(scored_rows[i].get(score_key) or 0.0),
+        )
+        return [scored_rows[i] for i in order]
+
+    # Fairness-active: band near-ties by match score, break them by fairness prob.
+    # Band-edge cases (two rows within epsilon but straddling a band boundary) are
+    # an accepted approximation of the tie-band heuristic.
+    order_frame = pd.DataFrame({
+        "_idx": range(len(scored_rows)),
+        "match": [float(row.get(score_key) or 0.0) for row in scored_rows],
+        "fair": [float(row.get(fairness_key)) for row in scored_rows],
+    }).assign(
+        band=lambda d: (d["match"] / FAIRNESS_TIE_EPSILON).round().astype(int),
+    ).sort_values(
+        by=["band", "fair", "match", "_idx"],
+        ascending=[False, False, False, True],
+        kind="mergesort",  # stable
+    )
+    return [scored_rows[i] for i in order_frame["_idx"].tolist()]
 
 
 def sort_jobs_for_student(student: Dict[str, Any], jobs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    reset_fairness_cycle()
     scored_jobs = []
     for job in jobs:
         score, breakdown = blended_pair_score(student, job)
-        scored_jobs.append({**job, "phi_score": score, "_match_breakdown": breakdown})
-    scored_jobs.sort(key=lambda item: (bool(item.get("job_type")), float(item.get("phi_score") or 0)), reverse=True)
-    return scored_jobs
+        scored_jobs.append({
+            **job,
+            "phi_score": score,
+            "_fairness_score": breakdown.get("fairlearn"),
+            "_match_breakdown": breakdown,
+        })
+    # Stage 2: rank by match, fairness reorders near-ties (or no-op if unavailable).
+    ranked = rerank_with_fairness(scored_jobs, "phi_score", "_fairness_score")
+    # Outer constraint: jobs carrying a job_type stay ahead of those without.
+    # list.sort is stable, so the fairness ordering is preserved within each group.
+    ranked.sort(key=lambda item: 0 if bool(item.get("job_type")) else 1)
+    return ranked
 
 
 def job_track(job: Dict[str, Any]) -> str:
@@ -1282,22 +1426,29 @@ def recruiter_feed_with_track(
     eligible_students = [row for row in unseen_students if passes_hard_criteria(row, job)]
 
     def score_student_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        reset_fairness_cycle()
         scored_rows = []
         for row in rows:
             enriched = enrich_student_row(row)
-            final_score, breakdown = blended_pair_score(enriched, job, interested_rank)
-            enriched["_match_score"] = final_score
+            match_score, breakdown = blended_pair_score(enriched, job, interested_rank)
+            enriched["_match_score"] = match_score
+            enriched["_fairness_score"] = breakdown.get("fairlearn")
             enriched["_match_breakdown"] = breakdown
             scored_rows.append(enriched)
         return scored_rows
 
-    scored = score_student_rows(eligible_students)
-    scored.sort(key=lambda row: (
-        student_id(row) not in interested_rank,
+    scored_rows = score_student_rows(eligible_students)
+    # Outer constraint: students the recruiter already showed interest in stay
+    # pinned to the top in their interest order; only the discovery pool ("rest")
+    # is subject to the match-then-fairness reorder.
+    interested_pool = [row for row in scored_rows if student_id(row) in interested_rank]
+    rest_pool = [row for row in scored_rows if student_id(row) not in interested_rank]
+    interested_pool.sort(key=lambda row: (
         interested_rank.get(student_id(row), 999999),
-        -float(row.get("_match_score") or 0),
         str(row.get("email") or ""),
     ))
+    rest_pool = rerank_with_fairness(rest_pool, "_match_score", "_fairness_score")
+    scored = interested_pool + rest_pool
     page = scored[offset:offset + limit]
     cards = [student_to_card(row, job_id, hydrate_details=False) for row in page]
     return {"students": cards}

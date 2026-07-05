@@ -38,10 +38,32 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+const AUTH_STORAGE_KEYS = [
+  'jobswipe_role',
+  'jobswipe_user_id',
+  'jobswipe_user_name',
+  'jobswipe_user_email',
+  'jobswipe_token',
+];
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config as any;
+
+    // Token expired or invalid: drop the stale session and bounce to login.
+    // Skipped on the login page so failed sign-in attempts surface their own error.
+    const status = error?.response?.status;
+    if ((status === 401 || status === 403) && typeof window !== 'undefined') {
+      const hadSession = !!window.localStorage.getItem('jobswipe_token');
+      const onLoginPage = window.location.pathname === '/login';
+      if (hadSession && !onLoginPage) {
+        AUTH_STORAGE_KEYS.forEach((key) => window.localStorage.removeItem(key));
+        window.location.assign('/login');
+      }
+      return Promise.reject(error);
+    }
+
     const currentBase = config?.baseURL || API_BASE;
     const currentIndex = API_BASE_CANDIDATES.indexOf(currentBase);
     const hasNetworkError = !!error && !error.response;

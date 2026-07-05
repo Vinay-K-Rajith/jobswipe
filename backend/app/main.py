@@ -10,7 +10,7 @@ import json
 import pandas as pd
 import math
 from typing import Any, Dict, List, Optional
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -46,7 +46,9 @@ from app.services.bias_reduction import (
 )
 from app.services.data_paths import data_dir, dataset_variant
 from app.services.artifact_registry import load_classifier_artifact, load_ranker_artifact
-from app.routers import auth, profile, resume, resume_builder, swipe, upskill
+from app.config import CORS_ORIGINS
+from app.routers import auth, interview, profile, resume, resume_builder, swipe, upskill
+from app.routers.deps import require_admin
 
 # Try to load classifier model (may not be trained yet)
 try:
@@ -123,20 +125,26 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS for frontend
+# CORS for frontend — explicit allowlist (wildcard + credentials is rejected by
+# browsers and flagged by audits). Configure CORS_ORIGINS for deployed origins.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Admin-only API surface: student PII, eligibility, ML shortlists and bias tools
+# are placement-team features. Every route on this router requires an admin JWT.
+admin_router = APIRouter(dependencies=[Depends(require_admin)])
 
 app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(resume.router)
 app.include_router(resume_builder.router)
 app.include_router(swipe.router)
+app.include_router(interview.router)
 app.include_router(upskill.router)
 
 # ---------- Load data at startup ----------
@@ -270,7 +278,7 @@ async def root():
     }
 
 
-@app.get("/api/students")
+@admin_router.get("/api/students")
 async def get_students(
     department: Optional[str] = None,
     min_cgpa: Optional[float] = None,
@@ -297,7 +305,7 @@ async def get_students(
     return {"total": total, "students": clean_nan(records)}
 
 
-@app.get("/api/students/{student_id}")
+@admin_router.get("/api/students/{student_id}")
 async def get_student(student_id: str):
     """Get a single student's full profile."""
     if students_df is None:
@@ -322,7 +330,7 @@ async def get_student(student_id: str):
     return clean_nan(record)
 
 
-@app.get("/api/companies")
+@admin_router.get("/api/companies")
 async def get_companies(
     tier: Optional[str] = None,
     industry: Optional[str] = None,
@@ -340,7 +348,7 @@ async def get_companies(
     return {"total": len(df), "companies": clean_nan(df.to_dict(orient="records"))}
 
 
-@app.get("/api/companies/{company_id}")
+@admin_router.get("/api/companies/{company_id}")
 async def get_company(company_id: str):
     """Get a single company's requirements."""
     if companies_df is None:
@@ -353,7 +361,7 @@ async def get_company(company_id: str):
     return clean_nan(company.iloc[0].to_dict())
 
 
-@app.post("/api/eligibility/check")
+@admin_router.post("/api/eligibility/check")
 async def check_eligibility(request: EligibilityRequest):
     """Check eligibility of a student for a company."""
     if students_df is None or companies_df is None:
@@ -428,7 +436,7 @@ async def check_eligibility(request: EligibilityRequest):
     }
 
 
-@app.post("/api/eligibility/batch")
+@admin_router.post("/api/eligibility/batch")
 async def batch_check_eligibility(request: BatchEligibilityRequest):
     """Check eligibility of multiple students for a company."""
     if students_df is None or companies_df is None:
@@ -464,8 +472,8 @@ async def batch_check_eligibility(request: BatchEligibilityRequest):
             try:
                 result = run_inference(student_data, company_data, model, scaler, feature_cols)
                 score = result["score"]
-            except:
-                pass
+            except Exception as e:
+                print(f"Warning: batch inference failed for {sid}: {e}")
 
         results.append({
             "student_id": sid,
@@ -493,7 +501,7 @@ async def batch_check_eligibility(request: BatchEligibilityRequest):
     }
 
 
-@app.get("/api/model/metrics")
+@admin_router.get("/api/model/metrics")
 async def get_model_metrics():
     """Get model training metrics."""
     metrics_path = active_model_json("baseline_metrics.json", "metrics.json")
@@ -516,7 +524,7 @@ async def get_model_metrics():
     }
 
 
-@app.get("/api/model/artifacts")
+@admin_router.get("/api/model/artifacts")
 async def get_model_artifacts():
     """Return admin-facing summaries from generated model evaluation artifacts."""
     model_dir = MODEL_DIR
@@ -610,7 +618,7 @@ async def get_model_artifacts():
     })
 
 
-@app.get("/api/stats")
+@admin_router.get("/api/stats")
 async def get_stats():
     """Get system statistics."""
     if students_df is None:
@@ -637,7 +645,7 @@ async def get_stats():
     return stats
 
 
-@app.get("/api/skill-deficits")
+@admin_router.get("/api/skill-deficits")
 async def get_skill_deficits(limit: int = Query(default=8, le=25)):
     """Get cohort-level missing-skill aggregates for company-required skills."""
     if students_df is None or companies_df is None or skills_df is None:
@@ -708,7 +716,7 @@ async def get_skill_deficits(limit: int = Query(default=8, le=25)):
 # OPTION 1 — ML Ranked Shortlist
 # GET /api/ml/ranked-shortlist/{company_id}?top_k=20
 # ═══════════════════════════════════════════════════════════
-@app.get("/api/ml/ranked-shortlist/{company_id}")
+@admin_router.get("/api/ml/ranked-shortlist/{company_id}")
 async def get_ranked_shortlist(company_id: str, top_k: int = Query(default=20, le=800)):
     """Return ML-ranked shortlist of students for a company (Option 1)."""
     if not RANKER_LOADED:
@@ -722,7 +730,6 @@ async def get_ranked_shortlist(company_id: str, top_k: int = Query(default=20, l
     company_data = company.iloc[0].to_dict()
 
     # Build feature rows for all students vs this company
-    import numpy as np
     from src.preprocessing.feature_engineering import compute_skill_match, COMPANY_COMPLEXITY_MAP, COMPANY_CERT_TIER_MAP
 
     allowed_depts = [d.strip() for d in str(company_data.get("allowed_departments", "")).split(",")]
@@ -804,7 +811,7 @@ async def get_ranked_shortlist(company_id: str, top_k: int = Query(default=20, l
 # OPTION 2 — ML Skill Gap Recommendations
 # GET /api/ml/skill-gap/{student_id}?top_k=5
 # ═══════════════════════════════════════════════════════════
-@app.get("/api/ml/skill-gap/{student_id}")
+@admin_router.get("/api/ml/skill-gap/{student_id}")
 async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
     """Return ML-predicted top skill recommendations for a student (Option 2)."""
     if not SKILL_REC_LOADED:
@@ -829,7 +836,6 @@ async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
                     feats[col] = dept_match_ratio
                 else:
                     feats[col] = float(student_row.get(col, 0) or 0)
-        import numpy as np
         X = pd.DataFrame([feats])[skill_rec_feat_cols].fillna(0)
         gain = float(skill_rec_model.predict(skill_rec_scaler.transform(X.values))[0])
         rec_rows.append({"skill": skill, "predicted_gain": round(gain, 4)})
@@ -865,7 +871,7 @@ async def get_skill_gap(student_id: str, top_k: int = Query(default=5, le=20)):
 # OPTION 3 — Criteria Bias Report
 # GET /api/ml/bias-report
 # ═══════════════════════════════════════════════════════════
-@app.get("/api/ml/bias-report")
+@admin_router.get("/api/ml/bias-report")
 async def get_bias_report(flagged_only: bool = False):
     """Return upstream criteria bias detection results (Option 3)."""
     if not BIAS_REPORT_AVAILABLE:
@@ -936,7 +942,7 @@ async def get_bias_report(flagged_only: bool = False):
     })
 
 
-@app.post("/api/bias/simulate-fix")
+@admin_router.post("/api/bias/simulate-fix")
 async def post_bias_simulation(request: BiasSimulationRequest):
     if students_df is None or companies_df is None or student_features_df is None:
         raise HTTPException(status_code=500, detail="Data not loaded")
@@ -954,7 +960,7 @@ async def post_bias_simulation(request: BiasSimulationRequest):
         raise HTTPException(status_code=500, detail=f"Bias simulation failed: {exc}")
 
 
-@app.post("/api/bias/recommendations")
+@admin_router.post("/api/bias/recommendations")
 async def post_bias_recommendation(request: BiasRecommendationRequest):
     try:
         return save_bias_recommendation(request.model_dump())
@@ -964,7 +970,7 @@ async def post_bias_recommendation(request: BiasRecommendationRequest):
         raise HTTPException(status_code=500, detail=f"Failed to save recommendation: {exc}")
 
 
-@app.get("/api/bias/recommendations")
+@admin_router.get("/api/bias/recommendations")
 async def get_bias_recommendations(company_id: Optional[str] = None):
     try:
         return load_bias_recommendations(company_id)
@@ -974,7 +980,7 @@ async def get_bias_recommendations(company_id: Optional[str] = None):
         raise HTTPException(status_code=500, detail=f"Failed to load recommendations: {exc}")
 
 
-@app.post("/api/bias/counterfactual-rules")
+@admin_router.post("/api/bias/counterfactual-rules")
 async def post_counterfactual_rules(request: CounterfactualRulesRequest):
     if students_df is None or companies_df is None or student_features_df is None:
         raise HTTPException(status_code=500, detail="Data not loaded")
@@ -991,7 +997,7 @@ async def post_counterfactual_rules(request: CounterfactualRulesRequest):
         raise HTTPException(status_code=500, detail=f"Counterfactual analysis failed: {exc}")
 
 
-@app.post("/api/bias/preview-substitution")
+@admin_router.post("/api/bias/preview-substitution")
 async def post_preview_substitution(request: BiasSubstitutionPreviewRequest):
     if students_df is None or companies_df is None or student_features_df is None:
         raise HTTPException(status_code=500, detail="Data not loaded")
@@ -1012,7 +1018,7 @@ async def post_preview_substitution(request: BiasSubstitutionPreviewRequest):
         raise HTTPException(status_code=500, detail=f"Substitution preview failed: {exc}")
 
 
-@app.get("/api/bias/ml-fairness-comparison")
+@admin_router.get("/api/bias/ml-fairness-comparison")
 async def get_ml_fairness_comparison(company_id: str):
     if students_df is None or companies_df is None or student_features_df is None:
         raise HTTPException(status_code=500, detail="Data not loaded")
@@ -1032,7 +1038,7 @@ async def get_ml_fairness_comparison(company_id: str):
         raise HTTPException(status_code=500, detail=f"ML fairness comparison failed: {exc}")
 
 
-@app.get("/api/bias/jobswipe-feed-replay")
+@admin_router.get("/api/bias/jobswipe-feed-replay")
 async def get_jobswipe_feed_replay(company_id: str):
     if students_df is None or companies_df is None or student_features_df is None:
         raise HTTPException(status_code=500, detail="Data not loaded")
@@ -1051,7 +1057,7 @@ async def get_jobswipe_feed_replay(company_id: str):
         raise HTTPException(status_code=500, detail=f"JobSwipe feed replay failed: {exc}")
 
 
-@app.post("/api/bias/retrain-constrained")
+@admin_router.post("/api/bias/retrain-constrained")
 async def post_retrain_constrained(request: ConstrainedRetrainRequest):
     if students_df is None or companies_df is None or student_features_df is None:
         raise HTTPException(status_code=500, detail="Data not loaded")
@@ -1074,7 +1080,7 @@ async def post_retrain_constrained(request: ConstrainedRetrainRequest):
         raise HTTPException(status_code=500, detail=f"Constrained retraining failed: {exc}")
 
 
-@app.get("/api/bias/model-fairness-history/{company_id}")
+@admin_router.get("/api/bias/model-fairness-history/{company_id}")
 async def get_model_fairness_history(company_id: str):
     try:
         return get_fairness_history(company_id)
@@ -1082,6 +1088,9 @@ async def get_model_fairness_history(company_id: str):
         raise HTTPException(status_code=503, detail=str(exc))
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Failed to load fairness history: {exc}")
+
+# Register admin-only routes after all decorators above have run.
+app.include_router(admin_router)
 
 if __name__ == "__main__":
     import uvicorn

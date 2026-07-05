@@ -24,6 +24,7 @@ export default function StudentNavbar({ interestedCount = 0 }: StudentNavbarProp
           </Link>
           <Link to="/student/matches" className={active('/student/matches')}>Matches</Link>
           <Link to="/student/resume-builder" className={active('/student/resume-builder')}>Resume Builder</Link>
+          <Link to="/student/interview" className={active('/student/interview')}>Interview Prep</Link>
           <Link to="/student/rejections" className={active('/student/rejections')}>Growth Insights</Link>
           <Link to="/student/profile" className={active('/student/profile')}>Profile</Link>
         </div>

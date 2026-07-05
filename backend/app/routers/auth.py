@@ -1,5 +1,6 @@
 import hashlib
 import re
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 import bcrypt
@@ -7,7 +8,7 @@ from fastapi import APIRouter, HTTPException, status
 from jose import jwt
 from pydantic import BaseModel, EmailStr, validator
 
-from app.config import ADMIN_EMAIL_DOMAIN, ADMIN_LOGIN_PASSWORD, JWT_SECRET, STUDENT_EMAIL_DOMAIN, TRIAL_LOGIN_PASSWORD
+from app.config import ADMIN_EMAIL_DOMAIN, ADMIN_LOGIN_PASSWORD, JWT_SECRET, JWT_TTL_HOURS, STUDENT_EMAIL_DOMAIN, TRIAL_LOGIN_PASSWORD
 from app.database import supabase
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -30,6 +31,17 @@ GENERIC_COMPANY_TOKENS = {
     "technologies",
     "technology",
 }
+
+
+def create_access_token(claims: dict) -> str:
+    """Encode a signed JWT with issued-at and expiry claims.
+
+    The `exp` claim bounds how long a leaked token stays valid; `jose`
+    rejects expired tokens automatically on decode.
+    """
+    now = datetime.now(timezone.utc)
+    payload = {**claims, "iat": now, "exp": now + timedelta(hours=JWT_TTL_HOURS)}
+    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
 
 
 def email_domain(email: str) -> str:
@@ -413,7 +425,7 @@ def student_login(req: StudentLoginRequest):
 
     student_id = student_id_from_record(student)
     email = str(req.email or student.get("email") or "")
-    token = jwt.encode({"sub": student_id, "role": "student", "email": email}, JWT_SECRET, algorithm="HS256")
+    token = create_access_token({"sub": student_id, "role": "student", "email": email})
     return {"access_token": token, "student_id": student_id, "name": student_name_from_record(student), "email": email}
 
 
@@ -460,7 +472,7 @@ def recruiter_login(req: RecruiterLoginRequest):
 
     attach_seed_jobs_to_recruiter(recruiter)
 
-    token = jwt.encode({"sub": recruiter["id"], "role": "recruiter", "email": email}, JWT_SECRET, algorithm="HS256")
+    token = create_access_token({"sub": recruiter["id"], "role": "recruiter", "email": email})
     return {
         "access_token": token,
         "recruiter_id": recruiter["id"],
@@ -478,5 +490,5 @@ def admin_login(req: AdminLoginRequest):
     if req.password != ADMIN_LOGIN_PASSWORD:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid password")
 
-    token = jwt.encode({"sub": email, "role": "admin", "email": email}, JWT_SECRET, algorithm="HS256")
+    token = create_access_token({"sub": email, "role": "admin", "email": email})
     return {"access_token": token, "admin_id": email, "name": "Placement Team", "email": email}

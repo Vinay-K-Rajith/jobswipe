@@ -17,3 +17,16 @@ build/
 # Raw resume PDFs and per-resume ground-truth JSONs are intentionally kept out of Git.
 backend/data/resume_realworld_raw/
 backend/data/resume_realworld_parsed/parsed_records.json
+
+# Large ML model binaries — kept on disk, not in Git (regenerate via training
+# scripts or fetch separately). Lightweight JSON/PNG artifacts stay tracked.
+backend/models/*.pkl
+
+# Frozen paper reproducibility snapshot — local-only backup containing model
+# binaries, datasets, and PII resume PDFs/JSON. Never committed.
+backend/models/paper_frozen/
+backend/data/paper_frozen/
+
+# Track only the top-level README; keep all other markdown (docs, planning notes) local.
+*.md
+!README.md
