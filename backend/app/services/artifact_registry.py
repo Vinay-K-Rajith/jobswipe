@@ -143,3 +143,7 @@ def save_pickle(name: str, payload: Any) -> str:
 
 def artifact_names() -> Dict[str, Dict[str, str]]:
     return active_artifacts()
+
+
+def champion_bundle_name() -> str:
+    return active_artifacts()["fair_champion"]["bundle"]
